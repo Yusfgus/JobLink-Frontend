@@ -1,0 +1,86 @@
+<footer class="footer">
+    <div class="footer-inner">
+
+        <!-- ── Main Grid ─────────────────────────────────── -->
+        <div class="footer-grid">
+
+            <!-- Column 1: Brand -->
+            <div class="brand-col">
+                <span class="brand-name">CareerArch</span>
+                <p class="brand-desc">
+                    Building the future of professional growth through curated
+                    opportunities and expert career navigation.
+                </p>
+                <div class="social-row">
+                    <a href="#" class="social-link" aria-label="Website">
+                        <span class="material-symbols-outlined">public</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Share">
+                        <span class="material-symbols-outlined">share</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Email">
+                        <span class="material-symbols-outlined">alternate_email</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Column 2: Company Links -->
+            <div class="link-col">
+                <h4 class="col-title">Company</h4>
+                <nav class="link-list">
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">LinkedIn</a>
+                    <a href="#" class="footer-link">Twitter</a>
+                </nav>
+            </div>
+
+            <!-- Column 3: Support Links -->
+            <div class="link-col">
+                <h4 class="col-title">Support</h4>
+                <nav class="link-list">
+                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms</a>
+                </nav>
+            </div>
+
+            <!-- Column 4: Newsletter -->
+            <div class="newsletter-col">
+                <h4 class="col-title">Join our Newsletter</h4>
+                <p class="newsletter-desc">
+                    Get the latest job updates and career advice delivered weekly.
+                </p>
+                <div class="newsletter-form">
+                    <input
+                        pInputText
+                        type="email"
+                        placeholder="email@careerarch.com"
+                        class="newsletter-input"
+                        [(ngModel)]="newsletterEmail" />
+                    <p-button
+                        label="Subscribe"
+                        styleClass="subscribe-btn"
+                        (onClick)="onSubscribe()">
+                    </p-button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Copyright Bar ─────────────────────────────── -->
+        <div class="copyright-bar">
+            <span class="copyright-text">
+                © {{ currentYear }} CareerArch. Building the future of professional growth.
+            </span>
+            <div class="legal-links">
+                <a href="#" class="legal-icon" aria-label="Language">
+                    <span class="material-symbols-outlined">language</span>
+                </a>
+                <a href="#" class="legal-icon" aria-label="Security">
+                    <span class="material-symbols-outlined">security</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</footer>

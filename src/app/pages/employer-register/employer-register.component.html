@@ -1,0 +1,195 @@
+<main class="register-main">
+    <div class="register-canvas">
+
+        <!-- ── Left Column: Brand Messaging ─────────────────── -->
+        <div class="brand-col">
+
+            <header class="brand-header">
+                <span class="employer-badge">EMPLOYER PORTAL</span>
+                <h1 class="brand-title">
+                    Find the best <span class="accent">talent</span>, curated for you.
+                </h1>
+                <p class="brand-subtitle">
+                    Join the recruitment elite. Transform your hiring strategy from a simple listing to a prestige
+                    opportunity.
+                </p>
+            </header>
+
+            <!-- Feature Cards -->
+            <div class="feature-list">
+                <div class="feature-card">
+                    <div class="feature-icon-wrap feature-icon-wrap--gradient">
+                        <span class="material-symbols-outlined icon-filled">bolt</span>
+                    </div>
+                    <div>
+                        <h3 class="feature-title">Post jobs in minutes</h3>
+                        <p class="feature-body">Our streamlined editor removes the friction between identifying a need
+                            and filling a seat.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrap feature-icon-wrap--tonal">
+                        <span class="material-symbols-outlined icon-filled">verified</span>
+                    </div>
+                    <div>
+                        <h3 class="feature-title">Verified Professionals</h3>
+                        <p class="feature-body">Every applicant is pre-screened to ensure their skills align with your
+                            high standards.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrap feature-icon-wrap--tonal">
+                        <span class="material-symbols-outlined icon-filled">insights</span>
+                    </div>
+                    <div>
+                        <h3 class="feature-title">Deep Market Insights</h3>
+                        <p class="feature-body">Access real-time salary benchmarks and local talent density data.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Logos -->
+            <div class="trust-section">
+                <p class="trust-label">Trusted by Industry Leaders</p>
+                <div class="logo-cluster">
+                    <div class="logo-placeholder"></div>
+                    <div class="logo-placeholder"></div>
+                    <div class="logo-placeholder"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Right Column: Registration Form ──────────────── -->
+        <div class="form-col">
+            <div class="form-card">
+                <!-- Decorative blob -->
+                <div class="form-blob" aria-hidden="true"></div>
+
+                <div class="form-inner">
+                    <h2 class="form-title">Create Employer Account</h2>
+                    <p class="form-subtitle">Begin your journey toward architectural recruitment perfection.</p>
+
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form" novalidate>
+
+                        <!-- Row 1: Company Name / Work Email -->
+                        <div class="form-row">
+                            <div class="field">
+                                <label for="companyName" class="field-label">Company Name</label>
+                                <input
+                                    id="companyName"
+                                    pInputText
+                                    formControlName="companyName"
+                                    placeholder="e.g. Acme Studio"
+                                    class="field-input"
+                                    [class.ng-invalid]="form.get('companyName')?.invalid && form.get('companyName')?.touched" />
+                            </div>
+                            <div class="field">
+                                <label for="workEmail" class="field-label">Work Email</label>
+                                <input
+                                    id="workEmail"
+                                    pInputText
+                                    formControlName="workEmail"
+                                    placeholder="hr@yourcompany.com"
+                                    type="email"
+                                    class="field-input"
+                                    [class.ng-invalid]="form.get('workEmail')?.invalid && form.get('workEmail')?.touched" />
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Industry / Company Size -->
+                        <div class="form-row">
+                            <div class="field">
+                                <label for="industry" class="field-label">Industry</label>
+                                <p-dropdown
+                                    inputId="industry"
+                                    formControlName="industry"
+                                    [options]="industryOptions"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Select Industry"
+                                    styleClass="field-dropdown"
+                                    [class.ng-invalid]="form.get('industry')?.invalid && form.get('industry')?.touched">
+                                </p-dropdown>
+                            </div>
+                            <div class="field">
+                                <label for="companySize" class="field-label">Company Size</label>
+                                <p-dropdown
+                                    inputId="companySize"
+                                    formControlName="companySize"
+                                    [options]="companySizeOptions"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Select Size"
+                                    styleClass="field-dropdown"
+                                    [class.ng-invalid]="form.get('companySize')?.invalid && form.get('companySize')?.touched">
+                                </p-dropdown>
+                            </div>
+                        </div>
+
+                        <!-- Password — full width -->
+                        <div class="field field--full">
+                            <label for="password" class="field-label">Password</label>
+                            <p-password
+                                inputId="password"
+                                formControlName="password"
+                                placeholder="Create a strong password"
+                                styleClass="field-password"
+                                inputStyleClass="field-input"
+                                [toggleMask]="true"
+                                [feedback]="false"
+                                [class.ng-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+                            </p-password>
+                            <span class="password-hint">min. 8 characters</span>
+                        </div>
+
+                        <!-- Terms Checkbox -->
+                        <div class="terms-row">
+                            <p-checkbox
+                                inputId="terms"
+                                formControlName="terms"
+                                [binary]="true"
+                                styleClass="terms-checkbox"
+                                [class.ng-invalid]="form.get('terms')?.invalid && form.get('terms')?.touched">
+                            </p-checkbox>
+                            <label for="terms" class="terms-label">
+                                I agree to the
+                                <a href="#" class="terms-link">Terms of Service</a>
+                                and
+                                <a href="#" class="terms-link">Privacy Policy</a>.
+                            </label>
+                        </div>
+
+                        <!-- Submit -->
+                        <p-button
+                            type="submit"
+                            label="Create My Account"
+                            icon="pi pi-arrow-right"
+                            iconPos="right"
+                            styleClass="submit-btn"
+                            (onClick)="onSubmit()">
+                        </p-button>
+
+                    </form>
+
+                    <!-- Social Proof Footer -->
+                    <div class="social-proof">
+                        <div class="avatar-stack">
+                            @for (src of avatars; track src) {
+                                <div class="avatar-frame">
+                                    <img [src]="src" alt="Employer" class="avatar-img" />
+                                </div>
+                            }
+                        </div>
+                        <p class="testimonial">
+                            "CareerArch transformed how we source senior engineers."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

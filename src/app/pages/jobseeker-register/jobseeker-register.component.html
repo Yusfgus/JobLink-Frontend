@@ -1,0 +1,157 @@
+<main class="register-main">
+    <div class="register-canvas p-grid">
+
+        <!-- ── Left Column: Value Proposition ───────────── -->
+        <div class="p-col-12 p-lg-5 value-col">
+            <div class="value-header">
+                <h1 class="value-title">Design Your <br />Future Career.</h1>
+                <p class="value-subtitle">
+                    Stop searching. Start being discovered. Our editorial approach to recruitment ensures
+                    you're matched with roles that fit your narrative.
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <span class="material-symbols-outlined feature-icon">auto_awesome</span>
+                    </div>
+                    <div>
+                        <h3 class="feature-title">Get matched with top companies</h3>
+                        <p class="feature-body">
+                            Our AI curator identifies high-impact roles tailored to your professional trajectory.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">
+                        <span class="material-symbols-outlined feature-icon">touch_app</span>
+                    </div>
+                    <div>
+                        <h3 class="feature-title">Apply with one click</h3>
+                        <p class="feature-body">
+                            Streamlined profiles allow you to move from discovery to application in seconds.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Right Column: Registration Form ──────────── -->
+        <div class="p-col-12 p-lg-7 form-col">
+            <div class="form-card">
+                <!-- Decorative blob -->
+                <div class="form-blob" aria-hidden="true"></div>
+
+                <div class="form-inner">
+                    <header class="form-header">
+                        <h2 class="form-title">Create your account</h2>
+                        <p class="form-subtitle">Join 200,000+ professionals architecting their path.</p>
+                    </header>
+
+                    <!-- Social Sign-Up -->
+                    <div class="social-grid">
+                        <button class="social-btn" type="button" (click)="onLinkedIn()">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1oJOCWHzmsgGshp_pElTHv_I6izgfPLHjSVZSFFOPjBql16n09zBcMDy8DJ7YuFBBUPLa_8ihCshk_HgDMwRKN_jF3U3mdNPQsIdTFrZ_2jSCMAxRIh-v9PN3DNLBWUB8gYjkxt71ncn6buwBBmTwCGRAiLIARyr8FoP79EB--nRljrjiH0MvN1wB26EdXbP-6AHeCRehF5830LN3BwoGTj7my2VlepVghIKmt70dpydML2vkTAsqgTB8BVQnXGi4sh_8ApLEAk_D"
+                                alt="LinkedIn" class="social-logo" />
+                            LinkedIn
+                        </button>
+                        <button class="social-btn" type="button" (click)="onGoogle()">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-z--Qv-fYtYp4vmGv8ZSBuM7-vQgkH_P9Rl3S18N8p5A9d0mkcOrlYxzgoELz_OK5ZJpD6q1wXppXVuLYSH7n6iCykG0nvbET854vxU2CqFKvRLsw8BcuyZsyTQY5sNa8TVHznqUTy2Nhn4fHKZNv803C7WLAtsHrcijumr0gb_1kCH0lDoC3SzeZ2OwRpg2LpTdxRRNsB24oIlDmziIzfJTSSc00l3bgDRtykTiGvgtYNoIyX058T6IXf9xajmEuAaZZ7CVyzDr2"
+                                alt="Google" class="social-logo" />
+                            Google
+                        </button>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="or-divider">
+                        <div class="or-line"></div>
+                        <span class="or-label">Or register with email</span>
+                        <div class="or-line"></div>
+                    </div>
+
+                    <!-- Form -->
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form" novalidate>
+
+                        <!-- Row 1: First Name / Middle Name -->
+                        <div class="p-grid form-row">
+                            <div class="p-col-12 p-md-6 field">
+                                <label for="firstName" class="field-label">First Name</label>
+                                <input id="firstName" pInputText formControlName="firstName" placeholder="Alex"
+                                    class="field-input"
+                                    [class.ng-invalid]="form.get('firstName')?.invalid && form.get('firstName')?.touched" />
+                            </div>
+                            <div class="p-col-12 p-md-6 field">
+                                <label for="middleName" class="field-label">Middle Name</label>
+                                <input id="middleName" pInputText formControlName="middleName" placeholder="J."
+                                    class="field-input" />
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Last Name / Gender -->
+                        <div class="p-grid form-row">
+                            <div class="p-col-12 p-md-6 field">
+                                <label for="lastName" class="field-label">Last Name</label>
+                                <input id="lastName" pInputText formControlName="lastName" placeholder="Carter"
+                                    class="field-input"
+                                    [class.ng-invalid]="form.get('lastName')?.invalid && form.get('lastName')?.touched" />
+                            </div>
+                            <div class="p-col-12 p-md-6 field">
+                                <label for="gender" class="field-label">Gender</label>
+                                <p-dropdown inputId="gender" formControlName="gender" [options]="genderOptions"
+                                    optionLabel="label" optionValue="value" placeholder="Select Gender"
+                                    styleClass="field-dropdown"
+                                    [class.ng-invalid]="form.get('gender')?.invalid && form.get('gender')?.touched">
+                                </p-dropdown>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Email Address -->
+                        <div class="p-grid form-row">
+                            <div class="p-col-12 p-md-12 field field--full">
+                                <label for="email" class="field-label">Email Address</label>
+                                <div class="email-wrap">
+                                    <input id="email" pInputText formControlName="email" placeholder="alex@joblink.com"
+                                        type="email" class="field-input"
+                                        [class.ng-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+                                    <span class="material-symbols-outlined email-check-icon">check_circle</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="field">
+                            <div class="password-label-row">
+                                <label for="password" class="field-label">Password</label>
+                                <span class="password-hint">Min. 8 Characters</span>
+                            </div>
+                            <p-password inputId="password" formControlName="password" placeholder="••••••••"
+                                styleClass="field-password" inputStyleClass="field-input" [toggleMask]="true"
+                                [feedback]="false"
+                                [class.ng-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+                            </p-password>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="submit-wrap">
+                            <p-button type="submit" label="Create My Profile" styleClass="submit-btn">
+                            </p-button>
+                        </div>
+
+                        <!-- Legal -->
+                        <p class="legal-text">
+                            By signing up, you agree to our
+                            <a href="#" class="legal-link">Terms of Service</a>
+                            and
+                            <a href="#" class="legal-link">Privacy Policy</a>.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

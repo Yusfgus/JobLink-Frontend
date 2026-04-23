@@ -1,0 +1,22 @@
+<header class="auth-header">
+    <div class="header-inner">
+
+        <!-- Brand Logo -->
+        <a routerLink="/" class="brand-link">
+            <span class="brand-name">JobLink</span>
+        </a>
+
+        <!-- Right Action -->
+        <div class="header-actions">
+            <span class="action-prompt">{{ navAction().prompt }}</span>
+            <a [routerLink]="navAction().link" class="action-link">{{ navAction().label }}</a>
+        </div>
+        <!-- <div class="actions">
+            <span class="action-prompt">{{ navAction().prompt }}</span>
+            <p-button [label]="navAction().label" [icon]="navAction().icon" [routerLink]="navAction().link"
+                styleClass="p-button-outlined p-button-rounded">
+            </p-button>
+        </div> -->
+
+    </div>
+</header>

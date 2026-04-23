@@ -1,0 +1,89 @@
+/* =====================================================
+   Auth Header — stitch-theme.scss tokens
+   ===================================================== */
+
+:host {
+    display: block;
+    width: 100%;
+    background-color: var(--surface-ground);
+    /* #f9f9ff */
+    font-family: var(--font-family);
+}
+
+/* ── Bar ────────────────────────────────────────────── */
+.auth-header {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--surface-ground);
+    box-shadow: 0 1px 0 rgba(3, 28, 57, 0.04);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1536px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+}
+
+/* ── Brand ──────────────────────────────────────────── */
+.brand-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.brand-name {
+    font-family: var(--heading-font-family);
+    font-size: 2rem;
+    font-weight: 900;
+    color: #0055d9;
+    /* surface-tint */
+    letter-spacing: -0.04em;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+/* ── Actions ────────────────────────────────────────── */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.action-prompt {
+    display: none;
+    font-size: 1.15rem;
+    color: var(--text-color-secondary);
+
+    @media (min-width: 768px) {
+        display: inline;
+    }
+}
+
+.action-link {
+    font-family: var(--font-family);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0055d9;
+    /* surface-tint */
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}

@@ -1,0 +1,397 @@
+/* =====================================================
+   JobSeeker Register — stitch-theme.scss vars + PrimeNG
+   ===================================================== */
+
+:host {
+    display: block;
+    min-height: 100vh;
+    background-color: var(--surface-ground);
+    font-family: var(--font-family);
+    color: var(--text-color);
+}
+
+/* ── Page Layout ────────────────────────────────────── */
+.register-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 5rem 1.5rem;
+}
+
+.register-canvas {
+    width: 100%;
+    max-width: 72rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 5fr 7fr;
+    }
+}
+
+/* ── Value Proposition Column ───────────────────────── */
+.value-col {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.value-title {
+    font-family: var(--heading-font-family);
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-weight: 900;
+    color: var(--primary-color);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0 0 1.5rem 0;
+}
+
+.value-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-color-secondary);
+    line-height: 1.75;
+    max-width: 28rem;
+    margin: 0;
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feature-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    background-color: var(--surface-hover); /* surface-container-low */
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #d5e3ff; /* surface-container-highest */
+
+        .feature-icon-wrap {
+            transform: scale(1.1);
+        }
+    }
+}
+
+.feature-icon-wrap {
+    padding: 0.75rem;
+    border-radius: calc(var(--border-radius) - 4px);
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(3, 28, 57, 0.08);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.feature-icon {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    display: block;
+}
+
+.feature-title {
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0 0 0.25rem 0;
+}
+
+.feature-body {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Form Card ──────────────────────────────────────── */
+.form-col {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-card {
+    position: relative;
+    width: 100%;
+    max-width: 36rem;
+    background-color: #ffffff;
+    border-radius: var(--content-border-radius);
+    box-shadow: 0 12px 32px rgba(3, 28, 57, 0.06);
+    overflow: hidden;
+}
+
+.form-blob {
+    position: absolute;
+    top: -4rem;
+    right: -4rem;
+    width: 8rem;
+    height: 8rem;
+    background-color: rgba(0, 64, 167, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.form-inner {
+    position: relative;
+    padding: 2rem;
+
+    @media (min-width: 768px) {
+        padding: 3rem;
+    }
+}
+
+.form-header {
+    margin-bottom: 2.5rem;
+}
+
+.form-title {
+    font-family: var(--heading-font-family);
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: var(--text-color);
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem 0;
+}
+
+.form-subtitle {
+    color: var(--text-color-secondary);
+    margin: 0;
+}
+
+/* ── Social Buttons ─────────────────────────────────── */
+.social-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    background-color: var(--surface-hover);
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+        background-color: #dee8ff; /* surface-container-high */
+        border-color: rgba(195, 198, 215, 0.3);
+    }
+}
+
+.social-logo {
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+}
+
+/* ── OR Divider ─────────────────────────────────────── */
+.or-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.or-line {
+    flex: 1;
+    height: 1px;
+    background-color: rgba(195, 198, 215, 0.2);
+}
+
+.or-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--surface-border);
+    white-space: nowrap;
+}
+
+/* ── Form Fields ────────────────────────────────────── */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &.field--full {
+        @media (min-width: 768px) {
+            grid-column: span 2;
+        }
+    }
+}
+
+.field-label {
+    font-family: var(--heading-font-family);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.field-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius) !important;
+    background-color: var(--surface-hover) !important;
+    border: none !important;
+    outline: none;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+        color: rgba(115, 118, 134, 0.5);
+    }
+
+    &:focus {
+        background-color: #ffffff !important;
+        box-shadow: 0 0 0 2px var(--primary-color) !important;
+    }
+}
+
+/* Email field with icon */
+.email-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.email-check-icon {
+    position: absolute;
+    right: 1rem;
+    color: var(--primary-container);
+    font-size: 1.125rem;
+    pointer-events: none;
+}
+
+/* Password label row */
+.password-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.password-hint {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--surface-border);
+}
+
+/* ── PrimeNG overrides via ::ng-deep ─────────────────── */
+:host ::ng-deep {
+    /* Dropdown */
+    .field-dropdown {
+        width: 100%;
+
+        .p-dropdown {
+            width: 100%;
+            border-radius: var(--border-radius) !important;
+            background-color: var(--surface-hover) !important;
+            border: none !important;
+
+            &:not(.p-disabled).p-focus {
+                box-shadow: 0 0 0 2px var(--primary-color) !important;
+            }
+        }
+
+        .p-dropdown-label {
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            font-family: var(--font-family);
+        }
+    }
+
+    /* Password */
+    .field-password {
+        width: 100%;
+
+        .p-password-input {
+            @extend .field-input;
+        }
+
+        .p-password-panel {
+            border-radius: var(--border-radius);
+        }
+    }
+
+    /* Submit button */
+    .submit-btn {
+        width: 100%;
+        justify-content: center;
+        background: var(--primary-gradient) !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-family: var(--heading-font-family) !important;
+        font-weight: 700 !important;
+        font-size: 1.125rem !important;
+        padding: 1rem 2rem !important;
+        border-radius: var(--border-radius) !important;
+        box-shadow: 0 8px 24px rgba(0, 64, 167, 0.15);
+        transition: box-shadow 0.2s ease, transform 0.1s ease !important;
+
+        &:hover {
+            box-shadow: 0 12px 28px rgba(0, 64, 167, 0.25) !important;
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+}
+
+/* ── Submit & Legal ─────────────────────────────────── */
+.submit-wrap {
+    padding-top: 1rem;
+}
+
+.legal-text {
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--text-color-secondary);
+    padding: 0 1.5rem;
+    line-height: 1.75;
+    margin: 0;
+}
+
+.legal-link {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
