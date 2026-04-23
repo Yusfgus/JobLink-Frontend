@@ -3,12 +3,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { EmployerRegister } from '../../core/interfaces/employer-register';
+import { TokenResponse } from '../../core/interfaces/token-response';
+import { AuthService } from '../../core/services/auth.service';
+
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MessageService } from 'primeng/api';
+
 
 @Component({
     selector: 'app-employer-register',
@@ -31,7 +37,9 @@ export class EmployerRegisterComponent {
     constructor(
         private fb: FormBuilder,
         private router: Router,
-        private spinner: NgxSpinnerService
+        private spinner: NgxSpinnerService,
+        private authService: AuthService,
+        private messageService: MessageService
     ) {
         this.initFormControls();
         this.initFormGroup();
@@ -74,10 +82,10 @@ export class EmployerRegisterComponent {
     ];
 
     companySizeOptions = [
-        { label: '1–10 employees', value: '1-10' },
-        { label: '11–50 employees', value: '11-50' },
-        { label: '51–200 employees', value: '51-200' },
-        { label: '201–500 employees', value: '201-500' },
+        { label: '1-10 employees', value: '1-10' },
+        { label: '11-50 employees', value: '11-50' },
+        { label: '51-200 employees', value: '51-200' },
+        { label: '201-500 employees', value: '201-500' },
         { label: '500+ employees', value: '500+' },
     ];
 
@@ -90,16 +98,42 @@ export class EmployerRegisterComponent {
     onSubmit(): void {
         // console.log('Employer form submitted', this.form.value);
         if (this.form.valid) {
-            this.signUp();
+            const data: EmployerRegister = {
+                name: this.form.value.companyName,
+                email: this.form.value.workEmail,
+                industry: this.form.value.industry,
+                // companySize: this.form.value.companySize,
+                password: this.form.value.password
+            }
+            this.signUp(data);
         } else {
             this.form.markAllAsTouched();
         }
     }
 
-    signUp(): void {
-        this.spinner.show();
-        setTimeout(() => {
-            this.spinner.hide();
-        }, 2000);
+    signUp(registerData: EmployerRegister): void {
+        this.spinner.show()
+        this.authService.employer_register(registerData)
+            .subscribe({
+                next: (response: TokenResponse) => {
+                    console.log(response)
+                    this.authService.setToken(response)
+                    this.authService.setRole('Employer')
+                    // this._userData.username.next('Yusfgus')
+
+                    this.notify('success', 'Success', 'Registered successfully')
+                    // this.router.navigate(['home'])
+                    this.spinner.hide()
+                },
+                error: (response) => {
+                    this.spinner.hide()
+                    console.log(response)
+                    this.notify('error', 'Error', response.error.detail)
+                },
+            })
+    }
+
+    notify(severity: string, summary: string, detail: string): void {
+        this.messageService.add({ severity: severity, summary: summary, detail: detail, key: 'br', life: 3000 })
     }
 }
