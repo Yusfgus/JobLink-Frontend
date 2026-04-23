@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RouterLink, Router } from '@angular/router';
 
+import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
@@ -21,20 +22,39 @@ import { DividerModule } from 'primeng/divider';
         ButtonModule,
         CheckboxModule,
         DividerModule,
+        NgxSpinnerModule
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
-    form: FormGroup;
+    constructor(
+        private fb: FormBuilder,
+        private spinner: NgxSpinnerService,
+        private router: Router
+    ) {
+        this.initFormControls()
+        this.initFormGroups()
+    }
 
-    constructor(private fb: FormBuilder) {
-        this.form = this.fb.group({
-            email:    ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(8)]],
-            remember: [false],
-        });
+    email!: FormControl;
+    password!: FormControl;
+    remember!: FormControl;
+    form!: FormGroup
+
+    initFormControls(): void {
+        this.email = new FormControl('', [Validators.required, Validators.email])
+        this.password = new FormControl('', [Validators.required, Validators.minLength(6)])
+        this.remember = new FormControl(false)
+    }
+
+    initFormGroups(): void {
+        this.form = new FormGroup({
+            email: this.email,
+            password: this.password,
+            remember: this.remember,
+        })
     }
 
     onGoogle(): void {
@@ -46,10 +66,18 @@ export class LoginComponent {
     }
 
     onSubmit(): void {
+        // console.log('Login submitted', this.form.value);
         if (this.form.valid) {
-            console.log('Login submitted', this.form.value);
+            this.signIn();
         } else {
             this.form.markAllAsTouched();
         }
+    }
+
+    signIn(): void {
+        this.spinner.show();
+        setTimeout(() => {
+            this.spinner.hide();
+        }, 2000);
     }
 }

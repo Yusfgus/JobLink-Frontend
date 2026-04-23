@@ -78,24 +78,28 @@
                         <div class="form-row">
                             <div class="field">
                                 <label for="companyName" class="field-label">Company Name</label>
-                                <input
-                                    id="companyName"
-                                    pInputText
-                                    formControlName="companyName"
-                                    placeholder="e.g. Acme Studio"
-                                    class="field-input"
+                                <input id="companyName" pInputText formControlName="companyName"
+                                    placeholder="e.g. Acme Studio" class="field-input"
                                     [class.ng-invalid]="form.get('companyName')?.invalid && form.get('companyName')?.touched" />
+                                @if (companyName.invalid && companyName.touched) {
+                                @if (companyName.getError('required')) {
+                                <small class="form-error-message">Company name is required.</small>
+                                }
+                                }
                             </div>
                             <div class="field">
                                 <label for="workEmail" class="field-label">Work Email</label>
-                                <input
-                                    id="workEmail"
-                                    pInputText
-                                    formControlName="workEmail"
-                                    placeholder="hr@yourcompany.com"
-                                    type="email"
-                                    class="field-input"
+                                <input id="workEmail" pInputText formControlName="workEmail"
+                                    placeholder="hr@yourcompany.com" type="email" class="field-input"
                                     [class.ng-invalid]="form.get('workEmail')?.invalid && form.get('workEmail')?.touched" />
+                                @if (workEmail.invalid && workEmail.touched) {
+                                @if (workEmail.getError('required')) {
+                                <small class="form-error-message">Work email is required.</small>
+                                }
+                                @else if (workEmail.getError('email')) {
+                                <small class="form-error-message">Please enter a valid email address.</small>
+                                }
+                                }
                             </div>
                         </div>
 
@@ -103,54 +107,54 @@
                         <div class="form-row">
                             <div class="field">
                                 <label for="industry" class="field-label">Industry</label>
-                                <p-dropdown
-                                    inputId="industry"
-                                    formControlName="industry"
-                                    [options]="industryOptions"
-                                    optionLabel="label"
-                                    optionValue="value"
-                                    placeholder="Select Industry"
+                                <p-dropdown inputId="industry" formControlName="industry" [options]="industryOptions"
+                                    optionLabel="label" optionValue="value" placeholder="Select Industry"
                                     styleClass="field-dropdown"
                                     [class.ng-invalid]="form.get('industry')?.invalid && form.get('industry')?.touched">
                                 </p-dropdown>
+                                @if (industry.invalid && industry.touched) {
+                                @if (industry.getError('required')) {
+                                <small class="form-error-message">Industry is required.</small>
+                                }
+                                }
                             </div>
                             <div class="field">
                                 <label for="companySize" class="field-label">Company Size</label>
-                                <p-dropdown
-                                    inputId="companySize"
-                                    formControlName="companySize"
-                                    [options]="companySizeOptions"
-                                    optionLabel="label"
-                                    optionValue="value"
-                                    placeholder="Select Size"
-                                    styleClass="field-dropdown"
+                                <p-dropdown inputId="companySize" formControlName="companySize"
+                                    [options]="companySizeOptions" optionLabel="label" optionValue="value"
+                                    placeholder="Select Size" styleClass="field-dropdown"
                                     [class.ng-invalid]="form.get('companySize')?.invalid && form.get('companySize')?.touched">
                                 </p-dropdown>
+                                @if (companySize.invalid && companySize.touched) {
+                                @if (companySize.getError('required')) {
+                                <small class="form-error-message">Company size is required.</small>
+                                }
+                                }
                             </div>
                         </div>
 
                         <!-- Password — full width -->
                         <div class="field field--full">
                             <label for="password" class="field-label">Password</label>
-                            <p-password
-                                inputId="password"
-                                formControlName="password"
-                                placeholder="Create a strong password"
-                                styleClass="field-password"
-                                inputStyleClass="field-input"
-                                [toggleMask]="true"
-                                [feedback]="false"
+                            <p-password inputId="password" formControlName="password"
+                                placeholder="Create a strong password" styleClass="field-password"
+                                inputStyleClass="field-input" [toggleMask]="true" [feedback]="false"
                                 [class.ng-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
                             </p-password>
                             <span class="password-hint">min. 8 characters</span>
+                            @if (password.invalid && password.touched) {
+                            @if (password.getError('required')) {
+                            <small class="form-error-message">Password is required.</small>
+                            }
+                            @else if (password.getError('minlength')) {
+                            <small class="form-error-message">Password must be at least 8 characters long.</small>
+                            }
+                            }
                         </div>
 
                         <!-- Terms Checkbox -->
                         <div class="terms-row">
-                            <p-checkbox
-                                inputId="terms"
-                                formControlName="terms"
-                                [binary]="true"
+                            <p-checkbox inputId="terms" formControlName="terms" [binary]="true"
                                 styleClass="terms-checkbox"
                                 [class.ng-invalid]="form.get('terms')?.invalid && form.get('terms')?.touched">
                             </p-checkbox>
@@ -163,13 +167,8 @@
                         </div>
 
                         <!-- Submit -->
-                        <p-button
-                            type="submit"
-                            label="Create My Account"
-                            icon="pi pi-arrow-right"
-                            iconPos="right"
-                            styleClass="submit-btn"
-                            (onClick)="onSubmit()">
+                        <p-button type="submit" label="Create My Account" icon="pi pi-arrow-right" iconPos="right"
+                            styleClass="submit-btn" [disabled]="terms.invalid">
                         </p-button>
 
                     </form>
@@ -178,9 +177,9 @@
                     <div class="social-proof">
                         <div class="avatar-stack">
                             @for (src of avatars; track src) {
-                                <div class="avatar-frame">
-                                    <img [src]="src" alt="Employer" class="avatar-img" />
-                                </div>
+                            <div class="avatar-frame">
+                                <img [src]="src" alt="Employer" class="avatar-img" />
+                            </div>
                             }
                         </div>
                         <p class="testimonial">
@@ -192,4 +191,8 @@
         </div>
 
     </div>
+
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-pulse" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+    </ngx-spinner>
 </main>

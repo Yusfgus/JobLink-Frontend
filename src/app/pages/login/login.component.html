@@ -90,6 +90,14 @@
                         <input id="email" pInputText formControlName="email" type="email" placeholder="name@company.com"
                             class="field-input"
                             [class.ng-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+                        @if (email.invalid && email.touched) {
+                        @if (email.getError('required')){
+                        <small class="form-error-message">Email is required</small>
+                        }
+                        @else if (email.getError('email')) {
+                        <small class="form-error-message">Please enter a valid email address.</small>
+                        }
+                        }
                     </div>
 
                     <!-- Password -->
@@ -103,6 +111,15 @@
                             [feedback]="false"
                             [class.ng-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
                         </p-password>
+                        @if (password.invalid && password.touched) {
+                        @if (password.getError('required')){
+                        <small class="form-error-message">Password is required</small>
+                        }
+                        @else if (password.getError('minlength')) {
+                        <small class="form-error-message">Password should be at least {{
+                            password.getError('minlength').requiredLength }} char length.</small>
+                        }
+                        }
                     </div>
 
                     <!-- Remember Me -->
@@ -114,7 +131,7 @@
                     </div>
 
                     <!-- Submit -->
-                    <p-button type="submit" label="Sign In to Account" styleClass="submit-btn" (onClick)="onSubmit()">
+                    <p-button type="submit" label="Sign In to Account" styleClass="submit-btn">
                     </p-button>
 
                 </form>
@@ -129,4 +146,8 @@
         </div>
 
     </div>
+
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-pulse" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+    </ngx-spinner>
 </main>

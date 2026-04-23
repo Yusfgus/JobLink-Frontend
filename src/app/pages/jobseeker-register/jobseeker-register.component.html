@@ -83,6 +83,11 @@
                                 <input id="firstName" pInputText formControlName="firstName" placeholder="Alex"
                                     class="field-input"
                                     [class.ng-invalid]="form.get('firstName')?.invalid && form.get('firstName')?.touched" />
+                                @if (firstName.invalid && firstName.touched) {
+                                @if (firstName.getError('required')) {
+                                <small class="form-error-message">First Name is required.</small>
+                                }
+                                }
                             </div>
                             <div class="p-col-12 p-md-6 field">
                                 <label for="middleName" class="field-label">Middle Name</label>
@@ -98,6 +103,11 @@
                                 <input id="lastName" pInputText formControlName="lastName" placeholder="Carter"
                                     class="field-input"
                                     [class.ng-invalid]="form.get('lastName')?.invalid && form.get('lastName')?.touched" />
+                                @if (lastName.invalid && lastName.touched) {
+                                @if (lastName.getError('required')) {
+                                <small class="form-error-message">Last Name is required.</small>
+                                }
+                                }
                             </div>
                             <div class="p-col-12 p-md-6 field">
                                 <label for="gender" class="field-label">Gender</label>
@@ -106,6 +116,11 @@
                                     styleClass="field-dropdown"
                                     [class.ng-invalid]="form.get('gender')?.invalid && form.get('gender')?.touched">
                                 </p-dropdown>
+                                @if (gender.invalid && gender.touched) {
+                                @if (gender.getError('required')) {
+                                <small class="form-error-message">Gender is required.</small>
+                                }
+                                }
                             </div>
                         </div>
 
@@ -119,6 +134,14 @@
                                         [class.ng-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
                                     <span class="material-symbols-outlined email-check-icon">check_circle</span>
                                 </div>
+                                @if (email.invalid && email.touched) {
+                                @if (email.getError('required')) {
+                                <small class="form-error-message">Email is required</small>
+                                }
+                                @else if (email.getError('email')) {
+                                <small class="form-error-message">Please enter a valid email address.</small>
+                                }
+                                }
                             </div>
                         </div>
 
@@ -133,6 +156,15 @@
                                 [feedback]="false"
                                 [class.ng-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
                             </p-password>
+                            @if (password.invalid && password.touched) {
+                            @if (password.getError('required')){
+                            <small class="form-error-message">Password is required</small>
+                            }
+                            @else if (password.getError('minlength')) {
+                            <small class="form-error-message">Password should be at least {{
+                                password.getError('minlength').requiredLength }} char length.</small>
+                            }
+                            }
                         </div>
 
                         <!-- Submit -->
@@ -154,4 +186,8 @@
         </div>
 
     </div>
+
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-pulse" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+    </ngx-spinner>
 </main>

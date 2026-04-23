@@ -16,7 +16,8 @@
     align-items: center;
     justify-content: center;
     padding: 3rem 1.5rem 6rem;
-    min-height: calc(100vh - 6rem); /* account for sticky header */
+    min-height: calc(100vh - 6rem);
+    /* account for sticky header */
 }
 
 /* ── Card ───────────────────────────────────────────── */
@@ -40,7 +41,8 @@
     position: relative;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #0055d9; /* primary-container */
+    background-color: #0055d9;
+    /* primary-container */
     padding: 3rem;
     overflow: hidden;
 
@@ -59,7 +61,8 @@
     font-size: 1.875rem;
     font-weight: 900;
     letter-spacing: -0.04em;
-    color: #cfd9ff; /* on-primary-container */
+    color: #cfd9ff;
+    /* on-primary-container */
     margin-bottom: 2rem;
 }
 
@@ -74,7 +77,8 @@
 }
 
 .brand-accent {
-    color: #cfd9ff; /* on-primary-container */
+    color: #cfd9ff;
+    /* on-primary-container */
 }
 
 .brand-sub {

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -20,11 +21,49 @@ import { CheckboxModule } from 'primeng/checkbox';
         PasswordModule,
         DropdownModule,
         CheckboxModule,
+        NgxSpinnerModule
     ],
     templateUrl: './employer-register.component.html',
     styleUrl: './employer-register.component.scss'
 })
 export class EmployerRegisterComponent {
+
+    constructor(
+        private fb: FormBuilder,
+        private router: Router,
+        private spinner: NgxSpinnerService
+    ) {
+        this.initFormControls();
+        this.initFormGroup();
+    }
+
+    form!: FormGroup;
+    companyName!: FormControl;
+    workEmail!: FormControl;
+    industry!: FormControl;
+    companySize!: FormControl;
+    password!: FormControl;
+    terms!: FormControl;
+
+    initFormControls(): void {
+        this.companyName = new FormControl('', Validators.required);
+        this.workEmail = new FormControl('', [Validators.required, Validators.email]);
+        this.industry = new FormControl(null, Validators.required);
+        this.companySize = new FormControl(null, Validators.required);
+        this.password = new FormControl('', [Validators.required, Validators.minLength(8)]);
+        this.terms = new FormControl(false, Validators.requiredTrue);
+    }
+
+    initFormGroup(): void {
+        this.form = this.fb.group({
+            companyName: this.companyName,
+            workEmail: this.workEmail,
+            industry: this.industry,
+            companySize: this.companySize,
+            password: this.password,
+            terms: this.terms,
+        });
+    }
 
     industryOptions = [
         { label: 'Technology & SaaS', value: 'tech' },
@@ -48,25 +87,19 @@ export class EmployerRegisterComponent {
         'https://lh3.googleusercontent.com/aida-public/AB6AXuDNmEm0XUBetSbbEUpyIla22UvZynU0aN55N1LBVCqD7KG6bhcGuhccWKfR9r7kCZTrNp5K8H-ZkqYvg0-QaVdxtep8AV6qos8Tary486Rt7gMWmPT6SjWwYzot1HehVy2HwDNQr54dpRAB0cSQg6xEcgiJu-OT_n8pxIhc3i4HTZcYT4_FX8QkL4GrmyTFjgI9wpO4DnVIRzbDszRDRwrm-Jb9HMznutJbq1MZuncRu1NWhk6EBd3NEyjZ8-rwcaFRtyTP4AgWfrFF',
     ];
 
-    form: FormGroup;
-
-    constructor(private fb: FormBuilder, private router: Router) {
-        this.form = this.fb.group({
-            companyName: ['', Validators.required],
-            workEmail:   ['', [Validators.required, Validators.email]],
-            industry:    [null, Validators.required],
-            companySize: [null, Validators.required],
-            password:    ['', [Validators.required, Validators.minLength(8)]],
-            terms:       [false, Validators.requiredTrue],
-        });
-    }
-
     onSubmit(): void {
+        // console.log('Employer form submitted', this.form.value);
         if (this.form.valid) {
-            console.log('Employer form submitted', this.form.value);
-            // this.router.navigate(['/user/dashboard']);
+            this.signUp();
         } else {
             this.form.markAllAsTouched();
         }
+    }
+
+    signUp(): void {
+        this.spinner.show();
+        setTimeout(() => {
+            this.spinner.hide();
+        }, 2000);
     }
 }
