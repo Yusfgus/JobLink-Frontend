@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { EmployerRegister } from '../../core/interfaces/employer-register';
-import { TokenResponse } from '../../core/interfaces/token-response';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { EmployerRegister } from '../../../core/interfaces/employer-register';
+import { TokenResponse } from '../../../core/interfaces/token-response';
 
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';

@@ -1,0 +1,62 @@
+<article class="job-card">
+    <div class="card-inner">
+
+        <!-- Logo -->
+        <div class="card-logo">
+            <img [src]="job.logoUrl" [alt]="job.company + ' logo'" />
+        </div>
+
+        <!-- Content -->
+        <div class="card-body">
+
+            <!-- Header: title, company, location, posted-at -->
+            <header class="job-header">
+                <div class="job-title-row">
+                    <div>
+                        <h2 class="job-title">{{ job.title }}</h2>
+                        <div class="job-meta">
+                            <span class="job-company">{{ job.company }}</span>
+                            <span class="meta-dot"></span>
+                            <span class="job-location">{{ job.location }}</span>
+                        </div>
+                    </div>
+                    <span class="job-posted">Posted {{ job.postedAt }}</span>
+                </div>
+            </header>
+
+            <!-- Tags: location type / job type / level -->
+            <div class="job-tags">
+                @for (tag of job.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                }
+            </div>
+
+            <!-- Description -->
+            <p class="job-desc">{{ job.description }}</p>
+
+            <!-- Skills / Requirements -->
+            <div class="job-skills">
+                @for (skill of job.skills; track skill) {
+                    <span class="skill-chip">{{ skill }}</span>
+                }
+            </div>
+
+            <!-- Actions: apply, bookmark -->
+            <footer class="job-actions">
+                <p-button
+                    label="Apply Now"
+                    styleClass="apply-btn"
+                    (onClick)="onApply()">
+                </p-button>
+                <button
+                    type="button"
+                    class="bookmark-btn"
+                    (click)="onBookmark()"
+                    aria-label="Bookmark job">
+                    <span class="material-symbols-outlined">bookmark</span>
+                </button>
+            </footer>
+
+        </div>
+    </div>
+</article>

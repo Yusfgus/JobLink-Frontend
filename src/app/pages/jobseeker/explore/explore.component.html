@@ -1,0 +1,49 @@
+<main class="explore-page">
+    <div class="explore-layout">
+
+        <!-- ── Sidebar Filters ──────────────────────────── -->
+        <aside class="filters-sidebar">
+
+            @for (filter of filters; track filter.name) {
+            <div class="filter-group">
+                <h3 class="filter-title">{{ filter.name }}</h3>
+                <div class="filter-options">
+                    <label class="filter-item" *ngFor="let option of filter.options">
+                        <p-checkbox [(ngModel)]="option.checked" [binary]="true" [inputId]="option.value" />
+                        <span class="filter-label">{{ option.label }}</span>
+                    </label>
+                </div>
+            </div>
+            }
+
+            <!-- Clear Filters -->
+            <div class="filter-clear">
+                <p-button label="Clear All Filters" styleClass="clear-btn" (onClick)="onClearFilters()">
+                </p-button>
+            </div>
+
+        </aside>
+
+        <!-- ── Job Feed ─────────────────────────────────── -->
+        <section class="job-feed">
+
+            @for (job of jobs | slice:0:visibleJobsLimit; track job.id) {
+            <app-job-summary [job]="job" (apply)="onApply($event)" (bookmark)="onBookmark($event)">
+            </app-job-summary>
+            }
+
+            <!-- Load More -->
+            @if (visibleJobsLimit < jobs.length) { <div class="load-more-wrap">
+                <button type="button" class="load-more-btn" (click)="onLoadMore()">
+                    <span>Load more opportunities</span>
+                    <div class="load-more-circle">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </div>
+                </button>
+    </div>
+    }
+
+    </section>
+
+    </div>
+</main>

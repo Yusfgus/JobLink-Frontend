@@ -1,0 +1,78 @@
+<header class="nav-header">
+    <div class="nav-inner">
+
+        <!-- ── Brand + Search ──────────────────────────── -->
+        <div class="brand-cluster">
+            <a routerLink="/user/dashboard" class="brand-link">
+                <span class="brand-name">JobLink</span>
+            </a>
+
+            <!-- Search (hidden on mobile) -->
+            <div class="search-wrap">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input pInputText type="text" placeholder="Search opportunities..." class="search-input"
+                    [(ngModel)]="searchQuery" />
+            </div>
+        </div>
+
+        <!-- ── Nav Links ────────────────────────────────── -->
+        <nav class="main-nav">
+            @for (link of navLinks; track link.route) {
+            <a [routerLink]="link.route" routerLinkActive="nav-link--active" class="nav-link">
+                {{ link.label }}
+            </a>
+            }
+        </nav>
+
+        <!-- ── Actions Cluster ──────────────────────────── -->
+        <div class="actions-cluster">
+
+            <!-- Notifications -->
+            <button type="button" class="icon-btn" (click)="onNotifications()" aria-label="Notifications">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+
+            <!-- Profile Menu -->
+            <div class="profile-menu-wrap">
+                <button type="button" class="profile-trigger" (click)="toggleProfileMenu()" aria-haspopup="true"
+                    [attr.aria-expanded]="profileMenuOpen()">
+                    <div class="avatar-frame">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN1YCeGRV19deUz6wwUfLy6CQL0UIb9729IV5Z_DnnrB58gMqa3mXFc5cLE9oW_TWjRY_0gk6MJSpbl-0Qb9a7jrLUhA0q1HB8_gaDvvOkuRrcwADJEgIhxgXbCJtFfiIwiFtoPrzXsyaar8JKm6iEqpKaZD-cjagSMedevL4fcYzP4yA68C6YEbEooe5-uhfQ8GQY6iIjHyGS4xOLyitQqmGLxTdZr5QtzNfQubW1b7zwHqdVfnwG_BW7UyK6xu3__vCXgyuQ-VTX"
+                            alt="User avatar" class="avatar-img" />
+                    </div>
+                    <span class="material-symbols-outlined expand-icon">expand_more</span>
+                </button>
+
+                <!-- Dropdown -->
+                @if (profileMenuOpen()) {
+                <div class="profile-dropdown" role="menu">
+                    <!-- User Info -->
+                    <div class="dropdown-header">
+                        <p class="dropdown-name">Alex Thompson</p>
+                        <p class="dropdown-role">Senior Product Designer</p>
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a href="#" class="dropdown-item" role="menuitem" (click)="onEditProfile()">
+                        <span class="material-symbols-outlined dropdown-item-icon">edit</span>
+                        Edit Profile
+                    </a>
+                    <a href="#" class="dropdown-item" role="menuitem" (click)="onSettings()">
+                        <span class="material-symbols-outlined dropdown-item-icon">settings</span>
+                        Settings
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a href="#" class="dropdown-item dropdown-item--danger" role="menuitem" (click)="onLogout()">
+                        <span class="material-symbols-outlined dropdown-item-icon">logout</span>
+                        Logout
+                    </a>
+                </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</header>

@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 
-import { Login } from '../../core/interfaces/login';
-import { AuthService } from '../../core/services/auth.service';
-import { TokenResponse } from '../../core/interfaces/token-response';
+import { Login } from '../../../core/interfaces/login';
+import { AuthService } from '../../../core/services/auth.service';
+import { TokenResponse } from '../../../core/interfaces/token-response';
 
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { InputTextModule } from 'primeng/inputtext';

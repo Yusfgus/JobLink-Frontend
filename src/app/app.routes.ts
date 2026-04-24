@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
 
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
+import { JobseekerLayoutComponent } from './layouts/jobseeker-layout/jobseeker-layout.component';
 
 export const routes: Routes = [
     {
         path: '', redirectTo: 'auth', pathMatch: 'full'
-    },
-    {
-        path: 'user', component: UserLayoutComponent
     },
     {
         path: 'auth',
@@ -21,24 +18,51 @@ export const routes: Routes = [
             },
             {
                 path: 'welcome',
-                loadComponent: () => import('./pages/welcome/welcome.component').then(m => m.WelcomeComponent)
+                loadComponent: () => import('./pages/auth/welcome/welcome.component').then(m => m.WelcomeComponent)
             },
             {
                 path: 'login',
-                loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
+                loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent)
             },
             {
                 path: 'register',
                 children: [
                     {
                         path: 'jobseeker',
-                        loadComponent: () => import('./pages/jobseeker-register/jobseeker-register.component').then(m => m.JobseekerRegisterComponent)
+                        loadComponent: () => import('./pages/auth/jobseeker-register/jobseeker-register.component').then(m => m.JobseekerRegisterComponent)
                     },
                     {
                         path: 'employer',
-                        loadComponent: () => import('./pages/employer-register/employer-register.component').then(m => m.EmployerRegisterComponent)
+                        loadComponent: () => import('./pages/auth/employer-register/employer-register.component').then(m => m.EmployerRegisterComponent)
                     }
                 ]
+            }
+        ]
+    },
+    {
+        path: 'jobseeker',
+        component: JobseekerLayoutComponent,
+        children: [
+            {
+                path: '',
+                redirectTo: 'dashboard',
+                pathMatch: 'full'
+            },
+            {
+                path: 'dashboard',
+                loadComponent: () => import('./pages/jobseeker/dashboard/dashboard.component').then(m => m.DashboardComponent)
+            },
+            {
+                path: 'explore',
+                loadComponent: () => import('./pages/jobseeker/explore/explore.component').then(m => m.ExploreComponent)
+            },
+            {
+                path: 'applications',
+                loadComponent: () => import('./pages/jobseeker/applications/applications.component').then(m => m.ApplicationsComponent)
+            },
+            {
+                path: 'saved-jobs',
+                loadComponent: () => import('./pages/jobseeker/saved-jobs/saved-jobs.component').then(m => m.SavedJobsComponent)
             }
         ]
     },
