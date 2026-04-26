@@ -6,6 +6,7 @@ import { Login } from '../interfaces/login';
 import { JobseekerRegister } from '../interfaces/jobseeker-register';
 import { TokenResponse } from '../interfaces/token-response';
 import { EmployerRegister } from '../interfaces/employer-register';
+import { UserRole } from '../interfaces/UserRole';
 
 @Injectable({
   providedIn: 'root'
@@ -53,10 +54,7 @@ export class AuthService {
     localStorage.setItem('accessToken', tokenResponse.accessToken)
     localStorage.setItem('refreshToken', tokenResponse.refreshToken)
     localStorage.setItem('expiresOnUtc', tokenResponse.expires.toString())
-  }
-
-  setRole(role: string): void {
-    localStorage.setItem('role', role)
+    localStorage.setItem('role', tokenResponse.role.toString())
   }
 
   removeToken(): void {
@@ -78,8 +76,9 @@ export class AuthService {
     return localStorage.getItem('expiresOnUtc') || '';
   }
 
-  getRole(): string {
-    return localStorage.getItem('role') || '';
+  getRole(): UserRole | null {
+    const role = localStorage.getItem('role') as UserRole;
+    return role || null;
   }
 
   isTokenExpired(): boolean {

@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } 
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
 import { EmployerRegister } from '../../../core/interfaces/employer-register';
 import { TokenResponse } from '../../../core/interfaces/token-response';
 
@@ -13,7 +14,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -39,7 +39,7 @@ export class EmployerRegisterComponent {
         private router: Router,
         private spinner: NgxSpinnerService,
         private authService: AuthService,
-        private messageService: MessageService
+        private toastService: ToastService
     ) {
         this.initFormControls();
         this.initFormGroup();
@@ -117,23 +117,18 @@ export class EmployerRegisterComponent {
             .subscribe({
                 next: (response: TokenResponse) => {
                     console.log(response)
-                    this.authService.setToken(response)
-                    this.authService.setRole('Employer')
-                    // this._userData.username.next('Yusfgus')
 
-                    this.notify('success', 'Success', 'Registered successfully')
-                    // this.router.navigate(['home'])
+                    this.toastService.success('Success', 'Registered successfully')
+
+                    this.router.navigate(['/auth/login'])
+
                     this.spinner.hide()
                 },
                 error: (response) => {
                     this.spinner.hide()
                     console.log(response)
-                    this.notify('error', 'Error', response.error.detail)
+                    this.toastService.error('Error', response.error.detail)
                 },
             })
-    }
-
-    notify(severity: string, summary: string, detail: string): void {
-        this.messageService.add({ severity: severity, summary: summary, detail: detail, key: 'br', life: 3000 })
     }
 }

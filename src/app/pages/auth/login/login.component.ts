@@ -5,7 +5,9 @@ import { RouterLink, Router } from '@angular/router';
 
 import { Login } from '../../../core/interfaces/login';
 import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
 import { TokenResponse } from '../../../core/interfaces/token-response';
+import { UserRole } from '../../../core/interfaces/UserRole';
 
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,7 +15,6 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
-import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
@@ -39,7 +40,7 @@ export class LoginComponent {
         private spinner: NgxSpinnerService,
         private router: Router,
         private authService: AuthService,
-        private messageService: MessageService
+        private toastService: ToastService
     ) {
         this.initFormControls()
         this.initFormGroups()
@@ -91,23 +92,26 @@ export class LoginComponent {
             next: (response: TokenResponse) => {
                 console.log('Login response: ', response);
 
-                this.authService.setRole('JobSeeker')
+                this.toastService.success('Success', 'Logged in successfully')
+
+                if (response.role === UserRole.JobSeeker) {
+                    this.router.navigate(['/jobseeker']);
+                } else if (response.role === UserRole.Company) {
+                    this.router.navigate(['/company']);
+                }
+
+                this.spinner.hide();
+
                 if (this.remember.value) {
                     this.authService.setToken(response)
                 }
-                this.notify('success', 'Success', 'Logged in successfully')
-                // this.router.navigate(['/']);
-                this.spinner.hide();
+
             },
             error: (err) => {
                 this.spinner.hide();
                 console.log('Login error: ', err);
-                this.notify('error', 'Error', err.error.detail);
+                this.toastService.error('Error', err.error.detail);
             }
         })
-    }
-
-    notify(severity: string, summary: string, detail: string): void {
-        this.messageService.add({ severity: severity, summary: summary, detail: detail, key: 'br', life: 3000 })
     }
 }

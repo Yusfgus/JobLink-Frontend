@@ -27,13 +27,13 @@
         <!-- ── Job Feed ─────────────────────────────────── -->
         <section class="job-feed">
 
-            @for (job of jobs | slice:0:visibleJobsLimit; track job.id) {
+            @for (job of (jobs | async) | slice:0:visibleJobsLimit; track job.id) {
             <app-job-summary [job]="job" (apply)="onApply($event)" (bookmark)="onBookmark($event)">
             </app-job-summary>
             }
 
             <!-- Load More -->
-            @if (visibleJobsLimit < jobs.length) { <div class="load-more-wrap">
+            @if (visibleJobsLimit < _totalCount) { <div class="load-more-wrap">
                 <button type="button" class="load-more-btn" (click)="onLoadMore()">
                     <span>Load more opportunities</span>
                     <div class="load-more-circle">

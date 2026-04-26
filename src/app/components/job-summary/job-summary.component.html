@@ -3,7 +3,7 @@
 
         <!-- Logo -->
         <div class="card-logo">
-            <img [src]="job.logoUrl" [alt]="job.company + ' logo'" />
+            <img [src]="job.companyLogoUrl" [alt]="job.companyName + ' logo'" />
         </div>
 
         <!-- Content -->
@@ -11,50 +11,48 @@
 
             <!-- Header: title, company, location, posted-at -->
             <header class="job-header">
-                <div class="job-title-row">
-                    <div>
-                        <h2 class="job-title">{{ job.title }}</h2>
-                        <div class="job-meta">
-                            <span class="job-company">{{ job.company }}</span>
-                            <span class="meta-dot"></span>
-                            <span class="job-location">{{ job.location }}</span>
-                        </div>
+                <div>
+                    <h2 class="job-title">{{ job.title }}</h2>
+                    <div class="job-meta">
+                        <span class="job-company">{{ job.companyName }}</span>
+                        <span class="meta-dot"></span>
+                        <span class="job-location">{{ job.country }}, {{ job.city }}</span>
                     </div>
-                    <span class="job-posted">Posted {{ job.postedAt }}</span>
                 </div>
+                <span class="job-posted">Posted {{ job.postedAtUtc | date:'mediumDate' }}</span>
             </header>
 
             <!-- Tags: location type / job type / level -->
             <div class="job-tags">
-                @for (tag of job.tags; track tag) {
-                    <span class="tag">{{ tag }}</span>
-                }
+                <span class="tag">{{ job.jobType }}</span>
+                <span class="tag">{{ job.locationType }}</span>
+                <span class="tag">{{ job.experienceLevel }}</span>
             </div>
 
             <!-- Description -->
-            <p class="job-desc">{{ job.description }}</p>
+            <p class="job-desc">{{ job.description | slice: 0: 260 }} ...</p>
 
-            <!-- Skills / Requirements -->
-            <div class="job-skills">
-                @for (skill of job.skills; track skill) {
+            <!-- Skills -->
+            <footer class="job-footer">
+                <div class="job-skills">
+                    @for (skill of job.skills | slice: 0: 9; track skill) {
                     <span class="skill-chip">{{ skill }}</span>
-                }
-            </div>
+                    }
+                </div>
+                <!-- Actions: apply, save -->
+                <div class="job-actions">
+                    @if(job.isApplied){
+                    <span class="applied-badge">Applied</span>
+                    }@else{
+                    <p-button label="Apply Now" styleClass="apply-btn" (onClick)="onApply()">
+                    </p-button>
+                    }
 
-            <!-- Actions: apply, bookmark -->
-            <footer class="job-actions">
-                <p-button
-                    label="Apply Now"
-                    styleClass="apply-btn"
-                    (onClick)="onApply()">
-                </p-button>
-                <button
-                    type="button"
-                    class="bookmark-btn"
-                    (click)="onBookmark()"
-                    aria-label="Bookmark job">
-                    <span class="material-symbols-outlined">bookmark</span>
-                </button>
+                    <button type="button" class="bookmark-btn" (click)="onBookmark()" aria-label="Bookmark job">
+                        <span class="material-symbols-outlined"
+                            [ngClass]="{'filled-bookmark': job.isSaved}">bookmark</span>
+                    </button>
+                </div>
             </footer>
 
         </div>
