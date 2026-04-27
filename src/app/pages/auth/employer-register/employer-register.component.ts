@@ -26,8 +26,7 @@ import { CheckboxModule } from 'primeng/checkbox';
         InputTextModule,
         PasswordModule,
         DropdownModule,
-        CheckboxModule,
-        NgxSpinnerModule
+        CheckboxModule
     ],
     templateUrl: './employer-register.component.html',
     styleUrl: './employer-register.component.scss'

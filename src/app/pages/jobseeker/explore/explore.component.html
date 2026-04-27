@@ -28,8 +28,7 @@
         <section class="job-feed">
 
             @for (job of (jobs | async) | slice:0:visibleJobsLimit; track job.id) {
-            <app-job-summary [job]="job" (apply)="onApply($event)" (bookmark)="onBookmark($event)">
-            </app-job-summary>
+            <app-job-card [job]="job"></app-job-card>
             }
 
             <!-- Load More -->

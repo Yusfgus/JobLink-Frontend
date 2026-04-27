@@ -5,7 +5,7 @@ import { JobseekerLayoutComponent } from './layouts/jobseeker-layout/jobseeker-l
 
 export const routes: Routes = [
     {
-        path: '', redirectTo: 'auth', pathMatch: 'full'
+        path: '', redirectTo: 'jobseeker', pathMatch: 'full'
     },
     {
         path: 'auth',
@@ -45,7 +45,7 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'dashboard',
+                redirectTo: 'explore',
                 pathMatch: 'full'
             },
             {

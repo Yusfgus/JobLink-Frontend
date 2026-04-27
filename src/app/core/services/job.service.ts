@@ -21,6 +21,14 @@ export class JobService {
         });
     }
 
+    get_saved_jobs(page: number = 1, page_size: number = 10): Observable<PagedResponse<JobSummary>> {
+        return this._httpClient.get<PagedResponse<JobSummary>>(`${environment.apiRootUrl}/job-seekers/me/jobs/saved?page=${page}&pageSize=${page_size}`, {
+            headers: {
+                Authorization: `Bearer ${this._authService.getAccessToken()}`
+            }
+        });
+    }
+
     apply_for_job(job_id: string): Observable<void> {
         return this._httpClient.post<void>(`${environment.apiRootUrl}/jobs/${job_id}/apply`, null, {
             headers: {

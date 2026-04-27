@@ -1,8 +1,10 @@
-export interface JobSummary {
+
+export interface JobCard {
     id: string;
     title: string;
     jobType: string;
     locationType: string;
+    companyId: string;
     companyName: string;
     companyLogoUrl: string;
     country: string;
@@ -12,7 +14,14 @@ export interface JobSummary {
     skills: string[];
     postedAtUtc: Date;
     isApplied: boolean;
+}
+
+export interface JobSummary extends JobCard {
     isSaved: boolean;
+}
+
+export interface SavedJob extends JobCard {
+    savedAtUtc: Date;
 }
 
 interface Skill {
@@ -27,7 +36,7 @@ export interface JobDetails {
     jobType: string;
     locationType: string;
     companyName: string;
-    companyLogoUrl: string;
+    companyLogoUrl: string | null;
     country: string;
     city: string;
     area: string;
@@ -42,3 +51,4 @@ export interface JobDetails {
     description: string;
     requirements: string;
 }
+

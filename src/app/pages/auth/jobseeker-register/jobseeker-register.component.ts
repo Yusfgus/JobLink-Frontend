@@ -25,8 +25,7 @@ import { DividerModule } from 'primeng/divider';
         InputTextModule,
         PasswordModule,
         DropdownModule,
-        DividerModule,
-        NgxSpinnerModule
+        DividerModule
     ],
     templateUrl: './jobseeker-register.component.html',
     styleUrl: './jobseeker-register.component.scss'

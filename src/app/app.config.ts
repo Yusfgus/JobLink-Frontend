@@ -6,7 +6,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     importProvidersFrom(HttpClientModule),
-    MessageService
+    MessageService,
+    ConfirmationService,
   ]
 };

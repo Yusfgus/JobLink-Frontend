@@ -9,6 +9,7 @@
     font-size: 0.875rem;
     line-height: 1.6;
     color: var(--text-color);
+    border-top: 2px solid #0040A71A;
 }
 
 /* ── Shell ──────────────────────────────────────────── */
@@ -16,7 +17,8 @@
     width: 100%;
     padding: 4rem 0;
     margin-top: 5rem;
-    background-color: var(--surface-hover); /* #f0f3ff */
+    background-color: var(--surface-hover);
+    /* #f0f3ff */
 }
 
 .footer-inner {

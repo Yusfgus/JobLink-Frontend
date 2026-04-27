@@ -6,11 +6,11 @@ import { JobService } from '../../../core/services/job.service';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 
-import { JobSummaryComponent } from '../../../components/job-summary/job-summary.component';
 import { JobSummary } from '../../../core/interfaces/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PagedResponse } from '../../../core/interfaces/pagedResponse';
+import { JobCardComponent } from '../../../components/job-card/job-card.component';
 
 interface Filter {
     name: string;
@@ -25,7 +25,7 @@ interface Filter {
         FormsModule,
         ButtonModule,
         CheckboxModule,
-        JobSummaryComponent,
+        JobCardComponent,
     ],
     templateUrl: './explore.component.html',
     styleUrl: './explore.component.scss'
@@ -198,14 +198,6 @@ export class ExploreComponent {
     //     }
     // ];
 
-    onApply(job: JobSummary): void {
-        console.log('Apply:', job.title);
-    }
-
-    onBookmark(job: JobSummary): void {
-        console.log('Bookmark:', job.title);
-    }
-
     onLoadMore(): void {
         this.visibleJobsLimit += 5;
         if (this.visibleJobsLimit > this._jobs.value.length) {
@@ -219,10 +211,11 @@ export class ExploreComponent {
     private _pageSize: number = 10;
     private _totalPages: number = 0;
     protected _totalCount: number = 0;
-    private _hasMore: boolean = true;
+    private _hasNext: boolean = true;
+    private _hasPrevious: boolean = false;
 
     load_all_jobs(): void {
-        if (!this._hasMore) {
+        if (!this._hasNext) {
             return;
         }
         this._spinner.show();
@@ -230,14 +223,14 @@ export class ExploreComponent {
             next: (response: PagedResponse<JobSummary>) => {
                 this._jobs.next([...this._jobs.value, ...response.items]);
                 this._spinner.hide();
-                this._currentPage++;
+                this._currentPage = response.pageNumber;
                 this._totalPages = response.totalPages;
-                // this._totalCount = response.totalCount;
-                this._totalCount = 200;
-                this._hasMore = response.hasNextPage;
+                this._totalCount = response.totalCount;
+                this._hasNext = response.hasNextPage;
+                this._hasPrevious = response.hasPreviousPage;
             },
             error: () => {
-                this._hasMore = false;
+                this._hasNext = false;
                 this._spinner.hide();
             }
         });

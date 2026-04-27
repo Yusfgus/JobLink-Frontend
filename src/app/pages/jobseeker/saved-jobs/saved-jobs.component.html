@@ -1,1 +1,16 @@
-<p>saved-jobs works!</p>
+<main class="saved-jobs-page">
+    @for (job of (jobs | async) | slice:0:visibleJobsLimit; track job.id) {
+    <app-job-card [job]="job" [isSavedJob]="true"></app-job-card>
+    }
+
+    <!-- Load More -->
+    <!-- @if (visibleJobsLimit < _totalCount) { <div class="load-more-wrap">
+            <button type="button" class="load-more-btn" (click)="onLoadMore()">
+                <span>Load more opportunities</span>
+                <div class="load-more-circle">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </div>
+            </button>
+        </div>
+        } -->
+</main>

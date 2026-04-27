@@ -27,8 +27,7 @@ import { DividerModule } from 'primeng/divider';
         PasswordModule,
         ButtonModule,
         CheckboxModule,
-        DividerModule,
-        NgxSpinnerModule
+        DividerModule
     ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
@@ -36,7 +35,6 @@ import { DividerModule } from 'primeng/divider';
 export class LoginComponent {
 
     constructor(
-        private fb: FormBuilder,
         private spinner: NgxSpinnerService,
         private router: Router,
         private authService: AuthService,
