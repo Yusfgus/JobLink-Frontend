@@ -51,7 +51,7 @@
                     <button type="button" class="bookmark-btn" (click)="onBookmarkClick($event)"
                         aria-label="Bookmark job">
                         <span class="material-symbols-outlined"
-                            [ngClass]="{'filled-bookmark': _isSaved}">bookmark</span>
+                            [ngClass]="{'filled-bookmark': job.isSaved}">bookmark</span>
                     </button>
                     <p-confirmPopup />
 

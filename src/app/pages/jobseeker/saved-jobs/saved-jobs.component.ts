@@ -1,12 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SavedJobService } from '../../../core/services/savedJob.service';
-import { JobCard, SavedJob } from '../../../core/interfaces/job';
+import { Job } from '../../../core/interfaces/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
 import { ToastService } from '../../../core/services/toast.service';
+import { JobService } from '../../../core/services/job.service';
+import { SavedJobService } from '../../../core/services/savedJob.service';
+import { ApplicationsService } from '../../../core/services/applications.service';
 
+import { PaginatorModule } from 'primeng/paginator';
+
+interface PageEvent {
+	first: number;
+	rows: number;
+	page: number;
+	pageCount: number;
+}
 
 @Component({
 	selector: 'app-saved-jobs',
@@ -14,37 +24,49 @@ import { ToastService } from '../../../core/services/toast.service';
 	imports: [
 		CommonModule,
 		JobCardComponent,
+		PaginatorModule,
 	],
 	templateUrl: './saved-jobs.component.html',
 	styleUrl: './saved-jobs.component.scss'
 })
 export class SavedJobsComponent {
 
-	private _savedJobsService: SavedJobService = inject(SavedJobService);
+	private _jobService: JobService = inject(JobService);
+	protected _savedJobService: SavedJobService = inject(SavedJobService);
+	private _applicationService: ApplicationsService = inject(ApplicationsService);
 	private _spinner: NgxSpinnerService = inject(NgxSpinnerService);
 	private _toastService: ToastService = inject(ToastService);
 
-	visibleJobsLimit = 5;
+	first: number = 0;
+	rows: number = 10;
 
-	savedJobs: Observable<SavedJob[]> = this._savedJobsService.savedJobs;
+	onPageChange(event: any) {
+		console.log(event);
+		this.first = event.first;
+		this.rows = event.rows;
+
+		this.loadMore(event.page + 1, this.rows);
+	}
+
+	savedJobs: Observable<Job[]> = this._savedJobService.savedJobs$;
 
 	ngOnInit(): void {
 		console.log("saved-job-component ogOnInit");
-		this.loadMore(1, 5);
+		this.loadMore(1, this.rows);
 	}
 
 	loadMore(pageNumber: number, pageSize: number): void {
 		this._spinner.show();
-		this._savedJobsService.load_saved_jobs(pageNumber, pageSize);
+		this._savedJobService.loadSavedJob(pageNumber, pageSize);
 		this._spinner.hide();
 	}
 
-	onApply(job: JobCard): void {
+	onApply(job: Job): void {
 		this._spinner.show();
-		this._savedJobsService.apply_for_job(job.id).subscribe({
+		this._applicationService.applyForJob(job).subscribe({
 			next: () => {
-				job.isApplied = true;
 				this._toastService.success('Success', 'Job applied successfully');
+				this._jobService.updateAppliedStatus(job.id, true);
 			},
 			error: (error) => {
 				this._toastService.error('Error', error.error.detail || 'Failed to apply for job');
@@ -54,14 +76,15 @@ export class SavedJobsComponent {
 		});
 	}
 
-	onBookmarkClick(job: JobCard) {
-		this._savedJobsService.unsave_job(job.id).subscribe({
+	onBookmarkClick(job: Job): void {
+		this._savedJobService.unsave_job(job).subscribe({
 			next: () => {
 				this._toastService.success('Success', 'Job unsaved successfully');
+				this._jobService.updateSavedStatus(job.id, false);
 			},
 			error: (error) => {
 				this._toastService.error('Error', error.error.detail || 'Failed to unsave job');
 			}
-		});
+		})
 	}
 }

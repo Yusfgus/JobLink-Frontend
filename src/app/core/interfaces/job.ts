@@ -1,5 +1,5 @@
 
-export interface JobCard {
+export interface Job {
     id: string;
     title: string;
     jobType: string;
@@ -14,13 +14,7 @@ export interface JobCard {
     skills: string[];
     postedAtUtc: Date;
     isApplied: boolean;
-}
-
-export interface JobSummary extends JobCard {
     isSaved: boolean;
-}
-
-export interface SavedJob extends JobCard {
     savedAtUtc: Date;
 }
 

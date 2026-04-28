@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { SavedJob } from '../interfaces/job';
+import { Job } from '../interfaces/job';
 import { PagedResponse } from '../interfaces/pagedResponse';
 import { AuthService } from './auth.service';
-import { ApplicationsService } from './applications.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,38 +12,37 @@ import { ApplicationsService } from './applications.service';
 export class SavedJobService {
 
     constructor(
-        private _httpClient: HttpClient,
-        private _authService: AuthService,
-        private _applicationsService: ApplicationsService
+        private _httpClient: HttpClient
     ) { }
+
+    private _jwtHeader: string = `Bearer ${inject(AuthService).getAccessToken()}`;
 
     visibleJobsLimit = 5;
 
-    private _savedJobsSubject: BehaviorSubject<SavedJob[]> = new BehaviorSubject<SavedJob[]>([]);
-    savedJobs: Observable<SavedJob[]> = this._savedJobsSubject.asObservable();
+    private _savedJobsSubject: BehaviorSubject<Job[]> = new BehaviorSubject<Job[]>([]);
+    savedJobs$: Observable<Job[]> = this._savedJobsSubject.asObservable();
+
     private _currentPage: number = 1;
     private _pageSize: number = 10;
     private _totalPages: number = 0;
-    protected _totalCount: number = 0;
+    private _totalCount: number = 0;
     private _hasNext: boolean = true;
     private _hasPrevious: boolean = false;
 
-    load_saved_jobs(page: number = 1, page_size: number = 10): void {
+    loadSavedJob(page: number = 1, page_size: number = 10): void {
+        console.log("loadSavedJob")
+        console.log(this._savedJobsSubject.value)
         const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
         if ((startIndex < this._savedJobsSubject.value.length && endIndex < this._savedJobsSubject.value.length)
             || !this._hasNext) {
             return;
         }
 
-        this._httpClient.get<PagedResponse<SavedJob>>(`${environment.apiRootUrl}/job-seekers/me/jobs/saved?page=${page}&pageSize=${page_size}`, {
-            headers: {
-                Authorization: `Bearer ${this._authService.getAccessToken()}`
-            }
-        })
+        this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/job-seekers/me/jobs/saved?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this._jwtHeader } })
             .subscribe({
-                next: (response: PagedResponse<SavedJob>) => {
+                next: (response: PagedResponse<Job>) => {
+                    response.items.forEach(j => j.isSaved = true);
                     this._savedJobsSubject.next([...this._savedJobsSubject.value, ...response.items]);
-                    console.log(response);
                     this._currentPage = response.pageNumber;
                     this._totalPages = response.totalPages;
                     this._totalCount = response.totalCount;
@@ -57,36 +55,56 @@ export class SavedJobService {
             });
     }
 
-    apply_for_job(job_id: string): Observable<any> {
-        return this._applicationsService.apply_for_job(job_id)
-            .pipe(
-                tap(() => {
-                    const jobIndex = this._savedJobsSubject.value.findIndex((job: SavedJob) => job.id === job_id);
-                    if (jobIndex !== -1) {
-                        this._savedJobsSubject.value[jobIndex].isApplied = true;
-                    }
-                })
-            );
-    }
-
-    save_job(job: SavedJob): Observable<any> {
-        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/save`, null, { headers: { Authorization: `Bearer ${this._authService.getAccessToken()}` } })
+    saveJob(job: Job): Observable<any> {
+        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/save`, null, { headers: { Authorization: this._jwtHeader } })
             .pipe(
                 tap(() => {
                     job.savedAtUtc = new Date(Date.now());
-                    this._savedJobsSubject.next([...this._savedJobsSubject.value, job]);
+                    job.isSaved = true;
+                    this._savedJobsSubject.next([job, ...this._savedJobsSubject.value]);
                     this._totalCount++;
                 })
             );
     }
 
-    unsave_job(job_id: string): Observable<any> {
-        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job_id}/unsave`, { headers: { Authorization: `Bearer ${this._authService.getAccessToken()}` } })
+    unsave_job(job: Job): Observable<any> {
+        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.id}/unsave`, { headers: { Authorization: this._jwtHeader } })
             .pipe(
                 tap(() => {
-                    this._savedJobsSubject.next(this._savedJobsSubject.value.filter(j => j.id !== job_id));
+                    job.isSaved = false;
+                    this._savedJobsSubject.next(this._savedJobsSubject.value.filter(j => j.id !== job.id));
                     this._totalCount--;
                 })
             );
+    }
+
+    updateAppliedStatus(jobId: string, isApplied: boolean): void {
+        this._savedJobsSubject.next(
+            this._savedJobsSubject.value.map(job =>
+                job.id === jobId
+                    ? { ...job, isApplied }
+                    : job
+            )
+        );
+    }
+
+    get TotalCount(): number {
+        return this._totalCount;
+    }
+
+    get TotalPages(): number {
+        return this._totalPages;
+    }
+
+    get CurrentPage(): number {
+        return this._currentPage;
+    }
+
+    get HasNext(): boolean {
+        return this._hasNext;
+    }
+
+    get HasPrevious(): boolean {
+        return this._hasPrevious;
     }
 }

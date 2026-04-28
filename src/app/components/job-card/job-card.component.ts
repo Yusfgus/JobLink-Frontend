@@ -1,8 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { JobCard, JobSummary, SavedJob } from '../../core/interfaces/job';
-import { ToastService } from '../../core/services/toast.service';
+import { Job } from '../../core/interfaces/job';
 
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
@@ -17,26 +16,25 @@ import { EventEmitter } from '@angular/core';
 })
 export class JobCardComponent {
     constructor(
-        private _toastService: ToastService,
         private confirmationService: ConfirmationService
     ) { }
 
-    @Input({ required: true }) job!: JobCard;
-    @Input({ required: true }) _isSaved!: boolean;
+    @Input({ required: true }) job!: Job;
 
-    @Output() applyClicked = new EventEmitter<JobCard>();
+    @Output() applyClicked = new EventEmitter<Job>();
 
     onApply(): void {
         if (this.job.isApplied) {
+            console.log("Job is already applied")
             return;
         }
         this.applyClicked.emit(this.job);
     }
 
-    @Output() saveToggled = new EventEmitter<JobCard>();
+    @Output() saveToggled = new EventEmitter<Job>();
 
     onBookmarkClick(event: Event): void {
-        if (this._isSaved) {
+        if (this.job.isSaved) {
             this.confirmationService.confirm({
                 target: event.target as EventTarget,
                 message: 'Are you sure you want to unsave this job?',
@@ -47,12 +45,10 @@ export class JobCardComponent {
                 acceptButtonStyleClass: 'p-button-danger',
                 accept: () => {
                     this.saveToggled.emit(this.job);
-                    this._isSaved = false;
                 },
             });
         } else {
             this.saveToggled.emit(this.job);
-            this._isSaved = true;
         }
     }
 }

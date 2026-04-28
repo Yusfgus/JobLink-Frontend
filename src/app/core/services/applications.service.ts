@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { JobSummary } from '../interfaces/job';
+import { Job } from '../interfaces/job';
 import { PagedResponse } from '../interfaces/pagedResponse';
 import { AuthService } from './auth.service';
 
@@ -19,8 +19,9 @@ export class ApplicationsService {
 
     visibleJobsLimit = 5;
 
-    private _jobsSubject: BehaviorSubject<JobSummary[]> = new BehaviorSubject<JobSummary[]>([]);
-    jobs: Observable<JobSummary[]> = this._jobsSubject.asObservable();
+    private _applicationsSubject: BehaviorSubject<Job[]> = new BehaviorSubject<Job[]>([]);
+    applications$: Observable<Job[]> = this._applicationsSubject.asObservable();
+
     _currentPage: number = 1;
     _pageSize: number = 10;
     _totalPages: number = 0;
@@ -28,14 +29,16 @@ export class ApplicationsService {
     _hasNext: boolean = true;
     _hasPrevious: boolean = false;
 
-    load_applications(page: number = 1, page_size: number = 10): void {
-        if (!this._hasNext) {
+    loadApplications(page: number = 1, page_size: number = 10): void {
+        const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
+        if ((startIndex < this._applicationsSubject.value.length && endIndex < this._applicationsSubject.value.length)
+            || !this._hasNext) {
             return;
         }
-        this._httpClient.get<PagedResponse<JobSummary>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this.jwtHeader } })
+        this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this.jwtHeader } })
             .subscribe({
-                next: (response: PagedResponse<JobSummary>) => {
-                    this._jobsSubject.next([...this._jobsSubject.value, ...response.items]);
+                next: (response: PagedResponse<Job>) => {
+                    this._applicationsSubject.next([...this._applicationsSubject.value, ...response.items]);
                     console.log(response);
                     this._currentPage = response.pageNumber;
                     this._totalPages = response.totalPages;
@@ -49,7 +52,25 @@ export class ApplicationsService {
             });
     }
 
-    apply_for_job(job_id: string): Observable<any> {
-        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job_id}/apply`, null, { headers: { Authorization: this.jwtHeader } });
+    applyForJob(job: Job): Observable<any> {
+        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/apply`, null, { headers: { Authorization: this.jwtHeader } })
+            .pipe(
+                tap(() => {
+                    job.isApplied = true;
+                    this._applicationsSubject.next([job, ...this._applicationsSubject.value]);
+                    this._totalCount++;
+                })
+            );
+    }
+
+    withdrawApplication(job: Job): Observable<any> {
+        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.id}/withdraw`, { headers: { Authorization: this.jwtHeader } })
+            .pipe(
+                tap(() => {
+                    job.isApplied = false;
+                    this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.id !== job.id));
+                    this._totalCount--;
+                })
+            );
     }
 }

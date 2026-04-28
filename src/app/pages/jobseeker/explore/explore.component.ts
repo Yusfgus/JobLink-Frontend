@@ -1,16 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 
-import { JobCard, JobSummary } from '../../../core/interfaces/job';
+import { Job } from '../../../core/interfaces/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
 import { ToastService } from '../../../core/services/toast.service';
-import { ExploreService } from '../../../core/services/explore.service';
+import { JobService } from '../../../core/services/job.service';
+import { SavedJobService } from '../../../core/services/savedJob.service';
+import { ApplicationsService } from '../../../core/services/applications.service';
 
 interface Filter {
     name: string;
@@ -32,7 +34,9 @@ interface Filter {
 })
 export class ExploreComponent {
 
-    private _exploreService: ExploreService = inject(ExploreService);
+    private _jobService: JobService = inject(JobService);
+    private _savedJobService: SavedJobService = inject(SavedJobService);
+    private _applicationService: ApplicationsService = inject(ApplicationsService);
     private _spinner: NgxSpinnerService = inject(NgxSpinnerService);
     private _toastService: ToastService = inject(ToastService);
 
@@ -200,7 +204,7 @@ export class ExploreComponent {
 
     visibleJobsLimit = 5;
 
-    jobs: Observable<JobSummary[]> = this._exploreService.jobs;
+    jobs: Observable<Job[]> = this._jobService.jobs$;
 
     ngOnInit(): void {
         this.onLoadMore(1, 5);
@@ -209,17 +213,17 @@ export class ExploreComponent {
     onLoadMore(page: number, page_size: number): void {
         // if (this.jobs.length >= this.visibleJobsLimit) {
         this._spinner.show();
-        this._exploreService.load_jobs(page, page_size);
+        this._jobService.loadJobs(page, page_size);
         this._spinner.hide();
         // }
     }
 
-    onApply(job: JobCard): void {
+    onApply(job: Job): void {
         this._spinner.show();
-        this._exploreService.apply_for_job(job.id).subscribe({
+        this._applicationService.applyForJob(job).subscribe({
             next: () => {
-                job.isApplied = true;
                 this._toastService.success('Success', 'Job applied successfully');
+                this._savedJobService.updateAppliedStatus(job.id, true);
             },
             error: (error) => {
                 this._toastService.error('Error', error.error.detail || 'Failed to apply for job');
@@ -229,24 +233,24 @@ export class ExploreComponent {
         });
     }
 
-    onBookmarkClick(job: JobCard, isSaved: boolean = false): void {
-        if (isSaved) {
-            this._exploreService.unsave_job(job.id).subscribe({
+    onBookmarkClick(job: Job): void {
+        if (job.isSaved) {
+            this._savedJobService.unsave_job(job).subscribe({
                 next: () => {
                     this._toastService.success('Success', 'Job unsaved successfully');
                 },
                 error: (error) => {
                     this._toastService.error('Error', error.error.detail || 'Failed to unsave job');
                 }
-            });
+            })
         }
         else {
-            this._exploreService.save_job(job).subscribe({
+            this._savedJobService.saveJob(job).subscribe({
                 next: () => {
                     this._toastService.success('Success', 'Job saved successfully');
                 },
                 error: (error) => {
-                    this._toastService.error('Error', error.error.detail || 'Failed to unsave job');
+                    this._toastService.error('Error', error.error.detail || 'Failed to save job');
                 }
             });
         }
