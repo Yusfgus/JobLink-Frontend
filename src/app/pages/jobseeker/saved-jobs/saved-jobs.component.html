@@ -1,6 +1,6 @@
 <main class="saved-jobs-page">
-    @for (job of (jobs | async) | slice:0:visibleJobsLimit; track job.id) {
-    <app-job-card [job]="job" [isSavedJob]="true"></app-job-card>
+    @for (job of (savedJobs | async) | slice:0:visibleJobsLimit; track job.id) {
+    <app-job-card [job]="job" [_isSaved]="true" (saveToggled)="onBookmarkClick($event)"></app-job-card>
     }
 
     <!-- Load More -->

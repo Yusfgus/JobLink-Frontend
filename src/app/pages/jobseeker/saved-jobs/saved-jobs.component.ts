@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { JobService } from '../../../core/services/job.service';
-import { JobSummary } from '../../../core/interfaces/job';
+import { SavedJobService } from '../../../core/services/savedJob.service';
+import { JobCard, SavedJob } from '../../../core/interfaces/job';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { PagedResponse } from '../../../core/interfaces/pagedResponse';
+import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
+import { ToastService } from '../../../core/services/toast.service';
 
 
 @Component({
@@ -20,44 +20,48 @@ import { JobCardComponent } from '../../../components/job-card/job-card.componen
 })
 export class SavedJobsComponent {
 
-	private _jobService: JobService = inject(JobService);
+	private _savedJobsService: SavedJobService = inject(SavedJobService);
 	private _spinner: NgxSpinnerService = inject(NgxSpinnerService);
+	private _toastService: ToastService = inject(ToastService);
 
 	visibleJobsLimit = 5;
 
-	private _jobs: BehaviorSubject<JobSummary[]> = new BehaviorSubject<JobSummary[]>([]);
-	jobs: Observable<JobSummary[]> = this._jobs.asObservable();
-	private _currentPage: number = 1;
-	private _pageSize: number = 10;
-	private _totalPages: number = 0;
-	protected _totalCount: number = 0;
-	private _hasNext: boolean = true;
-	private _hasPrevious: boolean = false;
+	savedJobs: Observable<SavedJob[]> = this._savedJobsService.savedJobs;
 
-	load_saved_jobs(): void {
-		if (!this._hasNext) {
-			return;
-		}
+	ngOnInit(): void {
+		console.log("saved-job-component ogOnInit");
+		this.loadMore(1, 5);
+	}
+
+	loadMore(pageNumber: number, pageSize: number): void {
 		this._spinner.show();
-		this._jobService.get_saved_jobs(this._currentPage, this._pageSize).subscribe({
-			next: (response: PagedResponse<JobSummary>) => {
-				this._jobs.next([...this._jobs.value, ...response.items]);
-				console.log(response);
-				this._spinner.hide();
-				this._currentPage = response.pageNumber;
-				this._totalPages = response.totalPages;
-				this._totalCount = response.totalCount;
-				this._hasNext = response.hasNextPage;
-				this._hasPrevious = response.hasPreviousPage;
+		this._savedJobsService.load_saved_jobs(pageNumber, pageSize);
+		this._spinner.hide();
+	}
+
+	onApply(job: JobCard): void {
+		this._spinner.show();
+		this._savedJobsService.apply_for_job(job.id).subscribe({
+			next: () => {
+				job.isApplied = true;
+				this._toastService.success('Success', 'Job applied successfully');
 			},
-			error: () => {
-				this._hasNext = false;
-				this._spinner.hide();
+			error: (error) => {
+				this._toastService.error('Error', error.error.detail || 'Failed to apply for job');
 			}
+		}).add(() => {
+			this._spinner.hide();
 		});
 	}
 
-	ngOnInit(): void {
-		this.load_saved_jobs();
+	onBookmarkClick(job: JobCard) {
+		this._savedJobsService.unsave_job(job.id).subscribe({
+			next: () => {
+				this._toastService.success('Success', 'Job unsaved successfully');
+			},
+			error: (error) => {
+				this._toastService.error('Error', error.error.detail || 'Failed to unsave job');
+			}
+		});
 	}
 }

@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { JobService } from '../../../core/services/job.service';
 
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 
-import { JobSummary } from '../../../core/interfaces/job';
+import { JobCard, JobSummary } from '../../../core/interfaces/job';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { PagedResponse } from '../../../core/interfaces/pagedResponse';
+import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
+import { ToastService } from '../../../core/services/toast.service';
+import { ExploreService } from '../../../core/services/explore.service';
 
 interface Filter {
     name: string;
@@ -32,8 +32,9 @@ interface Filter {
 })
 export class ExploreComponent {
 
-    private _jobService: JobService = inject(JobService);
+    private _exploreService: ExploreService = inject(ExploreService);
     private _spinner: NgxSpinnerService = inject(NgxSpinnerService);
+    private _toastService: ToastService = inject(ToastService);
 
     /* ── Filter State ─────────────────────────────────── */
     filters: Filter[] = [
@@ -83,7 +84,6 @@ export class ExploreComponent {
     }
 
     /* ── Job Data ─────────────────────────────────────── */
-    visibleJobsLimit = 5;
 
     // jobs: Job[] = [
     //     {
@@ -198,45 +198,57 @@ export class ExploreComponent {
     //     }
     // ];
 
-    onLoadMore(): void {
-        this.visibleJobsLimit += 5;
-        if (this.visibleJobsLimit > this._jobs.value.length) {
-            this.load_all_jobs();
-        }
+    visibleJobsLimit = 5;
+
+    jobs: Observable<JobSummary[]> = this._exploreService.jobs;
+
+    ngOnInit(): void {
+        this.onLoadMore(1, 5);
     }
 
-    private _jobs: BehaviorSubject<JobSummary[]> = new BehaviorSubject<JobSummary[]>([]);
-    jobs: Observable<JobSummary[]> = this._jobs.asObservable();
-    private _currentPage: number = 1;
-    private _pageSize: number = 10;
-    private _totalPages: number = 0;
-    protected _totalCount: number = 0;
-    private _hasNext: boolean = true;
-    private _hasPrevious: boolean = false;
-
-    load_all_jobs(): void {
-        if (!this._hasNext) {
-            return;
-        }
+    onLoadMore(page: number, page_size: number): void {
+        // if (this.jobs.length >= this.visibleJobsLimit) {
         this._spinner.show();
-        this._jobService.get_all_jobs(this._currentPage, this._pageSize).subscribe({
-            next: (response: PagedResponse<JobSummary>) => {
-                this._jobs.next([...this._jobs.value, ...response.items]);
-                this._spinner.hide();
-                this._currentPage = response.pageNumber;
-                this._totalPages = response.totalPages;
-                this._totalCount = response.totalCount;
-                this._hasNext = response.hasNextPage;
-                this._hasPrevious = response.hasPreviousPage;
+        this._exploreService.load_jobs(page, page_size);
+        this._spinner.hide();
+        // }
+    }
+
+    onApply(job: JobCard): void {
+        this._spinner.show();
+        this._exploreService.apply_for_job(job.id).subscribe({
+            next: () => {
+                job.isApplied = true;
+                this._toastService.success('Success', 'Job applied successfully');
             },
-            error: () => {
-                this._hasNext = false;
-                this._spinner.hide();
+            error: (error) => {
+                this._toastService.error('Error', error.error.detail || 'Failed to apply for job');
             }
+        }).add(() => {
+            this._spinner.hide();
         });
     }
 
-    ngOnInit(): void {
-        this.load_all_jobs();
+    onBookmarkClick(job: JobCard, isSaved: boolean = false): void {
+        if (isSaved) {
+            this._exploreService.unsave_job(job.id).subscribe({
+                next: () => {
+                    this._toastService.success('Success', 'Job unsaved successfully');
+                },
+                error: (error) => {
+                    this._toastService.error('Error', error.error.detail || 'Failed to unsave job');
+                }
+            });
+        }
+        else {
+            this._exploreService.save_job(job).subscribe({
+                next: () => {
+                    this._toastService.success('Success', 'Job saved successfully');
+                },
+                error: (error) => {
+                    this._toastService.error('Error', error.error.detail || 'Failed to unsave job');
+                }
+            });
+        }
     }
 }

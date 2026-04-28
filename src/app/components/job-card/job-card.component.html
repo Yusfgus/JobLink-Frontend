@@ -48,7 +48,8 @@
                     </p-button>
                     }
 
-                    <button type="button" class="bookmark-btn" (click)="onBookmark($event)" aria-label="Bookmark job">
+                    <button type="button" class="bookmark-btn" (click)="onBookmarkClick($event)"
+                        aria-label="Bookmark job">
                         <span class="material-symbols-outlined"
                             [ngClass]="{'filled-bookmark': _isSaved}">bookmark</span>
                     </button>
