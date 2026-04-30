@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 
-import { Job } from '../../../core/interfaces/job';
+import { Job } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
@@ -34,7 +34,7 @@ interface Filter {
 })
 export class ExploreComponent {
 
-    private _jobService: JobService = inject(JobService);
+    protected _jobService: JobService = inject(JobService);
     private _savedJobService: SavedJobService = inject(SavedJobService);
     private _applicationService: ApplicationsService = inject(ApplicationsService);
     private _spinner: NgxSpinnerService = inject(NgxSpinnerService);
@@ -202,18 +202,19 @@ export class ExploreComponent {
     //     }
     // ];
 
-    visibleJobsLimit = 5;
+    pageSize = 1;
 
     jobs: Observable<Job[]> = this._jobService.jobs$;
 
     ngOnInit(): void {
-        this.onLoadMore(1, 5);
+        this.onLoadMore();
     }
 
-    onLoadMore(page: number, page_size: number): void {
+    onLoadMore(): void {
+        console.log('loading...')
         // if (this.jobs.length >= this.visibleJobsLimit) {
         this._spinner.show();
-        this._jobService.loadJobs(page, page_size);
+        this._jobService.loadJobs(this._jobService.CurrentPage + 1, this.pageSize);
         this._spinner.hide();
         // }
     }

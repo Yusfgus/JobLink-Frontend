@@ -1,1 +1,15 @@
-<p>applications works!</p>
+<main class="applications-page">
+    @for (application of (applications | async) | slice:first:(first + rows); track application.jobId) {
+    <app-application-card [application]="application" (withdrawClicked)="onWithdraw($event)"></app-application-card>
+    }
+    @empty {
+
+    }
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+            [totalRecords]="_applicationService.TotalCount" [showJumpToPageDropdown]="false" />
+    </div>
+
+</main>

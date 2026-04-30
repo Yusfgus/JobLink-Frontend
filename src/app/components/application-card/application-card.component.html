@@ -1,0 +1,41 @@
+<article class="application-card">
+    <div class="card-inner">
+
+        <!-- Logo -->
+        <div class="card-logo">
+            <img [src]="application.companyLogoUrl" [alt]="application.companyName + ' logo'" />
+        </div>
+
+        <!-- Content -->
+        <div class="card-body">
+
+            <!-- Header: title, company, location, posted-at -->
+            <header class="application-header">
+                <div>
+                    <h2 class="application-title">{{ application.jobTitle }}</h2>
+                    <div class="application-meta">
+                        <span class="application-company">{{ application.companyName }}</span>
+                        <span class="meta-dot"></span>
+                        <span class="application-location">{{ application.country }}, {{ application.city }}</span>
+                    </div>
+                </div>
+                <span class="application-posted">Applied on {{ application.appliedAtUtc | date:'mediumDate' }}</span>
+            </header>
+
+            <footer class="application-footer">
+                <div class="application-status">
+                    <span class="application-status-chip">{{ application.status }}</span>
+                </div>
+                <!-- Actions: withdraw -->
+                <div class="application-actions">
+                    <button type="button" class="withdraw-btn" (click)="onWithdrawClick($event)"
+                        aria-label="Withdraw application">
+                        <span>Withdraw</span>
+                    </button>
+                    <p-confirmPopup />
+                </div>
+            </footer>
+
+        </div>
+    </div>
+</article>

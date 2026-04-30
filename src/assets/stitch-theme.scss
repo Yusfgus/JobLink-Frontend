@@ -4,7 +4,7 @@
     --primary-color: #0040a7;
     --primary-color-text: #ffffff;
     --primary-container: #0055d9;
-    
+
     /* Surface Hierarchy */
     --surface-ground: #f9f9ff;
     --surface-section: #e7eeff;
@@ -12,19 +12,21 @@
     --surface-overlay: #ffffff;
     --surface-border: #737686;
     --surface-hover: #f0f3ff;
-    
+
     /* Text Colors */
     --text-color: #031c39;
     --text-color-secondary: #434654;
-    
+
+    --danger-color: #db2525;
+
     /* Typography */
     --font-family: 'Inter', sans-serif;
     --heading-font-family: 'Work Sans', sans-serif;
-    
+
     /* Borders & Roundness */
     --content-border-radius: 12px;
     --border-radius: 12px;
-    
+
     /* Custom Gradients */
     --primary-gradient: linear-gradient(135deg, #0040a7 0%, #0055d9 100%);
 }
@@ -34,7 +36,12 @@
     font-family: var(--font-family);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--heading-font-family);
     color: var(--text-color);
     margin-top: 0;
@@ -62,7 +69,8 @@ body {
 }
 
 .no-border-input {
-    background-color: #f0f3ff !important; /* surface_container_low */
+    background-color: #f0f3ff !important;
+    /* surface_container_low */
     border: none !important;
     border-radius: 8px !important;
     transition: all 0.2s ease;
@@ -70,5 +78,6 @@ body {
 
 .no-border-input:focus {
     background-color: #ffffff !important;
-    box-shadow: 0 0 0 2px #0054d7 !important; /* surface_tint */
+    box-shadow: 0 0 0 2px #0054d7 !important;
+    /* surface_tint */
 }

@@ -2,30 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Job } from '../interfaces/job';
-import { PagedResponse } from '../interfaces/pagedResponse';
+import { Job } from '../abstractions/job';
+import { PagedResponse } from '../abstractions/pagedResponse';
 import { AuthService } from './auth.service';
+import { Paged } from '../abstractions/paged';
 
 @Injectable({
     providedIn: 'root'
 })
-export class JobService {
+export class JobService extends Paged {
 
     constructor(
         private _httpClient: HttpClient,
-    ) { }
+    ) { super(); }
 
     private _jobsSubject: BehaviorSubject<Job[]> = new BehaviorSubject<Job[]>([]);
     jobs$: Observable<Job[]> = this._jobsSubject.asObservable();
 
     private _jwtHeader: string = `Bearer ${inject(AuthService).getAccessToken()}`;
-
-    _currentPage: number = 1;
-    _pageSize: number = 10;
-    _totalPages: number = 0;
-    _totalCount: number = 0;
-    _hasNext: boolean = true;
-    _hasPrevious: boolean = false;
 
     loadJobs(page: number = 1, page_size: number = 10): void {
         const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
@@ -73,4 +67,5 @@ export class JobService {
             )
         );
     }
+
 }

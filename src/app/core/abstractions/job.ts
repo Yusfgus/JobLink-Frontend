@@ -6,7 +6,7 @@ export interface Job {
     locationType: string;
     companyId: string;
     companyName: string;
-    companyLogoUrl: string;
+    companyLogoUrl: string | null;
     country: string;
     city: string;
     description: string;
@@ -16,6 +16,26 @@ export interface Job {
     isApplied: boolean;
     isSaved: boolean;
     savedAtUtc: Date;
+}
+
+export enum ApplicationStatus {
+    Pending = 'pending',
+    Reviewing = 'reviewing',
+    Interview = 'interview',
+    Accepted = 'accepted',
+    Rejected = 'rejected'
+}
+
+export interface Application {
+    jobId: string;
+    jobTitle: string;
+    companyId: string;
+    companyName: string;
+    companyLogoUrl: string | null;
+    country: string;
+    city: string;
+    status: ApplicationStatus;
+    appliedAtUtc: Date;
 }
 
 interface Skill {

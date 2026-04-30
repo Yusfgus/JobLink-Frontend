@@ -1,7 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { Job } from '../../core/interfaces/job';
+import { Job } from '../../core/abstractions/job';
 
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';

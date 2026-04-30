@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Login } from '../interfaces/login';
-import { JobseekerRegister } from '../interfaces/jobseeker-register';
-import { TokenResponse } from '../interfaces/token-response';
-import { EmployerRegister } from '../interfaces/employer-register';
-import { UserRole } from '../interfaces/UserRole';
+import { Login } from '../abstractions/login';
+import { JobseekerRegister } from '../abstractions/jobseeker-register';
+import { TokenResponse } from '../abstractions/token-response';
+import { EmployerRegister } from '../abstractions/employer-register';
+import { UserRole } from '../abstractions/user-role';
 
 @Injectable({
   providedIn: 'root'

@@ -2,18 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Job } from '../interfaces/job';
-import { PagedResponse } from '../interfaces/pagedResponse';
+import { Job } from '../abstractions/job';
+import { PagedResponse } from '../abstractions/pagedResponse';
 import { AuthService } from './auth.service';
+import { Paged } from '../abstractions/paged';
 
 @Injectable({
     providedIn: 'root'
 })
-export class SavedJobService {
+export class SavedJobService extends Paged {
 
     constructor(
         private _httpClient: HttpClient
-    ) { }
+    ) { super(); }
 
     private _jwtHeader: string = `Bearer ${inject(AuthService).getAccessToken()}`;
 
@@ -21,13 +22,6 @@ export class SavedJobService {
 
     private _savedJobsSubject: BehaviorSubject<Job[]> = new BehaviorSubject<Job[]>([]);
     savedJobs$: Observable<Job[]> = this._savedJobsSubject.asObservable();
-
-    private _currentPage: number = 1;
-    private _pageSize: number = 10;
-    private _totalPages: number = 0;
-    private _totalCount: number = 0;
-    private _hasNext: boolean = true;
-    private _hasPrevious: boolean = false;
 
     loadSavedJob(page: number = 1, page_size: number = 10): void {
         console.log("loadSavedJob")
@@ -86,25 +80,5 @@ export class SavedJobService {
                     : job
             )
         );
-    }
-
-    get TotalCount(): number {
-        return this._totalCount;
-    }
-
-    get TotalPages(): number {
-        return this._totalPages;
-    }
-
-    get CurrentPage(): number {
-        return this._currentPage;
-    }
-
-    get HasNext(): boolean {
-        return this._hasNext;
-    }
-
-    get HasPrevious(): boolean {
-        return this._hasPrevious;
     }
 }

@@ -2,32 +2,26 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Job } from '../interfaces/job';
-import { PagedResponse } from '../interfaces/pagedResponse';
+import { Application, ApplicationStatus, Job } from '../abstractions/job';
+import { PagedResponse } from '../abstractions/pagedResponse';
 import { AuthService } from './auth.service';
+import { Paged } from '../abstractions/paged';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ApplicationsService {
+export class ApplicationsService extends Paged {
 
     constructor(
         private _httpClient: HttpClient,
-    ) { }
+    ) { super(); }
 
     jwtHeader: string = `Bearer ${inject(AuthService).getAccessToken()}`;
 
     visibleJobsLimit = 5;
 
-    private _applicationsSubject: BehaviorSubject<Job[]> = new BehaviorSubject<Job[]>([]);
-    applications$: Observable<Job[]> = this._applicationsSubject.asObservable();
-
-    _currentPage: number = 1;
-    _pageSize: number = 10;
-    _totalPages: number = 0;
-    _totalCount: number = 0;
-    _hasNext: boolean = true;
-    _hasPrevious: boolean = false;
+    private _applicationsSubject: BehaviorSubject<Application[]> = new BehaviorSubject<Application[]>([]);
+    applications$: Observable<Application[]> = this._applicationsSubject.asObservable();
 
     loadApplications(page: number = 1, page_size: number = 10): void {
         const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
@@ -35,9 +29,9 @@ export class ApplicationsService {
             || !this._hasNext) {
             return;
         }
-        this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this.jwtHeader } })
+        this._httpClient.get<PagedResponse<Application>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this.jwtHeader } })
             .subscribe({
-                next: (response: PagedResponse<Job>) => {
+                next: (response: PagedResponse<Application>) => {
                     this._applicationsSubject.next([...this._applicationsSubject.value, ...response.items]);
                     console.log(response);
                     this._currentPage = response.pageNumber;
@@ -53,22 +47,33 @@ export class ApplicationsService {
     }
 
     applyForJob(job: Job): Observable<any> {
+
         return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/apply`, null, { headers: { Authorization: this.jwtHeader } })
             .pipe(
                 tap(() => {
                     job.isApplied = true;
-                    this._applicationsSubject.next([job, ...this._applicationsSubject.value]);
+                    const application: Application = {
+                        jobId: job.id,
+                        jobTitle: job.title,
+                        status: ApplicationStatus.Pending,
+                        appliedAtUtc: new Date(),
+                        companyId: job.companyId,
+                        companyLogoUrl: job.companyLogoUrl,
+                        companyName: job.companyName,
+                        country: job.country,
+                        city: job.city,
+                    };
+                    this._applicationsSubject.next([application, ...this._applicationsSubject.value]);
                     this._totalCount++;
                 })
             );
     }
 
-    withdrawApplication(job: Job): Observable<any> {
-        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.id}/withdraw`, { headers: { Authorization: this.jwtHeader } })
+    withdrawApplication(job: Application): Observable<any> {
+        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.jobId}/withdraw`, { headers: { Authorization: this.jwtHeader } })
             .pipe(
                 tap(() => {
-                    job.isApplied = false;
-                    this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.id !== job.id));
+                    this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.jobId !== job.jobId));
                     this._totalCount--;
                 })
             );

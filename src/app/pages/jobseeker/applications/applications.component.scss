@@ -1,0 +1,38 @@
+:host {
+    display: block;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+    min-height: calc(100dvh - 6rem);
+}
+
+.applications-page {
+    max-width: 60rem;
+    min-height: calc(100dvh - 6rem);
+    margin: 0 auto;
+    padding: 2rem 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+
+    .pagination-container {
+        margin-top: auto;
+        padding: 1.5rem 0 3rem;
+        display: flex;
+        justify-content: center;
+
+        ::ng-deep .p-paginator {
+            background-color: transparent;
+            border: none;
+            padding: 0.5rem;
+
+            .p-paginator-pages .p-paginator-page {
+                &.p-highlight {
+                    background: var(--primary-600, #2563eb);
+                    color: #ffffff;
+                }
+            }
+        }
+    }
+}

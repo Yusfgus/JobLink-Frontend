@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Job } from '../../../core/interfaces/job';
+import { Job } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
@@ -38,7 +38,7 @@ export class SavedJobsComponent {
 	private _toastService: ToastService = inject(ToastService);
 
 	first: number = 0;
-	rows: number = 10;
+	rows: number = 1;
 
 	onPageChange(event: any) {
 		console.log(event);
