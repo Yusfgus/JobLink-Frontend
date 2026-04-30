@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { JobseekerLayoutComponent } from './layouts/jobseeker-layout/jobseeker-layout.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -41,6 +42,7 @@ export const routes: Routes = [
     },
     {
         path: 'jobseeker',
+        canActivate: [authGuard],
         component: JobseekerLayoutComponent,
         children: [
             {

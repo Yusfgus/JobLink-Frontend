@@ -1,7 +1,7 @@
 export abstract class Paged {
     protected _currentPage: number = 0;
-    protected _totalPages: number = 1000;
-    protected _totalCount: number = 1000;
+    protected _totalPages: number = 1;
+    protected _totalCount: number = 1;
     protected _hasNext: boolean = true;
     protected _hasPrevious: boolean = true;
 

@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Job } from '../abstractions/job';
 import { PagedResponse } from '../abstractions/pagedResponse';
-import { AuthService } from './auth.service';
 import { Paged } from '../abstractions/paged';
 
 @Injectable({
@@ -15,8 +14,6 @@ export class SavedJobService extends Paged {
     constructor(
         private _httpClient: HttpClient
     ) { super(); }
-
-    private _jwtHeader: string = `Bearer ${inject(AuthService).getAccessToken()}`;
 
     visibleJobsLimit = 5;
 
@@ -32,7 +29,7 @@ export class SavedJobService extends Paged {
             return;
         }
 
-        this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/job-seekers/me/jobs/saved?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this._jwtHeader } })
+        this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/job-seekers/me/jobs/saved?page=${page}&pageSize=${page_size}`)
             .subscribe({
                 next: (response: PagedResponse<Job>) => {
                     response.items.forEach(j => j.isSaved = true);
@@ -50,7 +47,7 @@ export class SavedJobService extends Paged {
     }
 
     saveJob(job: Job): Observable<any> {
-        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/save`, null, { headers: { Authorization: this._jwtHeader } })
+        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/save`, null)
             .pipe(
                 tap(() => {
                     job.savedAtUtc = new Date(Date.now());
@@ -62,7 +59,7 @@ export class SavedJobService extends Paged {
     }
 
     unsave_job(job: Job): Observable<any> {
-        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.id}/unsave`, { headers: { Authorization: this._jwtHeader } })
+        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.id}/unsave`)
             .pipe(
                 tap(() => {
                     job.isSaved = false;

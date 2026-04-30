@@ -38,7 +38,7 @@ export class SavedJobsComponent {
 	private _toastService: ToastService = inject(ToastService);
 
 	first: number = 0;
-	rows: number = 1;
+	rows: number = 10;
 
 	onPageChange(event: any) {
 		console.log(event);

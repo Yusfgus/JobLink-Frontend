@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
 
@@ -13,8 +13,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimations(),
-    importProvidersFrom(HttpClientModule),
     MessageService,
     ConfirmationService,
+    provideHttpClient(withInterceptors([authInterceptor]))
   ]
 };

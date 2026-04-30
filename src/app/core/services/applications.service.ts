@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Application, ApplicationStatus, Job } from '../abstractions/job';
 import { PagedResponse } from '../abstractions/pagedResponse';
-import { AuthService } from './auth.service';
 import { Paged } from '../abstractions/paged';
 
 @Injectable({
@@ -15,8 +14,6 @@ export class ApplicationsService extends Paged {
     constructor(
         private _httpClient: HttpClient,
     ) { super(); }
-
-    jwtHeader: string = `Bearer ${inject(AuthService).getAccessToken()}`;
 
     visibleJobsLimit = 5;
 
@@ -29,7 +26,7 @@ export class ApplicationsService extends Paged {
             || !this._hasNext) {
             return;
         }
-        this._httpClient.get<PagedResponse<Application>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`, { headers: { Authorization: this.jwtHeader } })
+        this._httpClient.get<PagedResponse<Application>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`)
             .subscribe({
                 next: (response: PagedResponse<Application>) => {
                     this._applicationsSubject.next([...this._applicationsSubject.value, ...response.items]);
@@ -48,7 +45,7 @@ export class ApplicationsService extends Paged {
 
     applyForJob(job: Job): Observable<any> {
 
-        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/apply`, null, { headers: { Authorization: this.jwtHeader } })
+        return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/apply`, null)
             .pipe(
                 tap(() => {
                     job.isApplied = true;
@@ -70,7 +67,7 @@ export class ApplicationsService extends Paged {
     }
 
     withdrawApplication(job: Application): Observable<any> {
-        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.jobId}/withdraw`, { headers: { Authorization: this.jwtHeader } })
+        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.jobId}/withdraw`)
             .pipe(
                 tap(() => {
                     this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.jobId !== job.jobId));

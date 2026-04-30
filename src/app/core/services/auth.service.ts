@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Login } from '../abstractions/login';
 import { JobseekerRegister } from '../abstractions/jobseeker-register';
@@ -9,82 +9,85 @@ import { EmployerRegister } from '../abstractions/employer-register';
 import { UserRole } from '../abstractions/user-role';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private _httpClient: HttpClient) { }
+	constructor(private _httpClient: HttpClient) { }
 
-  jobseeker_register(registerData: JobseekerRegister): Observable<any> {
-    return this._httpClient.post(`${environment.apiRootUrl}/auth/register/job-seeker`, registerData)
-  }
+	jobseeker_register(registerData: JobseekerRegister): Observable<any> {
+		return this._httpClient.post(`${environment.apiRootUrl}/auth/register/job-seeker`, registerData)
+	}
 
-  employer_register(registerData: EmployerRegister): Observable<any> {
-    return this._httpClient.post(`${environment.apiRootUrl}/auth/register/company`, registerData)
-  }
+	employer_register(registerData: EmployerRegister): Observable<any> {
+		return this._httpClient.post(`${environment.apiRootUrl}/auth/register/company`, registerData)
+	}
 
-  login(loginData: Login): Observable<any> {
-    return this._httpClient.post(`${environment.apiRootUrl}/auth/login`, loginData)
-  }
+	login(loginData: Login): Observable<any> {
+		return this._httpClient.post(`${environment.apiRootUrl}/auth/login`, loginData)
+	}
 
-  refresh(refreshToken: string): Observable<any> {
-    return this._httpClient.post(`${environment.apiRootUrl}/auth/refresh-token`, { refreshToken: refreshToken })
-  }
+	refresh(): Observable<TokenResponse> {
+		const refreshToken = this.getRefreshToken();
 
-  logout(): Observable<any> {
-    this.removeToken();
-    return this._httpClient.post(`${environment.apiRootUrl}/auth/logout`, null)
+		if (!refreshToken)
+			return throwError(() => new Error("No refresh token"));
 
-    // this._httpClient.post(`${environment.apiRootUrl}/auth/logout`, null)
-    //   .subscribe({
-    //     next: _ => {
-    //       this.removeToken();
-    //     },
-    //     error: error => {
-    //       console.log(error)
-    //     }
-    //   })
-  }
+		return this._httpClient.post<TokenResponse>(`${environment.apiRootUrl}/auth/refresh-token`, { refreshToken });
+	}
 
-  isLoggedIn(): boolean {
-    return localStorage.getItem('token') != null;
-  }
+	logout(): Observable<any> {
+		return this._httpClient.post(`${environment.apiRootUrl}/auth/logout`, null)
+			.pipe(tap(() => {
+				this.removeToken();
+			}))
+	}
 
-  setToken(tokenResponse: TokenResponse): void {
-    localStorage.setItem('accessToken', tokenResponse.accessToken)
-    localStorage.setItem('refreshToken', tokenResponse.refreshToken)
-    localStorage.setItem('expiresOnUtc', tokenResponse.expires.toString())
-    localStorage.setItem('role', tokenResponse.role.toString())
-  }
+	isLoggedIn(): boolean {
+		return this.getAccessToken() != null && this.getRefreshToken() != null && this.isTokenValid();
+	}
 
-  removeToken(): void {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('expiresOnUtc')
-    localStorage.removeItem('role')
-  }
+	setToken(tokenResponse: TokenResponse): void {
+		const expires = new Date(tokenResponse.expires);
+		localStorage.setItem('accessToken', tokenResponse.accessToken)
+		localStorage.setItem('refreshToken', tokenResponse.refreshToken)
+		localStorage.setItem('expiresOnUtc', expires.toString())
+		localStorage.setItem('role', tokenResponse.role.toString())
+	}
 
-  getAccessToken(): string {
-    return localStorage.getItem('accessToken') || '';
-  }
+	removeToken(): void {
+		localStorage.removeItem('accessToken')
+		localStorage.removeItem('refreshToken')
+		localStorage.removeItem('expiresOnUtc')
+		localStorage.removeItem('role')
+	}
 
-  getRefreshToken(): string {
-    return localStorage.getItem('refreshToken') || '';
-  }
+	getAccessToken(): string | null {
+		return localStorage.getItem('accessToken');
+	}
 
-  getExpiresOnUtc(): string {
-    return localStorage.getItem('expiresOnUtc') || '';
-  }
+	getRefreshToken(): string | null {
+		return localStorage.getItem('refreshToken');
+	}
 
-  getRole(): UserRole | null {
-    const role = localStorage.getItem('role') as UserRole;
-    return role || null;
-  }
+	getExpiresOnUtc(): string | null {
+		return localStorage.getItem('expiresOnUtc');
+	}
 
-  isTokenExpired(): boolean {
-    const expiresOnUtc = this.getExpiresOnUtc();
-    if (!expiresOnUtc) return true;
-    const expiresOn = new Date(expiresOnUtc);
-    return expiresOn < new Date();
-  }
+	getRole(): UserRole | null {
+		const role = localStorage.getItem('role') as UserRole;
+		return role || null;
+	}
+
+	isTokenValid(): boolean {
+		const expiresOnUtc = this.getExpiresOnUtc();
+		if (expiresOnUtc === null)
+			return false;
+
+		const expiresOn = new Date(expiresOnUtc);
+		const current = new Date();
+
+		console.log(expiresOn, current);
+		return expiresOn > current;
+	}
 }

@@ -202,7 +202,7 @@ export class ExploreComponent {
     //     }
     // ];
 
-    pageSize = 1;
+    pageSize = 10;
 
     jobs: Observable<Job[]> = this._jobService.jobs$;
 
