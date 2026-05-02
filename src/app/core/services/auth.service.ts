@@ -1,19 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Login } from '../abstractions/login';
 import { JobseekerRegister } from '../abstractions/jobseeker-register';
 import { TokenResponse } from '../abstractions/token-response';
 import { EmployerRegister } from '../abstractions/employer-register';
 import { UserRole } from '../abstractions/user-role';
+import { StorageService } from './storage.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
 
-	constructor(private _httpClient: HttpClient) { }
+	constructor(private _httpClient: HttpClient, private _storageService: StorageService) { }
 
 	jobseeker_register(registerData: JobseekerRegister): Observable<any> {
 		return this._httpClient.post(`${environment.apiRootUrl}/auth/register/job-seeker`, registerData)
@@ -44,39 +45,47 @@ export class AuthService {
 	}
 
 	isLoggedIn(): boolean {
-		return this.getAccessToken() != null && this.getRefreshToken() != null && this.isTokenValid();
+		return this.getAccessToken() != null;
 	}
 
 	setToken(tokenResponse: TokenResponse): void {
 		const expires = new Date(tokenResponse.expires);
-		localStorage.setItem('accessToken', tokenResponse.accessToken)
-		localStorage.setItem('refreshToken', tokenResponse.refreshToken)
-		localStorage.setItem('expiresOnUtc', expires.toString())
-		localStorage.setItem('role', tokenResponse.role.toString())
+		this._storageService.set('accessToken', tokenResponse.accessToken)
+		this._storageService.set('refreshToken', tokenResponse.refreshToken)
+		this._storageService.set('expiresOnUtc', expires.toString())
+		this._storageService.set('role', tokenResponse.role.toString())
 	}
 
 	removeToken(): void {
-		localStorage.removeItem('accessToken')
-		localStorage.removeItem('refreshToken')
-		localStorage.removeItem('expiresOnUtc')
-		localStorage.removeItem('role')
+		this._storageService.remove('accessToken')
+		this._storageService.remove('refreshToken')
+		this._storageService.remove('expiresOnUtc')
+		this._storageService.remove('role')
 	}
 
 	getAccessToken(): string | null {
-		return localStorage.getItem('accessToken');
+		return this._storageService.get('accessToken');
 	}
 
 	getRefreshToken(): string | null {
-		return localStorage.getItem('refreshToken');
+		return this._storageService.get('refreshToken');
 	}
 
 	getExpiresOnUtc(): string | null {
-		return localStorage.getItem('expiresOnUtc');
+		return this._storageService.get('expiresOnUtc');
 	}
 
 	getRole(): UserRole | null {
-		const role = localStorage.getItem('role') as UserRole;
-		return role || null;
+		const role = this._storageService.get('role') as UserRole;
+		return role;
+	}
+
+	isJobSeeker(): boolean {
+		return this.getRole() === UserRole.JobSeeker;
+	}
+
+	isEmployer(): boolean {
+		return this.getRole() === UserRole.Company;
 	}
 
 	isTokenValid(): boolean {

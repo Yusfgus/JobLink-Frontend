@@ -34,7 +34,6 @@ export class ApplicationsComponent {
   rows: number = 10;
 
   onPageChange(event: any) {
-    console.log(event);
     this.first = event.first;
     this.rows = event.rows;
 
@@ -44,7 +43,6 @@ export class ApplicationsComponent {
   applications: Observable<Application[]> = this._applicationService.applications$;
 
   ngOnInit(): void {
-    console.log("applications-component ogOnInit");
     this.loadMore(1, this.rows);
   }
 

@@ -44,7 +44,6 @@ export class ApplicationsService extends Paged {
     }
 
     applyForJob(job: Job): Observable<any> {
-
         return this._httpClient.post<any>(`${environment.apiRootUrl}/jobs/${job.id}/apply`, null)
             .pipe(
                 tap(() => {

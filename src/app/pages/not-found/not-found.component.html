@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="message-box">
+        <span class="code">404</span>
+        <h1 class="title">Page Not Found</h1>
+        <p class="description">
+            We couldn't find the page you're looking for.
+        </p>
+
+        @if (showHomeButton && showContactButton) {
+        <div class="actions">
+            <p-button label="Go to Homepage" (onClick)="goToHome()" styleClass="p-button-primary" />
+            <p-button label="Contact Support" (onClick)="goToContact()" styleClass="p-button-secondary" />
+        </div>
+        }
+    </div>
+</div>

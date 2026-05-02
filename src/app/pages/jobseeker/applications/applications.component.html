@@ -7,7 +7,7 @@
     }
 
     <!-- Pagination -->
-    <div class="pagination-container">
+    <div class="pagination-container" *ngIf="_applicationService.TotalCount > 0">
         <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
             [totalRecords]="_applicationService.TotalCount" [showJumpToPageDropdown]="false" />
     </div>

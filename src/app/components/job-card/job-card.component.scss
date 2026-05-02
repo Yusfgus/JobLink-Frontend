@@ -180,14 +180,18 @@
     gap: 1rem;
 }
 
-.applied-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    background-color: #e2f6ed;
-    color: #2ecc71;
-    border: 1px solid #2ecc71;
+.applied-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    background-color: rgb(220 252 231);
+    color: rgb(21 128 61);
+
+    .material-symbols-outlined {
+        font-size: 1.25rem;
+    }
 }
 
 .filled-bookmark {

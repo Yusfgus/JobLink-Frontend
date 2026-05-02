@@ -1,8 +1,10 @@
-import { Component, ElementRef, HostListener, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { AuthService } from '../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-jobseeker-header',
@@ -18,16 +20,17 @@ import { InputTextModule } from 'primeng/inputtext';
     styleUrl: './jobseeker-header.component.scss'
 })
 export class JobseekerHeaderComponent {
+    private router = inject(Router);
 
     searchQuery = '';
 
     profileMenuOpen = signal(false);
 
     navLinks = [
-        { label: 'Dashboard', route: '/jobseeker/dashboard' },
-        { label: 'Explore', route: '/jobseeker/explore' },
-        { label: 'My Applications', route: '/jobseeker/applications' },
-        { label: 'Saved Jobs', route: '/jobseeker/saved-jobs' },
+        { label: 'Dashboard', route: '/dashboard' },
+        { label: 'Explore', route: '/explore' },
+        { label: 'My Applications', route: '/applications' },
+        { label: 'Saved Jobs', route: '/saved-jobs' },
     ];
 
     constructor(private elRef: ElementRef) { }
@@ -62,5 +65,8 @@ export class JobseekerHeaderComponent {
     onLogout(): void {
         this.profileMenuOpen.set(false);
         console.log('Logout');
+        inject(AuthService).logout().subscribe(() => {
+            this.router.navigate(['/auth/welcome']);
+        });
     }
 }

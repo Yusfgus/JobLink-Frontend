@@ -2,11 +2,11 @@ import { Routes } from '@angular/router';
 
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { JobseekerLayoutComponent } from './layouts/jobseeker-layout/jobseeker-layout.component';
-import { authGuard } from './core/guards/auth.guard';
+import { jobSeekerAuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     {
-        path: '', redirectTo: 'jobseeker', pathMatch: 'full'
+        path: '', redirectTo: 'explore', pathMatch: 'full'
     },
     {
         path: 'auth',
@@ -35,14 +35,19 @@ export const routes: Routes = [
                     {
                         path: 'employer',
                         loadComponent: () => import('./pages/auth/employer-register/employer-register.component').then(m => m.EmployerRegisterComponent)
+                    },
+                    {
+                        path: '',
+                        redirectTo: 'jobseeker',
+                        pathMatch: 'full'
                     }
                 ]
             }
         ]
     },
     {
-        path: 'jobseeker',
-        canActivate: [authGuard],
+        path: '',
+        canActivateChild: [jobSeekerAuthGuard],
         component: JobseekerLayoutComponent,
         children: [
             {
@@ -65,7 +70,19 @@ export const routes: Routes = [
             {
                 path: 'saved-jobs',
                 loadComponent: () => import('./pages/jobseeker/saved-jobs/saved-jobs.component').then(m => m.SavedJobsComponent)
-            }
+            },
+            {
+                path: 'job/:id',
+                loadComponent: () => import('./pages/jobseeker/job-page/job-page.component').then(m => m.JobPageComponent)
+            },
         ]
     },
+    {
+        path: 'not-found',
+        loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
+    },
+    {
+        path: '**',
+        redirectTo: 'not-found'
+    }
 ]

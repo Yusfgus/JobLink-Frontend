@@ -6,11 +6,12 @@ import { Application } from '../../core/abstractions/job';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { EventEmitter } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'app-application-card',
 	standalone: true,
-	imports: [CommonModule, ButtonModule, ConfirmPopupModule],
+	imports: [CommonModule, ButtonModule, ConfirmPopupModule, RouterLink],
 	templateUrl: './application-card.component.html',
 	styleUrl: './application-card.component.scss'
 })

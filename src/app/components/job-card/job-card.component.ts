@@ -1,37 +1,28 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Job } from '../../core/abstractions/job';
-
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
-import { EventEmitter } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { JobActionsService } from '../../core/services/job-actions.service';
 
 @Component({
     selector: 'app-job-card',
     standalone: true,
-    imports: [CommonModule, ButtonModule, ConfirmPopupModule],
+    imports: [CommonModule, ButtonModule, ConfirmPopupModule, RouterLink],
     templateUrl: './job-card.component.html',
     styleUrl: './job-card.component.scss'
 })
 export class JobCardComponent {
-    constructor(
-        private confirmationService: ConfirmationService
-    ) { }
+    private _jobActionsService: JobActionsService = inject(JobActionsService);
+    private confirmationService: ConfirmationService = inject(ConfirmationService);
 
     @Input({ required: true }) job!: Job;
 
-    @Output() applyClicked = new EventEmitter<Job>();
-
     onApply(): void {
-        if (this.job.isApplied) {
-            console.log("Job is already applied")
-            return;
-        }
-        this.applyClicked.emit(this.job);
+        this._jobActionsService.apply(this.job);
     }
-
-    @Output() saveToggled = new EventEmitter<Job>();
 
     onBookmarkClick(event: Event): void {
         if (this.job.isSaved) {
@@ -44,11 +35,11 @@ export class JobCardComponent {
                 blockScroll: true,
                 acceptButtonStyleClass: 'p-button-danger',
                 accept: () => {
-                    this.saveToggled.emit(this.job);
+                    this._jobActionsService.unsave(this.job);
                 },
             });
         } else {
-            this.saveToggled.emit(this.job);
+            this._jobActionsService.save(this.job);
         }
     }
 }

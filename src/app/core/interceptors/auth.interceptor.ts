@@ -5,12 +5,7 @@ import { catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
-	if (
-		req.url.includes('/auth/login') ||
-		req.url.includes('/auth/register/job-seeker') ||
-		req.url.includes('/auth/register/company') ||
-		req.url.includes('/auth/refresh-token')
-	) {
+	if (req.url.includes('/auth/')) {
 		return next(req);
 	}
 

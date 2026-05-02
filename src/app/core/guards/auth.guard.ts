@@ -1,10 +1,17 @@
-import { inject } from "@angular/core";
-import { CanActivateFn, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from "@angular/router";
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
 import { AuthService } from "../services/auth.service";
-import { catchError, map, of } from "rxjs";
-import { TokenResponse } from "../abstractions/token-response";
+import { UserRole } from "../abstractions/user-role";
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const authGuard = (role: UserRole, route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+	const platformId = inject(PLATFORM_ID);
+
+	// Skip guard on server
+	if (!isPlatformBrowser(platformId)) {
+		return true;
+	}
+
 	const authService = inject(AuthService);
 	const router = inject(Router);
 
@@ -13,37 +20,19 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 			queryParams: { returnUrl: state.url }
 		});
 
-	const accessToken = authService.getAccessToken();
-
-	// No token
-	if (!accessToken) {
+	if (!authService.isLoggedIn())
 		return redirectToLogin();
-	}
+
+	if (authService.getRole() !== role)
+		return redirectToLogin();
 
 	return true;
+};
 
-	// // Token valid
-	// if (authService.isTokenValid()) {
-	// 	return true;
-	// }
+export const jobSeekerAuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+	return authGuard(UserRole.JobSeeker, route, state);
+};
 
-	// // Expired token → try refresh
-	// const refreshToken = authService.getRefreshToken();
-
-	// if (!refreshToken) {
-	// 	authService.removeToken();
-	// 	return redirectToLogin();
-	// }
-
-	// // Try refresh
-	// return authService.refresh().pipe(
-	// 	map((tokenResponse: TokenResponse) => {
-	// 		authService.setToken(tokenResponse);
-	// 		return true;
-	// 	}),
-	// 	catchError(() => {
-	// 		authService.removeToken();
-	// 		return of(redirectToLogin());
-	// 	})
-	// );
+export const employerAuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+	return authGuard(UserRole.Company, route, state);
 };

@@ -1,0 +1,5 @@
+@if (showButton$ | async) {
+<button type="button" class="go-to-top" (click)="scrollToTop()" @fadeInOut aria-label="Go to top">
+    <span class="material-symbols-outlined">arrow_upward</span>
+</button>
+}

@@ -12,7 +12,9 @@
             <!-- Header: title, company, location, posted-at -->
             <header class="job-header">
                 <div>
-                    <h2 class="job-title">{{ job.title }}</h2>
+                    <h2 class="job-title">
+                        <a [routerLink]="['/job', job.id]">{{ job.title}}</a>
+                    </h2>
                     <div class="job-meta">
                         <span class="job-company">{{ job.companyName }}</span>
                         <span class="meta-dot"></span>
@@ -36,13 +38,16 @@
             <footer class="job-footer">
                 <div class="job-skills">
                     @for (skill of job.skills | slice: 0: 9; track skill) {
-                    <span class="skill-chip">{{ skill }}</span>
+                    <span class="skill-chip">{{ skill.name }}</span>
                     }
                 </div>
                 <!-- Actions: apply, save -->
                 <div class="job-actions">
                     @if(job.isApplied){
-                    <span class="applied-badge">Applied</span>
+                    <div class="applied-btn" id="btn-applied-job">
+                        <span class="material-symbols-outlined filled">check_circle</span>
+                        Applied
+                    </div>
                     }@else{
                     <p-button label="Apply Now" styleClass="apply-btn" (onClick)="onApply()">
                     </p-button>
@@ -50,8 +55,7 @@
 
                     <button type="button" class="bookmark-btn" (click)="onBookmarkClick($event)"
                         aria-label="Bookmark job">
-                        <span class="material-symbols-outlined"
-                            [ngClass]="{'filled-bookmark': job.isSaved}">bookmark</span>
+                        <span class="material-symbols-outlined" [class.filled-bookmark]="job.isSaved">bookmark</span>
                     </button>
                     <p-confirmPopup />
 

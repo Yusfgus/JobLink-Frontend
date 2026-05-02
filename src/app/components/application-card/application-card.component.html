@@ -12,7 +12,9 @@
             <!-- Header: title, company, location, posted-at -->
             <header class="application-header">
                 <div>
-                    <h2 class="application-title">{{ application.jobTitle }}</h2>
+                    <h2 class="application-title">
+                        <a [routerLink]="['/job', application.jobId]">{{ application.jobTitle }}</a>
+                    </h2>
                     <div class="application-meta">
                         <span class="application-company">{{ application.companyName }}</span>
                         <span class="meta-dot"></span>

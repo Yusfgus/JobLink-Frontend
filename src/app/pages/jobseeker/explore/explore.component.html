@@ -27,12 +27,11 @@
         <!-- ── Job Feed ─────────────────────────────────── -->
         <section class="job-feed">
 
-            @for (job of (jobs | async); track job.id) {
-            <app-job-card [job]="job" (saveToggled)="onBookmarkClick($event)"
-                (applyClicked)="onApply($event)"></app-job-card>}
+            @for (job of (jobs$ | async); track job.id) {
+            <app-job-card [job]="job"></app-job-card>}
 
             <!-- Load More -->
-            @if (_jobService.HasNext) { <div class="load-more-wrap">
+            @if (jobService.HasNext) { <div class="load-more-wrap">
                 <button type="button" class="load-more-btn" (click)="onLoadMore()">
                     <span>Load more opportunities</span>
                     <div class="load-more-circle">

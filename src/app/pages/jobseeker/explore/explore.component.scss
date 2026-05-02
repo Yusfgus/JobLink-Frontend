@@ -13,8 +13,6 @@
     max-width: 88rem;
     margin: 0 auto;
     padding: 2rem 2rem 0;
-    height: calc(100vh - 6rem);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -23,7 +21,6 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    height: 100%;
 
     @media (min-width: 768px) {
         flex-direction: row;
@@ -44,16 +41,7 @@
     @media (min-width: 768px) {
         width: 17rem;
         flex-shrink: 0;
-        overflow-y: auto;
         padding-bottom: 2rem;
-
-        /* Hide scrollbar while maintaining functionality */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
 }
 
@@ -112,24 +100,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    overflow-y: auto;
     padding-bottom: 4rem;
-    padding-right: 1rem;
-
-    /* Custom Scrollbar for job feed */
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: rgba(195, 198, 215, 0.3);
-        border-radius: 10px;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-        background: var(--primary-color);
-    }
 }
 
 /* ── Load More ──────────────────────────────────────── */

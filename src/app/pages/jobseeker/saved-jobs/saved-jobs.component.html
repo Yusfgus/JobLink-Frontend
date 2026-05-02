@@ -1,13 +1,13 @@
 <main class="saved-jobs-page">
     @for (job of (savedJobs | async) | slice:first:(first + rows); track job.id) {
-    <app-job-card [job]="job" (saveToggled)="onBookmarkClick($event)" (applyClicked)="onApply($event)"></app-job-card>
+    <app-job-card [job]="job"></app-job-card>
     }
     @empty {
 
     }
 
     <!-- Pagination -->
-    <div class="pagination-container">
+    <div class="pagination-container" *ngIf="_savedJobService.TotalCount > 0">
         <p-paginator (onPageChange)="onPageChange($event)" [rows]="rows" [totalRecords]="_savedJobService.TotalCount"
             [showJumpToPageDropdown]="false" />
     </div>

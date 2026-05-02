@@ -1,22 +1,4 @@
 
-export interface Job {
-    id: string;
-    title: string;
-    jobType: string;
-    locationType: string;
-    companyId: string;
-    companyName: string;
-    companyLogoUrl: string | null;
-    country: string;
-    city: string;
-    description: string;
-    experienceLevel: string;
-    skills: string[];
-    postedAtUtc: Date;
-    isApplied: boolean;
-    isSaved: boolean;
-    savedAtUtc: Date;
-}
 
 export enum ApplicationStatus {
     Pending = 'pending',
@@ -38,31 +20,36 @@ export interface Application {
     appliedAtUtc: Date;
 }
 
-interface Skill {
+export interface Skill {
     id: string;
     name: string;
     isRequired: boolean;
 }
 
-export interface JobDetails {
+export interface Job {
     id: string;
     title: string;
     jobType: string;
     locationType: string;
+    companyId: string;
     companyName: string;
     companyLogoUrl: string | null;
     country: string;
     city: string;
     area: string;
-    postedAtUtc: Date;
-    closedAt: Date | null;
-    expirationDate: Date;
-    status: string;
+    description: string;
     experienceLevel: string;
+    skills: Skill[];
     minSalary: number | null;
     maxSalary: number | null;
-    skills: Skill[];
-    description: string;
-    requirements: string;
+    isApplied: boolean;
+    isSaved: boolean;
+    status: string;
+    postedAtUtc: Date;
+    savedAtUtc: Date | null;
+    closedAt: Date | null;
+    expirationDate: Date | null;
 }
+
+
 
