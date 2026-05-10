@@ -20,9 +20,9 @@ export class JobCardComponent {
 
     @Input({ required: true }) job!: Job;
 
-    onApply(): void {
-        this._jobActionsService.apply(this.job);
-    }
+    // onApply(): void {
+    //     this._jobActionsService.apply(this.job);
+    // }
 
     onBookmarkClick(event: Event): void {
         if (this.job.isSaved) {

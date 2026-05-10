@@ -10,7 +10,8 @@
                     @if (job.companyLogoUrl) {
                     <img [src]="job.companyLogoUrl" [alt]="job.companyName + ' logo'" class="company-logo" />
                     } @else {
-                    <span class="material-symbols-outlined logo-placeholder">business</span>
+                    <!-- <span class="material-symbols-outlined logo-placeholder">business</span> -->
+                    <div class="no-logo">{{ job.companyName.charAt(0).toUpperCase() }}</div>
                     }
                 </div>
 
@@ -76,12 +77,12 @@
                     <span class="material-symbols-outlined section-icon">description</span>
                     Overview
                 </h2>
-                <!-- <p class="section-body">{{ job.description }}</p> -->
-                <p class="section-body">At Stellar Horizon, we believe that complexity is the enemy of progress. As a
+                <p class="section-body">{{ job.description }}</p>
+                <!-- <p class="section-body">At Stellar Horizon, we believe that complexity is the enemy of progress. As a
                     Senior UX Architect, you will be the structural visionary behind our next generation of space-tech
                     logistics platforms. This isn't just about designing screens; it's about defining the invisible
                     frameworks that make interplanetary resource management feel as simple as ordering coffee. You will
-                    bridge the gap between high-level business strategy and granular interface execution.</p>
+                    bridge the gap between high-level business strategy and granular interface execution.</p> -->
             </article>
 
             <p-divider />
@@ -92,8 +93,8 @@
                     <span class="material-symbols-outlined section-icon">checklist</span>
                     Requirements
                 </h2>
-                <!-- <p class="section-body">{{ job.requirements }}</p> -->
-                <p class="section-body">Strategic Planning & Roadmapping: Define and evangelize the product vision,
+                <p class="section-body">{{ job.requirements }}</p>
+                <!-- <p class="section-body">Strategic Planning & Roadmapping: Define and evangelize the product vision,
                     strategy, and roadmap, ensuring tight alignment with company objectives and market opportunities.
                     Cross-Functional Leadership: Champion the product vision across the organization, ensuring alignment
                     and buy-in from engineering, design, marketing, sales, and executive stakeholders.
@@ -112,7 +113,7 @@
                     Risk Assessment & Mitigation: Identify potential risks associated with product decisions and develop
                     mitigation strategies to ensure successful product delivery.
                     Product Evangelism: Act as the internal and external champion for the product, clearly articulating
-                    its value proposition and strategic importance.</p>
+                    its value proposition and strategic importance.</p> -->
             </article>
 
             <p-divider />

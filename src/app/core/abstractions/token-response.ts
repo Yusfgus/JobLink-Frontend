@@ -4,7 +4,7 @@ import { UserRole } from "./user-role";
 export interface TokenResponse {
     accessToken: string;
     refreshToken: string;
-    expires: Date;
+    expiresUtc: Date;
     role: UserRole;
 }
 

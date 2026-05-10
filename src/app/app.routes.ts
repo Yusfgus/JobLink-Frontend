@@ -57,7 +57,8 @@ export const routes: Routes = [
             },
             {
                 path: 'dashboard',
-                loadComponent: () => import('./pages/jobseeker/dashboard/dashboard.component').then(m => m.DashboardComponent)
+                redirectTo: '/coming-soon',
+                // loadComponent: () => import('./pages/jobseeker/dashboard/dashboard.component').then(m => m.DashboardComponent)
             },
             {
                 path: 'explore',
@@ -75,11 +76,25 @@ export const routes: Routes = [
                 path: 'job/:id',
                 loadComponent: () => import('./pages/jobseeker/job-page/job-page.component').then(m => m.JobPageComponent)
             },
+            {
+                path: 'profile',
+                redirectTo: '/coming-soon',
+                // loadComponent: () => import('./pages/jobseeker/profile/profile.component').then(m => m.ProfileComponent)
+            },
+            {
+                path: 'settings',
+                redirectTo: '/coming-soon',
+                // loadComponent: () => import('./pages/jobseeker/settings/settings.component').then(m => m.SettingsComponent)
+            }
         ]
     },
     {
+        path: 'coming-soon',
+        loadComponent: () => import('./pages/error/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+    },
+    {
         path: 'not-found',
-        loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
+        loadComponent: () => import('./pages/error/not-found/not-found.component').then(m => m.NotFoundComponent)
     },
     {
         path: '**',

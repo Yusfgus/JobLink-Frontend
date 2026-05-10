@@ -93,9 +93,9 @@ export class LoginComponent {
                 this.toastService.success('Success', 'Logged in successfully')
 
                 if (response.role === UserRole.JobSeeker) {
-                    this.router.navigate(['/jobseeker']);
+                    this.router.navigate(['/explore']);
                 } else if (response.role === UserRole.Company) {
-                    this.router.navigate(['/company']);
+                    this.router.navigate(['/coming-soon']);
                 }
 
                 this.spinner.hide();

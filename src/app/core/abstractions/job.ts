@@ -38,6 +38,7 @@ export interface Job {
     city: string;
     area: string;
     description: string;
+    requirements: string;
     experienceLevel: string;
     skills: Skill[];
     minSalary: number | null;

@@ -110,7 +110,7 @@ export class JobseekerRegisterComponent {
 
                     this.toastService.success('Success', 'Registered successfully')
 
-                    this.router.navigate(['/auth/login'])
+                    this.router.navigate(['/explore'])
 
                     this.spinner.hide()
                 },

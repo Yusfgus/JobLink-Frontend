@@ -3,7 +3,11 @@
 
         <!-- Logo -->
         <div class="card-logo">
+            @if(job.companyLogoUrl){
             <img [src]="job.companyLogoUrl" [alt]="job.companyName + ' logo'" />
+            } @else {
+            <div class="no-logo">{{ job.companyName.charAt(0).toUpperCase() }}</div>
+            }
         </div>
 
         <!-- Content -->
@@ -49,7 +53,7 @@
                         Applied
                     </div>
                     }@else{
-                    <p-button label="Apply Now" styleClass="apply-btn" (onClick)="onApply()">
+                    <p-button label="Apply Now" styleClass="apply-btn" [routerLink]="['/job', job.id]">
                     </p-button>
                     }
 

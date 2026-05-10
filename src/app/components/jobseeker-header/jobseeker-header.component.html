@@ -34,8 +34,8 @@
 
             <!-- Profile Menu -->
             <div class="profile-menu-wrap">
-                <button type="button" class="profile-trigger" (click)="toggleProfileMenu()" aria-haspopup="true"
-                    [attr.aria-expanded]="profileMenuOpen()">
+
+                <button type="button" class="profile-trigger" aria-haspopup="true" (click)="menu.toggle($event)">
                     <div class="avatar-frame">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN1YCeGRV19deUz6wwUfLy6CQL0UIb9729IV5Z_DnnrB58gMqa3mXFc5cLE9oW_TWjRY_0gk6MJSpbl-0Qb9a7jrLUhA0q1HB8_gaDvvOkuRrcwADJEgIhxgXbCJtFfiIwiFtoPrzXsyaar8JKm6iEqpKaZD-cjagSMedevL4fcYzP4yA68C6YEbEooe5-uhfQ8GQY6iIjHyGS4xOLyitQqmGLxTdZr5QtzNfQubW1b7zwHqdVfnwG_BW7UyK6xu3__vCXgyuQ-VTX"
                             alt="User avatar" class="avatar-img" />
@@ -44,33 +44,9 @@
                 </button>
 
                 <!-- Dropdown -->
-                @if (profileMenuOpen()) {
-                <div class="profile-dropdown" role="menu">
-                    <!-- User Info -->
-                    <div class="dropdown-header">
-                        <p class="dropdown-name">Alex Thompson</p>
-                        <p class="dropdown-role">Senior Product Designer</p>
-                    </div>
-
-                    <div class="dropdown-divider"></div>
-
-                    <a href="#" class="dropdown-item" role="menuitem" (click)="onEditProfile()">
-                        <span class="material-symbols-outlined dropdown-item-icon">edit</span>
-                        Edit Profile
-                    </a>
-                    <a href="#" class="dropdown-item" role="menuitem" (click)="onSettings()">
-                        <span class="material-symbols-outlined dropdown-item-icon">settings</span>
-                        Settings
-                    </a>
-
-                    <div class="dropdown-divider"></div>
-
-                    <a href="#" class="dropdown-item dropdown-item--danger" role="menuitem" (click)="onLogout()">
-                        <span class="material-symbols-outlined dropdown-item-icon">logout</span>
-                        Logout
-                    </a>
+                <div class="card flex justify-content-center">
+                    <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
                 </div>
-                }
             </div>
 
         </div>

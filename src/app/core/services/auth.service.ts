@@ -49,35 +49,39 @@ export class AuthService {
 	}
 
 	setToken(tokenResponse: TokenResponse): void {
-		const expires = new Date(tokenResponse.expires);
-		this._storageService.set('accessToken', tokenResponse.accessToken)
-		this._storageService.set('refreshToken', tokenResponse.refreshToken)
-		this._storageService.set('expiresOnUtc', expires.toString())
-		this._storageService.set('role', tokenResponse.role.toString())
+		this._storageService.set('tokenResponse', tokenResponse)
 	}
 
 	removeToken(): void {
-		this._storageService.remove('accessToken')
-		this._storageService.remove('refreshToken')
-		this._storageService.remove('expiresOnUtc')
-		this._storageService.remove('role')
+		this._storageService.remove('tokenResponse')
 	}
 
 	getAccessToken(): string | null {
-		return this._storageService.get('accessToken');
+		const tokenResponse: TokenResponse | null = this._storageService.get('tokenResponse');
+		if (tokenResponse === null)
+			return null;
+		return tokenResponse.accessToken;
 	}
 
 	getRefreshToken(): string | null {
-		return this._storageService.get('refreshToken');
+		const tokenResponse: TokenResponse | null = this._storageService.get('tokenResponse');
+		if (tokenResponse === null)
+			return null;
+		return tokenResponse.refreshToken;
 	}
 
-	getExpiresOnUtc(): string | null {
-		return this._storageService.get('expiresOnUtc');
+	getExpiresOnUtc(): Date | null {
+		const tokenResponse: TokenResponse | null = this._storageService.get('tokenResponse');
+		if (tokenResponse === null)
+			return null;
+		return tokenResponse.expiresUtc;
 	}
 
 	getRole(): UserRole | null {
-		const role = this._storageService.get('role') as UserRole;
-		return role;
+		const tokenResponse: TokenResponse | null = this._storageService.get('tokenResponse');
+		if (tokenResponse === null)
+			return null;
+		return tokenResponse.role;
 	}
 
 	isJobSeeker(): boolean {
@@ -93,10 +97,6 @@ export class AuthService {
 		if (expiresOnUtc === null)
 			return false;
 
-		const expiresOn = new Date(expiresOnUtc);
-		const current = new Date();
-
-		console.log(expiresOn, current);
-		return expiresOn > current;
+		return expiresOnUtc > new Date();
 	}
 }

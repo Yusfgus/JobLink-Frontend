@@ -51,6 +51,19 @@
     }
 }
 
+.no-logo {
+    width: 100%;
+    height: 100%;
+    background: var(--surface-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-family: var(--heading-font-family);
+}
+
 /* ── Content Body ───────────────────────────────────── */
 .card-body {
     flex: 1;
@@ -159,9 +172,13 @@
 /* ── Skills ─────────────────────────────────────────── */
 .job-skills {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 0.5rem;
     height: fit-content;
+    max-height: 2rem;
+    max-width: 67%;
+    overflow: hidden;
 }
 
 .skill-chip {
