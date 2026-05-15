@@ -78,8 +78,34 @@ export const routes: Routes = [
             },
             {
                 path: 'profile',
-                redirectTo: '/coming-soon',
-                // loadComponent: () => import('./pages/jobseeker/profile/profile.component').then(m => m.ProfileComponent)
+                loadComponent: () => import('./pages/jobseeker/profile/layout/layout.component').then(m => m.LayoutComponent),
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'general-info',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'general-info',
+                        loadComponent: () => import('./pages/jobseeker/profile/general-info/general-info.component').then(m => m.GeneralInfoComponent)
+                    },
+                    {
+                        path: 'resume',
+                        loadComponent: () => import('./pages/jobseeker/profile/resume/resume.component').then(m => m.ResumeComponent)
+                    },
+                    {
+                        path: 'education',
+                        loadComponent: () => import('./pages/jobseeker/profile/education/education.component').then(m => m.EducationComponent)
+                    },
+                    {
+                        path: 'experience',
+                        loadComponent: () => import('./pages/jobseeker/profile/experience/experience.component').then(m => m.ExperienceComponent)
+                    },
+                    {
+                        path: 'skills',
+                        loadComponent: () => import('./pages/jobseeker/profile/skills/skills.component').then(m => m.SkillsComponent)
+                    },
+                ]
             },
             {
                 path: 'settings',

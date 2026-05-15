@@ -37,15 +37,19 @@
 
                 <button type="button" class="profile-trigger" aria-haspopup="true" (click)="menu.toggle($event)">
                     <div class="avatar-frame">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN1YCeGRV19deUz6wwUfLy6CQL0UIb9729IV5Z_DnnrB58gMqa3mXFc5cLE9oW_TWjRY_0gk6MJSpbl-0Qb9a7jrLUhA0q1HB8_gaDvvOkuRrcwADJEgIhxgXbCJtFfiIwiFtoPrzXsyaar8JKm6iEqpKaZD-cjagSMedevL4fcYzP4yA68C6YEbEooe5-uhfQ8GQY6iIjHyGS4xOLyitQqmGLxTdZr5QtzNfQubW1b7zwHqdVfnwG_BW7UyK6xu3__vCXgyuQ-VTX"
-                            alt="User avatar" class="avatar-img" />
+                        @if(profilePictureUrl()) {
+                        <p-avatar [image]="profilePictureUrl()!" shape="circle" size="xlarge"
+                            styleClass="profile-avatar" />
+                        }@else {
+                        <p-avatar [label]="avatarLabel()" shape="circle" size="xlarge" styleClass="profile-avatar" />
+                        }
                     </div>
                     <span class="material-symbols-outlined expand-icon">expand_more</span>
                 </button>
 
                 <!-- Dropdown -->
                 <div class="card flex justify-content-center">
-                    <p-menu #menu [model]="items" [popup]="true" appendTo="body" />
+                    <p-menu #menu [model]="items()" [popup]="true" appendTo="body" />
                 </div>
             </div>
 

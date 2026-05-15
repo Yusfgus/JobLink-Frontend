@@ -80,7 +80,7 @@ export class ExploreComponent {
         });
     }
 
-    pageSize = 10;
+    pageSize = 3;
 
     ngOnInit(): void {
         this.onLoadMore();

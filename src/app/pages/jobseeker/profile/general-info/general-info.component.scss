@@ -1,0 +1,116 @@
+.section-card {
+    padding: 2rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    background: var(--surface-section);
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+}
+
+.section-subtitle {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+}
+
+/* ── Form ─────────────────────────────────────── */
+.info-form {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+
+    &.form-grid--single {
+        grid-template-columns: 1fr;
+    }
+
+    &.form-grid--triple {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-color-secondary);
+    }
+
+    input,
+    textarea {
+        width: 100%;
+    }
+
+    &.form-field--full {
+        width: 100%;
+    }
+}
+
+/* ── PrimeNG Component Overrides ──────────────── */
+:host ::ng-deep {
+    .p-calendar,
+    .p-dropdown {
+        width: 100%;
+    }
+
+    /* Target the input within calendar and dropdown */
+    .p-calendar .p-inputtext,
+    .p-dropdown {
+        background-color: #f0f3ff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease;
+    }
+
+    .p-calendar .p-inputtext:enabled:focus,
+    .p-dropdown.p-focus {
+        background-color: #ffffff !important;
+        box-shadow: 0 0 0 2px #0054d7 !important;
+    }
+
+    .p-dropdown .p-dropdown-label {
+        padding: 0.75rem;
+        color: var(--text-color);
+    }
+
+    .p-dropdown .p-dropdown-trigger {
+        width: 3rem;
+    }
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+}
+
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

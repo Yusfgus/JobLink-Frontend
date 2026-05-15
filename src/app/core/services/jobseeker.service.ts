@@ -1,0 +1,89 @@
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map, Observable, of, tap } from 'rxjs';
+import { JobSeekerProfile } from '../abstractions/jobseeker';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class JobSeekerService {
+    private readonly _http = inject(HttpClient);
+
+    // --- Signals (Modern Angular State) ---
+    private readonly _profile = signal<JobSeekerProfile | null>(null);
+    private readonly _pictureUrl = signal<string | null>(null);
+    private readonly _isLoaded = signal<boolean>(false);
+
+    readonly profile = this._profile.asReadonly();
+    readonly pictureUrl = this._pictureUrl.asReadonly();
+    readonly isLoaded = this._isLoaded.asReadonly();
+
+    private _syncState(profile: JobSeekerProfile | null) {
+        this._profile.set(profile);
+        if (profile) this._isLoaded.set(true);
+    }
+
+    private _syncPicture(url: string | null) {
+        this._pictureUrl.set(url);
+    }
+
+    // --- Methods ---
+
+    loadJobSeekerProfile(): Observable<JobSeekerProfile | null> {
+        if (this.isLoaded()) {
+            return of(this.profile());
+        }
+
+        return this._http.get<JobSeekerProfile>(`${environment.apiRootUrl}/job-seekers/me`)
+            .pipe(
+                tap(profile => this._syncState(profile)),
+                catchError(() => {
+                    this._syncState(null);
+                    return of(null);
+                })
+            );
+    }
+
+    loadProfilePicture(): Observable<string | null> {
+        return this._http.get<{ profilePictureUrl: string | null }>(`${environment.apiRootUrl}/job-seekers/me/picture`)
+            .pipe(
+                map(res => res.profilePictureUrl),
+                tap(url => this._syncPicture(url)),
+                catchError(() => {
+                    this._syncPicture(null);
+                    return of(null);
+                })
+            );
+    }
+
+    updateJobSeekerProfile(profile: JobSeekerProfile): Observable<void> {
+        return this._http.put<void>(`${environment.apiRootUrl}/job-seekers/me`, profile)
+            .pipe(
+                tap(() => this._syncState(profile))
+            );
+    }
+
+    uploadProfilePicture(file: File): Observable<{ profilePictureUrl: string }> {
+        const formData = new FormData();
+        formData.append('profilePicture', file);
+
+        return this._http.post<{ profilePictureUrl: string }>(`${environment.apiRootUrl}/job-seekers/me/picture`, formData)
+            .pipe(
+                tap(res => this._syncPicture(res.profilePictureUrl))
+            );
+    }
+
+    deleteProfilePicture(): Observable<void> {
+        return this._http.delete<void>(`${environment.apiRootUrl}/job-seekers/me/picture`)
+            .pipe(
+                tap(() => this._syncPicture(null))
+            );
+    }
+
+    clearJobSeekerProfile(): void {
+        this._syncState(null);
+        this._syncPicture(null);
+        this._isLoaded.set(false);
+    }
+}

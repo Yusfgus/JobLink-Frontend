@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Login } from '../abstractions/login';
-import { JobseekerRegister } from '../abstractions/jobseeker-register';
+import { JobseekerRegister } from '../abstractions/jobseeker';
 import { TokenResponse } from '../abstractions/token-response';
-import { EmployerRegister } from '../abstractions/employer-register';
+import { EmployerRegister } from '../abstractions/employer';
 import { UserRole } from '../abstractions/user-role';
 import { StorageService } from './storage.service';
 
@@ -34,7 +34,7 @@ export class AuthService {
 		if (!refreshToken)
 			return throwError(() => new Error("No refresh token"));
 
-		return this._httpClient.post<TokenResponse>(`${environment.apiRootUrl}/auth/refresh-token`, { refreshToken });
+		return this._httpClient.post<TokenResponse>(`${environment.apiRootUrl}/auth/refresh`, { refreshToken });
 	}
 
 	logout(): Observable<any> {
@@ -98,5 +98,12 @@ export class AuthService {
 			return false;
 
 		return expiresOnUtc > new Date();
+	}
+
+	loadCurrentUser(): Observable<any> {
+		return this._httpClient.get(`${environment.apiRootUrl}/auth/me`)
+			.pipe(tap(user => {
+				// We could store user info here if needed
+			}));
 	}
 }

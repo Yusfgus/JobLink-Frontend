@@ -221,11 +221,19 @@
     flex-shrink: 0;
 }
 
-.avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+:host ::ng-deep .profile-avatar {
+    width: 100% !important;
+    height: 100% !important;
+    font-size: 0.875rem !important;
+    font-weight: 600;
+    background: var(--primary-gradient) !important;
+    color: #fff !important;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
 
 .expand-icon {

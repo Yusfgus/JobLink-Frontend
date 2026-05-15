@@ -1,0 +1,238 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+/* ── Page Wrapper ─────────────────────────────── */
+.profile-page {
+    min-height: calc(100vh - 72px);
+    background: var(--surface-ground);
+    padding: 2rem 1.5rem;
+}
+
+/* ── Two-Column Layout ────────────────────────── */
+.profile-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* ── Sidebar ─────────────────────────────────── */
+.profile-sidebar {
+    background: var(--surface-card);
+    border-radius: var(--content-border-radius);
+    box-shadow: 0 4px 24px rgba(3, 28, 57, 0.07);
+    padding: 1.75rem 1.25rem;
+    position: sticky;
+    top: 1.5rem;
+}
+
+/* Avatar + Name */
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.875rem;
+    text-align: center;
+    padding-bottom: 0.25rem;
+}
+
+.avatar-container {
+    position: relative;
+    padding: 2px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.02);
+
+        .avatar-overlay {
+            opacity: 1;
+        }
+
+        &::after {
+            opacity: 0.3;
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: #000;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+    }
+}
+
+.avatar-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+
+    span {
+        font-size: 24px;
+    }
+}
+
+.delete-avatar-btn {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ba1a1a;
+    color: #fff;
+    border: 2px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.15s ease, background 0.15s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    span {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    &:hover {
+        background: #93000a;
+        transform: scale(1.1);
+    }
+
+    &:active {
+        transform: scale(0.9);
+    }
+}
+
+:host ::ng-deep .profile-avatar {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 1.75rem !important;
+    font-weight: 600;
+    background: var(--primary-gradient) !important;
+    color: #fff !important;
+    display: flex !important;
+}
+
+.sidebar-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.sidebar-name {
+    font-family: var(--heading-font-family);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.sidebar-role {
+    font-size: 0.8rem;
+    color: var(--text-color-secondary);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* Divider tweak */
+:host ::ng-deep .p-divider {
+    margin: 0.75rem 0 !important;
+}
+
+/* ── Nav Items ───────────────────────────────── */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+    color: var(--text-color-secondary);
+    font-size: 0.925rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+        background: var(--surface-hover);
+        color: var(--primary-color);
+
+        .nav-icon {
+            color: var(--primary-color);
+        }
+    }
+
+    &.nav-item--active {
+        background: var(--surface-section);
+        color: var(--primary-color);
+        font-weight: 600;
+
+        .nav-icon {
+            color: var(--primary-color);
+        }
+    }
+}
+
+.nav-icon {
+    font-size: 1.25rem;
+    color: var(--surface-border);
+    transition: color 0.18s ease;
+}
+
+.nav-label {
+    flex: 1;
+}
+
+/* ── Content Area ───────────────────────────── */
+.profile-content {
+    min-height: 500px;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 900px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-sidebar {
+        position: static;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .sidebar-header {
+        flex-direction: row;
+        text-align: left;
+    }
+}

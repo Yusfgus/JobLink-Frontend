@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { EmployerRegister } from '../../../core/abstractions/employer-register';
+import { EmployerRegister } from '../../../core/abstractions/employer';
 import { TokenResponse } from '../../../core/abstractions/token-response';
 
 import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";

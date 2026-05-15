@@ -1,0 +1,57 @@
+<main class="profile-page">
+    <div class="profile-layout">
+
+        <!-- ── Sidebar Nav ──────────────────────────────── -->
+        <aside class="profile-sidebar">
+
+            <!-- Avatar + Name -->
+            <div class="sidebar-header">
+                <div class="avatar-container">
+                    <div class="avatar-wrapper" (click)="onUploadClick(fileInput)">
+                        @if(profilePictureUrl()) {
+                        <p-avatar [image]="profilePictureUrl()!" shape="circle" size="xlarge"
+                            styleClass="profile-avatar" />
+                        }@else {
+                        <p-avatar [label]="avatarLabel()" shape="circle" size="xlarge" styleClass="profile-avatar" />
+                        }
+                        <div class="avatar-overlay">
+                            <span class="material-symbols-outlined">edit</span>
+                        </div>
+                    </div>
+
+                    @if(profilePictureUrl()) {
+                    <button type="button" class="delete-avatar-btn" (click)="onDeletePicture()" title="Remove picture">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                    }
+
+                    <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
+                </div>
+                <div class="sidebar-user-info">
+                    <span class="sidebar-name">{{ fullName() }}</span>
+                    <span class="sidebar-role">Job Seeker</span>
+                </div>
+            </div>
+
+            <p-divider />
+
+            <!-- Nav Links -->
+            <nav class="sidebar-nav">
+                @for (item of navItems; track item.route) {
+                <a class="nav-item" [routerLink]="item.route" routerLinkActive="nav-item--active"
+                    [routerLinkActiveOptions]="{ exact: item.exact ?? false }">
+                    <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+                    <span class="nav-label">{{ item.label }}</span>
+                </a>
+                }
+            </nav>
+
+        </aside>
+
+        <!-- ── Content Area ─────────────────────────────── -->
+        <section class="profile-content">
+            <router-outlet />
+        </section>
+
+    </div>
+</main>

@@ -1,0 +1,100 @@
+<div class="section-card editorial-card">
+    <div class="section-header">
+        <span class="material-symbols-outlined section-icon">person</span>
+        <div>
+            <h2 class="section-title">General Information</h2>
+            <p class="section-subtitle">Your personal details visible to employers</p>
+        </div>
+    </div>
+
+    <p-divider />
+
+    <form class="info-form" [formGroup]="form" (ngSubmit)="onSave()">
+
+        <!-- Row 1: First / Middle / Last Name -->
+        <div class="p-fluid form-grid form-grid--triple">
+            <div class="form-field">
+                <label for="firstName">First Name</label>
+                <input pInputText id="firstName" formControlName="firstName" class="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="middleName">Middle Name</label>
+                <input pInputText id="middleName" formControlName="middleName" class="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="lastName">Last Name</label>
+                <input pInputText id="lastName" formControlName="lastName" class="no-border-input" />
+            </div>
+        </div>
+
+        <!-- Row 2: Nationality / Mobile Number -->
+        <div class="p-fluid form-grid">
+            <div class="form-field">
+                <label for="nationality">Nationality</label>
+                <input pInputText id="nationality" formControlName="nationality" class="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="mobileNumber">Mobile Number</label>
+                <input pInputText id="mobileNumber" formControlName="mobileNumber" class="no-border-input" />
+            </div>
+        </div>
+
+        <!-- Row 3: Birth Date / Gender -->
+        <div class="p-fluid form-grid">
+            <div class="form-field">
+                <label for="birthDate">Birth Date</label>
+                <p-calendar id="birthDate" formControlName="birthDate" placeholder="Select Date" [showIcon]="true"
+                    appendTo="body" styleClass="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="gender">Gender</label>
+                <p-dropdown id="gender" formControlName="gender" [options]="genderOptions" placeholder="Select Gender"
+                    appendTo="body" styleClass="no-border-input" />
+            </div>
+        </div>
+
+        <!-- Row 4: Marital Status / Military Status -->
+        <div class="p-fluid form-grid">
+            <div class="form-field">
+                <label for="maritalStatus">Marital Status</label>
+                <p-dropdown id="maritalStatus" formControlName="maritalStatus" [options]="maritalStatusOptions"
+                    placeholder="Select Marital Status" appendTo="body" styleClass="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="militaryStatus">Military Status</label>
+                <p-dropdown id="militaryStatus" formControlName="militaryStatus" [options]="militaryStatusOptions"
+                    placeholder="Select Military Status" appendTo="body" styleClass="no-border-input" />
+            </div>
+        </div>
+
+        <!-- Row 5: Country / City / Area -->
+        <div class="p-fluid form-grid form-grid--triple">
+            <div class="form-field">
+                <label for="country">Country</label>
+                <input pInputText id="country" formControlName="country" class="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="city">City</label>
+                <input pInputText id="city" formControlName="city" class="no-border-input" />
+            </div>
+            <div class="form-field">
+                <label for="area">Area</label>
+                <input pInputText id="area" formControlName="area" class="no-border-input" />
+            </div>
+        </div>
+
+        <!-- Row 6: Summary -->
+        <div class="form-field form-field--full">
+            <label for="summary">Summary</label>
+            <textarea pInputTextarea id="summary" formControlName="summary" [rows]="5" [autoResize]="true"
+                placeholder="Write a short summary about yourself..." class="no-border-input"></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <p-button type="submit" label="Save Changes" icon="pi pi-check" styleClass="primary-gradient-btn"
+                [loading]="saving" [disabled]="!form.dirty || !form.valid" />
+        </div>
+
+    </form>
+</div>

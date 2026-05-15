@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 
 import { Login } from '../../../core/abstractions/login';
@@ -9,12 +9,13 @@ import { ToastService } from '../../../core/services/toast.service';
 import { TokenResponse } from '../../../core/abstractions/token-response';
 import { UserRole } from '../../../core/abstractions/user-role';
 
-import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner";
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
+import { JobSeekerService } from '../../../core/services/jobseeker.service';
 
 @Component({
     selector: 'app-login',
@@ -38,7 +39,8 @@ export class LoginComponent {
         private spinner: NgxSpinnerService,
         private router: Router,
         private authService: AuthService,
-        private toastService: ToastService
+        private toastService: ToastService,
+        private jobSeekerService: JobSeekerService,
     ) {
         this.initFormControls()
         this.initFormGroups()
@@ -93,8 +95,10 @@ export class LoginComponent {
                 this.toastService.success('Success', 'Logged in successfully')
 
                 if (response.role === UserRole.JobSeeker) {
+                    this.jobSeekerService.loadJobSeekerProfile().subscribe();
                     this.router.navigate(['/explore']);
-                } else if (response.role === UserRole.Company) {
+                }
+                else if (response.role === UserRole.Company) {
                     this.router.navigate(['/coming-soon']);
                 }
 
