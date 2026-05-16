@@ -45,3 +45,7 @@ export interface JobSeekerProfile {
 	summary?: string;
 }
 
+export interface JobSeekerResume {
+	id: string;
+	resumeUrl: string;
+}

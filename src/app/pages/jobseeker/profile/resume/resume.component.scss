@@ -38,10 +38,13 @@
     border-radius: var(--border-radius);
     margin-top: 1.25rem;
     background: var(--surface-ground);
-    transition: border-color 0.2s;
+    transition: all 0.3s ease;
 
-    &:hover {
+    &:hover,
+    &.drag-over {
         border-color: var(--primary-color);
+        background: var(--surface-section);
+        transform: translateY(-2px);
     }
 }
 
@@ -60,6 +63,50 @@
     margin: 0;
     font-size: 0.8rem;
     color: var(--surface-border);
+}
+
+.active-resume {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+    margin-top: 1.25rem;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.01);
+    }
+}
+
+.resume-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.resume-icon {
+    font-size: 2.5rem;
+    color: #ef4444; // PDF Red
+}
+
+.resume-name {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.resume-meta {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+}
+
+.resume-actions {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .empty-state {

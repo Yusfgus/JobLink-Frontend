@@ -9,10 +9,32 @@
 
     <p-divider />
 
-    <div class="upload-area">
+    @if (resumeService.resume(); as resume) {
+    <div class="active-resume">
+        <div class="resume-info">
+            <span class="material-symbols-outlined resume-icon">picture_as_pdf</span>
+            <div>
+                <p class="resume-name">Your Resume</p>
+                <p class="resume-meta">Uploaded on JobLink</p>
+            </div>
+        </div>
+        <div class="resume-actions">
+            <p-button label="Preview" icon="pi pi-external-link" [text]="true" (onClick)="onPreview()" />
+            <p-button label="Delete" icon="pi pi-trash" [text]="true" severity="danger" (onClick)="onDelete()" />
+        </div>
+    </div>
+    } @else {
+    <div class="upload-area" [class.drag-over]="isDragging" (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)" (drop)="onFileDropped($event)">
         <span class="material-symbols-outlined upload-icon">upload_file</span>
         <p class="upload-hint">Drag & drop your resume here, or</p>
-        <p-button label="Browse File" icon="pi pi-upload" styleClass="primary-gradient-btn" />
+
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)"
+            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+        <p-button label="Browse File" icon="pi pi-upload" styleClass="primary-gradient-btn"
+            (onClick)="fileInput.click()" />
         <p class="upload-note">Supported formats: PDF, DOC, DOCX — Max 5 MB</p>
     </div>
+    }
 </div>

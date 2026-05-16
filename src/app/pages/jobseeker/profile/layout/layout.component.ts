@@ -6,6 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { JobSeekerService } from '../../../../core/services/jobseeker/jobseeker.service';
 import { ToastService } from '../../../../core/services/ui/toast.service';
 import { ApiErrorResponse } from '../../../../core/abstractions/response';
+import { ProfilePictureService } from '../../../../core/services/jobseeker/profile-picture.service';
 
 interface NavItem {
     label: string;
@@ -29,10 +30,11 @@ interface NavItem {
 export class LayoutComponent {
 
     private readonly jobSeekerService = inject(JobSeekerService);
+    private readonly profilePictureService = inject(ProfilePictureService);
     private readonly toastService = inject(ToastService);
 
     profile = this.jobSeekerService.profile;
-    profilePictureUrl = this.jobSeekerService.pictureUrl;
+    profilePictureUrl = this.profilePictureService.profilePictureUrl;
 
     fullName = computed(() => {
         const p = this.profile();
@@ -56,7 +58,7 @@ export class LayoutComponent {
     onFileSelected(event: any): void {
         const file: File = event.target.files[0];
         if (file) {
-            this.jobSeekerService.uploadProfilePicture(file).subscribe({
+            this.profilePictureService.uploadProfilePicture(file).subscribe({
                 next: () => {
                     this.toastService.success('Success', 'Profile picture updated');
                 },
@@ -68,7 +70,7 @@ export class LayoutComponent {
     }
 
     onDeletePicture(): void {
-        this.jobSeekerService.deleteProfilePicture().subscribe({
+        this.profilePictureService.deleteProfilePicture().subscribe({
             next: () => {
                 this.toastService.success('Success', 'Profile picture removed');
             },

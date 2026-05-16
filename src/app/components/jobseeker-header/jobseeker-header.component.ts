@@ -9,6 +9,7 @@ import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { JobSeekerService } from '../../core/services/jobseeker/jobseeker.service';
 import { AvatarModule } from 'primeng/avatar';
+import { ProfilePictureService } from '../../core/services/jobseeker/profile-picture.service';
 
 @Component({
     selector: 'app-jobseeker-header',
@@ -29,6 +30,7 @@ export class JobseekerHeaderComponent {
     private router = inject(Router);
     private authService = inject(AuthService);
     private jobSeekerService = inject(JobSeekerService);
+    private profilePictureService = inject(ProfilePictureService);
 
     searchQuery = '';
 
@@ -61,7 +63,7 @@ export class JobseekerHeaderComponent {
     }
 
     profile = this.jobSeekerService.profile;
-    profilePictureUrl = this.jobSeekerService.pictureUrl;
+    profilePictureUrl = this.profilePictureService.profilePictureUrl;
 
     fullName = computed(() => {
         const p = this.profile();

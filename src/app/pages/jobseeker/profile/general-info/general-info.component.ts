@@ -34,7 +34,6 @@ export class GeneralInfoComponent {
     private readonly toastService = inject(ToastService);
 
     profile = this.jobSeekerService.profile;
-    profilePictureUrl = this.jobSeekerService.pictureUrl;
 
     ngOnInit(): void {
         this.initOptions();
