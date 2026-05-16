@@ -7,7 +7,7 @@ import { Job } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
-import { JobService } from '../../../core/services/job.service';
+import { JobService } from '../../../core/services/jobs/explore-page.service';
 
 interface Filter {
     name: string;

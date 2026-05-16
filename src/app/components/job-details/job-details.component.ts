@@ -6,7 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { Job, Skill } from '../../core/abstractions/job';
-import { JobActionsService } from '../../core/services/job-actions.service';
+import { JobActionsService } from '../../core/services/jobs/job-actions.service';
 
 @Component({
     selector: 'app-job-details',

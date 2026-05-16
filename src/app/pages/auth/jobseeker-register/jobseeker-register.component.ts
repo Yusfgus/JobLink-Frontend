@@ -4,8 +4,8 @@ import { FormControl, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { Router } from '@angular/router';
 import { JobseekerRegister } from '../../../core/abstractions/jobseeker';
 import { TokenResponse } from '../../../core/abstractions/token-response';
-import { AuthService } from '../../../core/services/auth.service';
-import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { ToastService } from '../../../core/services/ui/toast.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';

@@ -1,8 +1,8 @@
 import { inject, Injectable } from "@angular/core";
-import { Job } from '../../core/abstractions/job';
-import { JobService } from '../../core/services/job.service';
-import { SavedJobService } from '../../core/services/savedJob.service';
-import { ApplicationsService } from '../../core/services/applications.service';
+import { Job } from '../../abstractions/job';
+import { JobService } from './explore-page.service';
+import { SavedJobService } from './saved-jobs.service';
+import { ApplicationsService } from './applications.service';
 import { Observable, tap } from "rxjs";
 
 @Injectable({

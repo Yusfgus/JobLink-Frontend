@@ -4,7 +4,7 @@ import { Job } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
-import { SavedJobService } from '../../../core/services/savedJob.service';
+import { SavedJobService } from '../../../core/services/jobs/saved-jobs.service';
 import { PaginatorModule } from 'primeng/paginator';
 
 

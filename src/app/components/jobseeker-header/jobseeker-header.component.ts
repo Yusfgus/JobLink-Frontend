@@ -6,8 +6,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
-import { AuthService } from '../../core/services/auth.service';
-import { JobSeekerService } from '../../core/services/jobseeker.service';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { JobSeekerService } from '../../core/services/jobseeker/jobseeker.service';
 import { AvatarModule } from 'primeng/avatar';
 
 @Component({

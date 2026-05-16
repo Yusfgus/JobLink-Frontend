@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Login } from '../../../core/abstractions/login';
-import { AuthService } from '../../../core/services/auth.service';
-import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
+import { ToastService } from '../../../core/services/ui/toast.service';
 import { TokenResponse } from '../../../core/abstractions/token-response';
 import { UserRole } from '../../../core/abstractions/user-role';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -13,7 +13,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
-import { JobSeekerService } from '../../../core/services/jobseeker.service';
+import { JobSeekerService } from '../../../core/services/jobseeker/jobseeker.service';
 
 @Component({
     selector: 'app-login',

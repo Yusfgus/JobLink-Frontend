@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
-import { JobSeekerService } from '../../../../core/services/jobseeker.service';
-import { ToastService } from '../../../../core/services/toast.service';
+import { JobSeekerService } from '../../../../core/services/jobseeker/jobseeker.service';
+import { ToastService } from '../../../../core/services/ui/toast.service';
 import { ApiErrorResponse } from '../../../../core/abstractions/response';
 
 interface NavItem {

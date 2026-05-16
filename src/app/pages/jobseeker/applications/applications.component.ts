@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Application } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
-import { ApplicationsService } from '../../../core/services/applications.service';
+import { ApplicationsService } from '../../../core/services/jobs/applications.service';
 import { ApplicationCardComponent } from '../../../components/application-card/application-card.component';
 import { PaginatorModule } from 'primeng/paginator';
 

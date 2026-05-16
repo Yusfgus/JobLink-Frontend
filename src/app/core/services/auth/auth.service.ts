@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Login } from '../abstractions/login';
-import { JobseekerRegister } from '../abstractions/jobseeker';
-import { TokenResponse } from '../abstractions/token-response';
-import { EmployerRegister } from '../abstractions/employer';
-import { UserRole } from '../abstractions/user-role';
-import { StorageService } from './storage.service';
+import { environment } from '../../../../environments/environment';
+import { Login } from '../../abstractions/login';
+import { JobseekerRegister } from '../../abstractions/jobseeker';
+import { TokenResponse } from '../../abstractions/token-response';
+import { EmployerRegister } from '../../abstractions/employer';
+import { UserRole } from '../../abstractions/user-role';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable({
 	providedIn: 'root'

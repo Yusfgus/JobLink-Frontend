@@ -5,7 +5,7 @@ import { Job } from '../../core/abstractions/job';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
-import { JobActionsService } from '../../core/services/job-actions.service';
+import { JobActionsService } from '../../core/services/jobs/job-actions.service';
 
 @Component({
     selector: 'app-job-card',

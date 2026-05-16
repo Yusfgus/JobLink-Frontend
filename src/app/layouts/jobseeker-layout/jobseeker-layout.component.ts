@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from "@angular/router";
 import { JobseekerHeaderComponent } from '../../components/jobseeker-header/jobseeker-header.component'
 import { AuthFooterComponent } from "../../components/auth-footer/auth-footer.component";
-import { AuthService } from '../../core/services/auth.service';
-import { JobSeekerService } from '../../core/services/jobseeker.service';
-import { ToastService } from '../../core/services/toast.service';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { JobSeekerService } from '../../core/services/jobseeker/jobseeker.service';
+import { ToastService } from '../../core/services/ui/toast.service';
 import { ApiErrorResponse } from '../../core/abstractions/response';
 
 @Component({

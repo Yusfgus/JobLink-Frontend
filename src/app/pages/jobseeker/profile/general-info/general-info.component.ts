@@ -7,10 +7,10 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { JobSeekerService } from '../../../../core/services/jobseeker.service';
+import { JobSeekerService } from '../../../../core/services/jobseeker/jobseeker.service';
 import { Gender, JobSeekerProfile, MaritalStatus, MilitaryStatus } from '../../../../core/abstractions/jobseeker';
 import { SelectItem } from 'primeng/api';
-import { ToastService } from '../../../../core/services/toast.service';
+import { ToastService } from '../../../../core/services/ui/toast.service';
 import { ApiErrorResponse } from '../../../../core/abstractions/response';
 
 @Component({

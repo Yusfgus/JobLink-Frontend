@@ -6,8 +6,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { AuthService } from './core/services/auth.service';
-import { JobSeekerService } from './core/services/jobseeker.service';
+import { AuthService } from './core/services/auth/auth.service';
+import { JobSeekerService } from './core/services/jobseeker/jobseeker.service';
 import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {

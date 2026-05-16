@@ -1,7 +1,7 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "../services/auth/auth.service";
 import { UserRole } from "../abstractions/user-role";
 
 export const authGuard = (role: UserRole, route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
