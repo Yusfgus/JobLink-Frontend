@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { EmployerRegister } from '../../../core/abstractions/employer';
 import { TokenResponse } from '../../../core/abstractions/token-response';
-
-import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -95,7 +93,6 @@ export class EmployerRegisterComponent {
     ];
 
     onSubmit(): void {
-        // console.log('Employer form submitted', this.form.value);
         if (this.form.valid) {
             const data: EmployerRegister = {
                 name: this.form.value.companyName,
@@ -115,17 +112,12 @@ export class EmployerRegisterComponent {
         this.authService.employer_register(registerData)
             .subscribe({
                 next: (response: TokenResponse) => {
-                    console.log(response)
-
                     this.toastService.success('Success', 'Registered successfully')
-
                     this.router.navigate(['/coming-soon'])
-
                     this.spinner.hide()
                 },
                 error: (response) => {
                     this.spinner.hide()
-                    console.log(response)
                     this.toastService.error('Error', response.error.detail)
                 },
             })

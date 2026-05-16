@@ -20,8 +20,9 @@ export class JobCardComponent {
 
     @Input({ required: true }) job!: Job;
 
+    // navigate to job page instead
     // onApply(): void {
-    //     this._jobActionsService.apply(this.job);
+    //     this._jobActionsService.apply(this.job).subscribe();
     // }
 
     onBookmarkClick(event: Event): void {
@@ -35,11 +36,11 @@ export class JobCardComponent {
                 blockScroll: true,
                 acceptButtonStyleClass: 'p-button-danger',
                 accept: () => {
-                    this._jobActionsService.unsave(this.job);
+                    this._jobActionsService.unsave(this.job).subscribe();
                 },
             });
         } else {
-            this._jobActionsService.save(this.job);
+            this._jobActionsService.save(this.job).subscribe();
         }
     }
 }

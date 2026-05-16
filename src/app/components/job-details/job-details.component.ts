@@ -58,15 +58,15 @@ export class JobDetailsComponent {
     }
 
     onApply(): void {
-        this._jobActionsService.apply(this.job);
+        this._jobActionsService.apply(this.job).subscribe();
     }
 
     onBookmarkClick(): void {
         if (this.job.isSaved) {
-            this._jobActionsService.unsave(this.job);
+            this._jobActionsService.unsave(this.job).subscribe();
         }
         else {
-            this._jobActionsService.save(this.job)
+            this._jobActionsService.save(this.job).subscribe();
         }
     }
 }

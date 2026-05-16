@@ -112,7 +112,6 @@ export class GeneralInfoComponent {
         }
 
         let updatedJobSeekerProfile: JobSeekerProfile = this.form.value;
-        console.log('updatedJobSeekerProfile', updatedJobSeekerProfile);
 
         this.jobSeekerService.updateJobSeekerProfile(updatedJobSeekerProfile)
             .subscribe({

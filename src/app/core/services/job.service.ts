@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Job } from '../abstractions/job';
 import { PagedResponse } from '../abstractions/pagedResponse';
@@ -28,7 +28,6 @@ export class JobService extends Paged {
             .subscribe({
                 next: (response: PagedResponse<Job>) => {
                     this._jobsSubject.next([...this._jobsSubject.value, ...response.items]);
-                    console.log(response);
                     this._currentPage = response.pageNumber;
                     this._totalPages = response.totalPages;
                     this._totalCount = response.totalCount;

@@ -30,7 +30,6 @@ export class ApplicationsService extends Paged {
             .subscribe({
                 next: (response: PagedResponse<Application>) => {
                     this._applicationsSubject.next([...this._applicationsSubject.value, ...response.items]);
-                    console.log(response);
                     this._currentPage = response.pageNumber;
                     this._totalPages = response.totalPages;
                     this._totalCount = response.totalCount;
@@ -65,11 +64,11 @@ export class ApplicationsService extends Paged {
             );
     }
 
-    withdrawApplication(job: Application): Observable<any> {
-        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${job.jobId}/withdraw`)
+    withdrawApplication(jobId: string): Observable<any> {
+        return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${jobId}/withdraw`)
             .pipe(
                 tap(() => {
-                    this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.jobId !== job.jobId));
+                    this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.jobId !== jobId));
                     this._totalCount--;
                 })
             );

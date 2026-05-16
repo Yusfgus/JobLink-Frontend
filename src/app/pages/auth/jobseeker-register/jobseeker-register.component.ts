@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { JobseekerRegister } from '../../../core/abstractions/jobseeker';
 import { TokenResponse } from '../../../core/abstractions/token-response';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
-
-import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -85,7 +83,6 @@ export class JobseekerRegisterComponent {
     }
 
     onSubmit(): void {
-        // console.log('Form submitted', this.form.value);
         if (this.form.valid) {
             const data: JobseekerRegister = {
                 email: this.form.value.email,
@@ -106,12 +103,8 @@ export class JobseekerRegisterComponent {
         this.authService.jobseeker_register(registerData)
             .subscribe({
                 next: (response: TokenResponse) => {
-                    console.log(response)
-
                     this.toastService.success('Success', 'Registered successfully')
-
                     this.router.navigate(['/explore'])
-
                     this.spinner.hide()
                 },
                 error: (response) => {

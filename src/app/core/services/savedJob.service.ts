@@ -21,14 +21,11 @@ export class SavedJobService extends Paged {
     savedJobs$: Observable<Job[]> = this._savedJobsSubject.asObservable();
 
     loadSavedJob(page: number = 1, page_size: number = 10): void {
-        console.log("loadSavedJob")
-        console.log(this._savedJobsSubject.value)
         const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
         if ((startIndex < this._savedJobsSubject.value.length && endIndex < this._savedJobsSubject.value.length)
             || !this._hasNext) {
             return;
         }
-
         this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/job-seekers/me/jobs/saved?page=${page}&pageSize=${page_size}`)
             .subscribe({
                 next: (response: PagedResponse<Job>) => {

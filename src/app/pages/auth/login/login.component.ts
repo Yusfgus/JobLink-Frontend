@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
-
 import { Login } from '../../../core/abstractions/login';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { TokenResponse } from '../../../core/abstractions/token-response';
 import { UserRole } from '../../../core/abstractions/user-role';
-
 import { NgxSpinnerService } from "ngx-spinner";
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -74,7 +72,6 @@ export class LoginComponent {
     }
 
     onSubmit(): void {
-        // console.log('Login submitted', this.form.value);
         if (this.form.valid) {
             const data: Login = {
                 email: this.form.value.email,
@@ -90,7 +87,6 @@ export class LoginComponent {
         this.spinner.show();
         this.authService.login(data).subscribe({
             next: (response: TokenResponse) => {
-                console.log('Login response: ', response);
 
                 this.toastService.success('Success', 'Logged in successfully')
 
@@ -111,7 +107,6 @@ export class LoginComponent {
             },
             error: (err) => {
                 this.spinner.hide();
-                console.log('Login error: ', err);
                 this.toastService.error('Error', err.error.detail);
             }
         })

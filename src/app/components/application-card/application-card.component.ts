@@ -1,12 +1,11 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { Application } from '../../core/abstractions/job';
-
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
-import { EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { JobActionsService } from '../../core/services/job-actions.service';
 
 @Component({
 	selector: 'app-application-card',
@@ -16,13 +15,10 @@ import { RouterLink } from '@angular/router';
 	styleUrl: './application-card.component.scss'
 })
 export class ApplicationCardComponent {
-	constructor(
-		private confirmationService: ConfirmationService
-	) { }
+	private _jobActionsService: JobActionsService = inject(JobActionsService);
+	private confirmationService: ConfirmationService = inject(ConfirmationService);
 
 	@Input({ required: true }) application!: Application;
-
-	@Output() withdrawClicked = new EventEmitter<Application>();
 
 	onWithdrawClick(event: Event): void {
 		this.confirmationService.confirm({
@@ -34,7 +30,7 @@ export class ApplicationCardComponent {
 			blockScroll: true,
 			acceptButtonStyleClass: 'p-button-danger',
 			accept: () => {
-				this.withdrawClicked.emit(this.application);
+				this._jobActionsService.withdrawApplication(this.application.jobId).subscribe();
 			},
 		});
 	}

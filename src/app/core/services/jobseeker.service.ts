@@ -28,7 +28,6 @@ export class JobSeekerService {
         this._pictureUrl.set(url);
     }
 
-    // --- Methods ---
 
     loadJobSeekerProfile(): Observable<JobSeekerProfile | null> {
         if (this.isLoaded()) {
