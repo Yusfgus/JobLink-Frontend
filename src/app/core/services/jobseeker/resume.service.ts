@@ -19,6 +19,9 @@ export class ResumeService {
     }
 
     loadResume(): Observable<JobSeekerResume | null> {
+        if (this._resume()) {
+            return of(this._resume());
+        }
         return this._http.get<JobSeekerResume | null>(`${environment.apiRootUrl}/job-seekers/me/resume`)
             .pipe(
                 tap(resume => this._syncResume(resume)),

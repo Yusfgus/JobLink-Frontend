@@ -49,3 +49,22 @@ export interface JobSeekerResume {
 	id: string;
 	resumeUrl: string;
 }
+
+export enum AcademicGrade {
+	Excellent = "Excellent",
+	VeryGood = "VeryGood",
+	Good = "Good",
+	Pass = "Pass"
+}
+
+export interface Education {
+	id: string,
+	degree: string,
+	country: string,
+	institution: string,
+	fieldOfStudy: string,
+	startDate: Date,
+	endDate: Date,
+	grade: AcademicGrade
+}
+

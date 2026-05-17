@@ -9,9 +9,80 @@
 
     <p-divider />
 
+    @if (educations().length === 0) {
     <div class="empty-state">
         <span class="material-symbols-outlined empty-icon">menu_book</span>
         <p class="empty-text">No education entries yet.</p>
-        <p-button label="Add Education" icon="pi pi-plus" styleClass="primary-gradient-btn" />
+        <p-button label="Add Education" icon="pi pi-plus" styleClass="primary-gradient-btn" (onClick)="showDialog()" />
     </div>
+    }
+    @else {
+    <div class="educations-list">
+        @for (edu of educations(); track $index) {
+        <app-education-card [education]="edu" (edit)="editEducation($event)" (delete)="deleteEducation($event)">
+        </app-education-card>
+        }
+        <div class="flex mt-3">
+            <p-button label="Add Education" icon="pi pi-plus" styleClass="primary-gradient-btn"
+                (onClick)="showDialog()" />
+        </div>
+    </div>
+    }
 </div>
+
+<p-dialog header="Add Education" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '90vw' }" [draggable]="false" [resizable]="false"
+    (onHide)="closeDialog()">
+
+    <form [formGroup]="educationForm" (ngSubmit)="saveEducation()" class="flex flex-column gap-3 mt-3">
+        <!-- Degree -->
+        <div class="flex flex-column gap-2">
+            <label for="degree">Degree</label>
+            <input pInputText id="degree" formControlName="degree" placeholder="e.g. Bachelor's" />
+        </div>
+
+        <!-- Field of Study -->
+        <div class="flex flex-column gap-2">
+            <label for="fieldOfStudy">Field of Study</label>
+            <input pInputText id="fieldOfStudy" formControlName="fieldOfStudy" placeholder="e.g. Computer Science" />
+        </div>
+
+        <!-- Institution & Country -->
+        <div class="flex gap-3">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="institution">Institution</label>
+                <input pInputText id="institution" formControlName="institution" placeholder="e.g. Cairo University" />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="country">Country</label>
+                <input pInputText id="country" formControlName="country" placeholder="e.g. Egypt" />
+            </div>
+        </div>
+
+        <!-- Start & End Date & Grade -->
+        <div class="flex gap-3">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="startDate">Start Date</label>
+                <p-calendar id="startDate" formControlName="startDate" view="month" dateFormat="mm/yy"
+                    [readonlyInput]="true" placeholder="MM/YYYY" appendTo="body" />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="endDate">End Date</label>
+                <p-calendar id="endDate" formControlName="endDate" view="month" dateFormat="mm/yy"
+                    [readonlyInput]="true" placeholder="MM/YYYY" appendTo="body" />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="grade">Grade</label>
+                <p-dropdown id="grade" [options]="academicGrades" formControlName="grade" optionLabel="label"
+                    optionValue="value" placeholder="Select a Grade" appendTo="body" />
+            </div>
+        </div>
+
+        <div class="flex justify-content-end gap-2 mt-4">
+            <p-button label="Cancel" icon="pi pi-times" [outlined]="true" severity="secondary"
+                (onClick)="closeDialog()" />
+            <p-button label="Save" icon="pi pi-check" type="submit" [disabled]="educationForm.invalid"
+                styleClass="primary-gradient-btn" />
+        </div>
+    </form>
+</p-dialog>

@@ -19,6 +19,9 @@ export class ProfilePictureService {
     }
 
     loadProfilePicture(): Observable<string | null> {
+        if (this._profilePictureUrl()) {
+            return of(this._profilePictureUrl());
+        }
         return this._http.get<{ profilePictureUrl: string | null; }>(`${environment.apiRootUrl}/job-seekers/me/picture`)
             .pipe(
                 map(res => res.profilePictureUrl),

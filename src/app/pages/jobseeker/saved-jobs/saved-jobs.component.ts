@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Job } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable } from 'rxjs';
 import { JobCardComponent } from '../../../components/job-card/job-card.component';
 import { SavedJobService } from '../../../core/services/jobs/saved-jobs.service';
 import { PaginatorModule } from 'primeng/paginator';
@@ -34,7 +33,7 @@ export class SavedJobsComponent {
 		this.loadMore(event.page + 1, this.rows);
 	}
 
-	savedJobs: Observable<Job[]> = this._savedJobService.savedJobs$;
+	savedJobs = this._savedJobService.savedJobs;
 
 	ngOnInit(): void {
 		this.loadMore(1, this.rows);
@@ -42,7 +41,14 @@ export class SavedJobsComponent {
 
 	loadMore(pageNumber: number, pageSize: number): void {
 		this._spinner.show();
-		this._savedJobService.loadSavedJob(pageNumber, pageSize);
-		this._spinner.hide();
+		const req = this._savedJobService.loadSavedJob(pageNumber, pageSize);
+		if (req) {
+			req.subscribe({
+				next: () => this._spinner.hide(),
+				error: () => this._spinner.hide()
+			});
+		} else {
+			this._spinner.hide();
+		}
 	}
 }

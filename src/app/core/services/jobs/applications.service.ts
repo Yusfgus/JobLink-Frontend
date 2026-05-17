@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Application, ApplicationStatus, Job } from '../../abstractions/job';
 import { PagedResponse } from '../../abstractions/pagedResponse';
@@ -17,29 +18,26 @@ export class ApplicationsService extends Paged {
 
     visibleJobsLimit = 5;
 
-    private _applicationsSubject: BehaviorSubject<Application[]> = new BehaviorSubject<Application[]>([]);
-    applications$: Observable<Application[]> = this._applicationsSubject.asObservable();
+    private _applications = signal<Application[]>([]);
+    applications = this._applications.asReadonly();
 
-    loadApplications(page: number = 1, page_size: number = 10): void {
+    loadApplications(page: number = 1, page_size: number = 10): Observable<PagedResponse<Application>> | void {
         const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
-        if ((startIndex < this._applicationsSubject.value.length && endIndex < this._applicationsSubject.value.length)
+        if ((startIndex < this._applications().length && endIndex < this._applications().length)
             || !this._hasNext) {
             return;
         }
-        this._httpClient.get<PagedResponse<Application>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`)
-            .subscribe({
-                next: (response: PagedResponse<Application>) => {
-                    this._applicationsSubject.next([...this._applicationsSubject.value, ...response.items]);
+        return this._httpClient.get<PagedResponse<Application>>(`${environment.apiRootUrl}/job-seekers/me/jobs/applied?page=${page}&pageSize=${page_size}`)
+            .pipe(
+                tap((response: PagedResponse<Application>) => {
+                    this._applications.update(apps => [...apps, ...response.items]);
                     this._currentPage = response.pageNumber;
                     this._totalPages = response.totalPages;
                     this._totalCount = response.totalCount;
                     this._hasNext = response.hasNextPage;
                     this._hasPrevious = response.hasPreviousPage;
-                },
-                error: () => {
-                    this._hasNext = false;
-                }
-            });
+                })
+            );
     }
 
     applyForJob(job: Job): Observable<any> {
@@ -58,7 +56,7 @@ export class ApplicationsService extends Paged {
                         country: job.country,
                         city: job.city,
                     };
-                    this._applicationsSubject.next([application, ...this._applicationsSubject.value]);
+                    this._applications.update(apps => [application, ...apps]);
                     this._totalCount++;
                 })
             );
@@ -68,7 +66,7 @@ export class ApplicationsService extends Paged {
         return this._httpClient.delete<any>(`${environment.apiRootUrl}/jobs/${jobId}/withdraw`)
             .pipe(
                 tap(() => {
-                    this._applicationsSubject.next(this._applicationsSubject.value.filter(j => j.jobId !== jobId));
+                    this._applications.update(apps => apps.filter(j => j.jobId !== jobId));
                     this._totalCount--;
                 })
             );

@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Application } from '../../../core/abstractions/job';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable } from 'rxjs';
 import { ApplicationsService } from '../../../core/services/jobs/applications.service';
 import { ApplicationCardComponent } from '../../../components/application-card/application-card.component';
 import { PaginatorModule } from 'primeng/paginator';
@@ -33,7 +32,7 @@ export class ApplicationsComponent {
     this.loadMore(event.page + 1, this.rows);
   }
 
-  applications: Observable<Application[]> = this._applicationService.applications$;
+  applications = this._applicationService.applications;
 
   ngOnInit(): void {
     this.loadMore(1, this.rows);
@@ -41,7 +40,14 @@ export class ApplicationsComponent {
 
   loadMore(pageNumber: number, pageSize: number): void {
     this._spinner.show();
-    this._applicationService.loadApplications(pageNumber, pageSize);
-    this._spinner.hide();
+    const req = this._applicationService.loadApplications(pageNumber, pageSize);
+    if (req) {
+      req.subscribe({
+        next: () => this._spinner.hide(),
+        error: () => this._spinner.hide()
+      });
+    } else {
+      this._spinner.hide();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Job } from '../../abstractions/job';
 import { PagedResponse } from '../../abstractions/pagedResponse';
@@ -15,29 +16,26 @@ export class JobService extends Paged {
         private _httpClient: HttpClient,
     ) { super(); }
 
-    private _jobsSubject: BehaviorSubject<Job[]> = new BehaviorSubject<Job[]>([]);
-    jobs$: Observable<Job[]> = this._jobsSubject.asObservable();
+    private _jobs = signal<Job[]>([]);
+    jobs = this._jobs.asReadonly();
 
-    loadJobs(page: number = 1, page_size: number = 10): void {
+    loadJobs(page: number = 1, page_size: number = 10): Observable<PagedResponse<Job>> | void {
         const startIndex = (page - 1) * page_size, endIndex = page * page_size - 1;
-        if ((startIndex < this._jobsSubject.value.length && endIndex < this._jobsSubject.value.length)
+        if ((startIndex < this._jobs().length && endIndex < this._jobs().length)
             || !this._hasNext) {
-            return;
+            return; // Can return of() if needed, but keeping original logic flow
         }
-        this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/jobs?page=${page}&pageSize=${page_size}`)
-            .subscribe({
-                next: (response: PagedResponse<Job>) => {
-                    this._jobsSubject.next([...this._jobsSubject.value, ...response.items]);
+        return this._httpClient.get<PagedResponse<Job>>(`${environment.apiRootUrl}/jobs?page=${page}&pageSize=${page_size}`)
+            .pipe(
+                tap((response: PagedResponse<Job>) => {
+                    this._jobs.update(jobs => [...jobs, ...response.items]);
                     this._currentPage = response.pageNumber;
                     this._totalPages = response.totalPages;
                     this._totalCount = response.totalCount;
                     this._hasNext = response.hasNextPage;
                     this._hasPrevious = response.hasPreviousPage;
-                },
-                error: () => {
-                    this._hasNext = false;
-                }
-            });
+                })
+            );
     }
 
     getJobById(id: string): Observable<Job> {
@@ -45,8 +43,8 @@ export class JobService extends Paged {
     }
 
     updateAppliedStatus(jobId: string, isApplied: boolean): void {
-        this._jobsSubject.next(
-            this._jobsSubject.value.map(job =>
+        this._jobs.update(jobs => 
+            jobs.map(job =>
                 job.id === jobId
                     ? { ...job, isApplied }
                     : job
@@ -55,8 +53,8 @@ export class JobService extends Paged {
     }
 
     updateSavedStatus(jobId: string, isSaved: boolean): void {
-        this._jobsSubject.next(
-            this._jobsSubject.value.map(job =>
+        this._jobs.update(jobs =>
+            jobs.map(job =>
                 job.id === jobId
                     ? { ...job, isSaved }
                     : job

@@ -1,0 +1,39 @@
+<div class="education-card p-4 border-round-2xl surface-card mb-4 flex justify-content-between align-items-start gap-4">
+    <div class="flex gap-4 w-full">
+        <div class="icon-container flex align-items-center justify-content-center border-circle shadow-1"
+            style="width: 56px; height: 56px; flex-shrink: 0;">
+            <span class="material-symbols-outlined text-500 text-3xl">account_balance</span>
+        </div>
+
+        <div class="flex-1 w-full">
+            <div class="flex justify-content-between align-items-start mb-1 flex-wrap gap-2">
+                <h3 class="m-0 text-xl font-semibold text-900 tracking-tight">{{ education.institution }}</h3>
+                <div class="date-badge white-space-nowrap">
+                    {{ education.startDate | date:'MMM yyyy' }} - {{ education.endDate ? (education.endDate | date:'MMM
+                    yyyy') : 'Present' }}
+                </div>
+            </div>
+
+            <p class="m-0 text-primary-600 font-medium text-lg mb-3">
+                {{ education.degree }}<span class="text-600 font-normal mx-1">in</span>{{ education.fieldOfStudy }}
+            </p>
+
+            <div class="flex flex-wrap gap-2 mt-2">
+                <span class="meta-chip">
+                    <i class="pi pi-map-marker text-primary-500"></i>
+                    {{ education.country }}
+                </span>
+                <span class="meta-chip" *ngIf="education.grade">
+                    <i class="pi pi-star text-yellow-500"></i>
+                    Grade: <span class="font-medium text-700 ml-1">{{ education.grade }}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons flex gap-2 ml-2 flex-shrink-0">
+        <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" severity="secondary"
+            (onClick)="onEdit()"></p-button>
+        <p-button icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger" (onClick)="onDelete()"></p-button>
+    </div>
+</div>

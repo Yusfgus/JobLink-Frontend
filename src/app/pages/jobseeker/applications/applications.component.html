@@ -1,5 +1,5 @@
 <main class="applications-page">
-    @for (application of (applications | async) | slice:first:(first + rows); track application.jobId) {
+    @for (application of applications() | slice:first:(first + rows); track application.jobId) {
     <app-application-card [application]="application"></app-application-card>
     }
     @empty {

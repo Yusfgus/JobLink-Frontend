@@ -27,7 +27,7 @@
         <!-- ── Job Feed ─────────────────────────────────── -->
         <section class="job-feed">
 
-            @for (job of (jobs$ | async); track job.id) {
+            @for (job of jobs(); track job.id) {
             <app-job-card [job]="job"></app-job-card>}
 
             <!-- Load More -->

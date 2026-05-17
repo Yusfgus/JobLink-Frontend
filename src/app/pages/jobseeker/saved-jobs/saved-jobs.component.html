@@ -1,5 +1,5 @@
 <main class="saved-jobs-page">
-    @for (job of (savedJobs | async) | slice:first:(first + rows); track job.id) {
+    @for (job of savedJobs() | slice:first:(first + rows); track job.id) {
     <app-job-card [job]="job"></app-job-card>
     }
     @empty {
