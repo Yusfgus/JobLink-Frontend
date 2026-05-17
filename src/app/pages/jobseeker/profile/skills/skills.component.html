@@ -9,9 +9,57 @@
 
     <p-divider />
 
+    @if (jobSeekerSkills().length === 0) {
     <div class="empty-state">
         <span class="material-symbols-outlined empty-icon">lightbulb</span>
         <p class="empty-text">No skills added yet.</p>
-        <p-button label="Add Skill" icon="pi pi-plus" styleClass="primary-gradient-btn" />
+        <p-button label="Add Skill" icon="pi pi-plus" styleClass="primary-gradient-btn" (onClick)="showDialog()" />
     </div>
+    }
+    @else {
+    <div class="skills-list mt-3">
+        <div class="grid">
+            @for (skill of jobSeekerSkills(); track skill.id) {
+            <div class="col-12 md:col-6">
+                <app-skill-card [skill]="skill" (edit)="editSkill($event)" (delete)="deleteSkill($event)">
+                </app-skill-card>
+            </div>
+            }
+        </div>
+        <div class="flex mt-3 justify-content-end">
+            <p-button label="Add Skill" icon="pi pi-plus" styleClass="primary-gradient-btn" (onClick)="showDialog()" />
+        </div>
+    </div>
+    }
 </div>
+
+
+<p-dialog header="Add Skills" [(visible)]="visible" [modal]="true" [style]="{ width: '35vw' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '90vw' }" [draggable]="false" [resizable]="false"
+    (onHide)="closeDialog()">
+
+    <form [formGroup]="skillForm" (ngSubmit)="saveSkill()" class="flex flex-column gap-3 mt-3">
+        <!-- skillName -->
+        <div class="flex gap-2">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="skillName">Skill Name</label>
+                <p-dropdown id="skillName" [options]="allSkills" formControlName="skillName" optionLabel="label"
+                    optionValue="value" placeholder="Select a Skill" appendTo="body" [style]="{ width: '100%' }"
+                    [ngClass]="{'ng-invalid ng-dirty': skillForm.get('skillName')?.invalid && skillForm.get('skillName')?.touched}" />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="skillLevel">Skill Level</label>
+                <p-dropdown id="skillLevel" [options]="skillLevels" formControlName="skillLevel" optionLabel="label"
+                    optionValue="value" placeholder="Select a Skill Level" appendTo="body" [style]="{ width: '100%' }"
+                    [ngClass]="{'ng-invalid ng-dirty': skillForm.get('skillLevel')?.invalid && skillForm.get('skillLevel')?.touched}" />
+            </div>
+        </div>
+
+        <div class="flex justify-content-end gap-2 mt-4">
+            <p-button label="Cancel" icon="pi pi-times" [outlined]="true" severity="secondary"
+                (onClick)="closeDialog()" />
+            <p-button label="Save" icon="pi pi-check" type="submit" [disabled]="skillForm.invalid"
+                styleClass="primary-gradient-btn" />
+        </div>
+    </form>
+</p-dialog>

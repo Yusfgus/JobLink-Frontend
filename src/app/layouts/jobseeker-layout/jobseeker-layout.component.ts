@@ -7,6 +7,7 @@ import { JobSeekerService } from '../../core/services/jobseeker/jobseeker.servic
 import { ToastService } from '../../core/services/ui/toast.service';
 import { ApiErrorResponse } from '../../core/abstractions/response';
 import { ProfilePictureService } from '../../core/services/jobseeker/profile-picture.service';
+import { SkillsService } from '../../core/services/shared/skills.service';
 
 @Component({
 	selector: 'app-jobseeker-layout',
@@ -19,6 +20,7 @@ export class JobseekerLayoutComponent {
 	constructor(
 		private authService: AuthService,
 		private jobSeekerService: JobSeekerService,
+		private skillsService: SkillsService,
 		private profilePictureService: ProfilePictureService,
 		private router: Router,
 		private toastService: ToastService
@@ -28,6 +30,7 @@ export class JobseekerLayoutComponent {
 				next: () => {
 					this.jobSeekerService.loadJobSeekerProfile().subscribe();
 					this.profilePictureService.loadProfilePicture().subscribe();
+					this.skillsService.loadSkills().subscribe();
 				},
 				error: (error: ApiErrorResponse) => {
 					this.toastService.error(error.title, error.detail);

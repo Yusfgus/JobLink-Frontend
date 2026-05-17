@@ -5,7 +5,8 @@ import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
-import { Job, Skill } from '../../core/abstractions/job';
+import { Job } from '../../core/abstractions/job';
+import { JobSkill } from '../../core/abstractions/skill';
 import { JobActionsService } from '../../core/services/jobs/job-actions.service';
 
 @Component({
@@ -49,11 +50,11 @@ export class JobDetailsComponent {
         return parts.join(', ');
     }
 
-    get requiredSkills(): Skill[] {
+    get requiredSkills(): JobSkill[] {
         return this.job.skills.filter(s => s.isRequired);
     }
 
-    get optionalSkills(): Skill[] {
+    get optionalSkills(): JobSkill[] {
         return this.job.skills.filter(s => !s.isRequired);
     }
 

@@ -1,3 +1,4 @@
+import { JobSkill } from "./skill";
 
 
 export enum ApplicationStatus {
@@ -20,12 +21,6 @@ export interface Application {
     appliedAtUtc: Date;
 }
 
-export interface Skill {
-    id: string;
-    name: string;
-    isRequired: boolean;
-}
-
 export interface Job {
     id: string;
     title: string;
@@ -40,7 +35,7 @@ export interface Job {
     description: string;
     requirements: string;
     experienceLevel: string;
-    skills: Skill[];
+    skills: JobSkill[];
     minSalary: number | null;
     maxSalary: number | null;
     isApplied: boolean;

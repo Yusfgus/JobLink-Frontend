@@ -42,7 +42,7 @@
             <footer class="job-footer">
                 <div class="job-skills">
                     @for (skill of job.skills | slice: 0: 9; track skill) {
-                    <span class="skill-chip">{{ skill.name }}</span>
+                    <span class="skill-chip">{{ skill.skillName }}</span>
                     }
                 </div>
                 <!-- Actions: apply, save -->

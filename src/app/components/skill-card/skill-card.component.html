@@ -1,0 +1,23 @@
+<div class="skill-card p-4 border-round-2xl surface-card flex align-items-center gap-4">
+
+    <div class="action-buttons flex gap-3 align-items-center">
+        <i class="pi pi-pencil cursor-pointer text-500 hover:text-primary-500 transition-colors"
+            style="font-size: 0.9rem;" (click)="onEdit()" title="Edit"></i>
+        <i class="pi pi-trash cursor-pointer text-500 hover:text-red-500 transition-colors" style="font-size: 0.9rem;"
+            (click)="onDelete()" title="Delete"></i>
+    </div>
+
+    <div class="flex gap-4 w-full align-items-center">
+        <div class="icon-container flex align-items-center justify-content-center border-circle shadow-1"
+            style="width: 48px; height: 48px; flex-shrink: 0;">
+            <span class="material-symbols-outlined text-500 text-2xl">bolt</span>
+        </div>
+
+        <div class="flex-1 w-full flex justify-content-between align-items-center flex-wrap gap-2">
+            <h3 class="m-0 text-lg font-semibold text-900 tracking-tight">{{ skill.skillName }}</h3>
+            <span class="skill-level-badge" [ngClass]="getSkillLevelClass(skill.skillLevel)">
+                {{ skill.skillLevel }}
+            </span>
+        </div>
+    </div>
+</div>

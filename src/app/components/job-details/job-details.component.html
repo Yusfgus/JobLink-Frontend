@@ -130,7 +130,7 @@
                     <p class="skills-group-label">Required</p>
                     <div class="skills-list">
                         @for (skill of requiredSkills; track skill.id) {
-                        <span class="skill-chip skill-chip--required">{{ skill.name }}</span>
+                        <span class="skill-chip skill-chip--required">{{ skill.skillName }}</span>
                         }
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                     <p class="skills-group-label">Nice to have</p>
                     <div class="skills-list">
                         @for (skill of optionalSkills; track skill.id) {
-                        <span class="skill-chip">{{ skill.name }}</span>
+                        <span class="skill-chip">{{ skill.skillName }}</span>
                         }
                     </div>
                 </div>

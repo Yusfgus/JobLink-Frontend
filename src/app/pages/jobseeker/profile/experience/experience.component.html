@@ -22,7 +22,7 @@
         <app-experience-card [experience]="exp" (edit)="editExperience($event)" (delete)="deleteExperience($event)">
         </app-experience-card>
         }
-        <div class="flex mt-3">
+        <div class="flex mt-3 justify-content-end">
             <p-button label="Add Experience" icon="pi pi-plus" styleClass="primary-gradient-btn"
                 (onClick)="showDialog()" />
         </div>
@@ -76,8 +76,8 @@
             </div>
             <div class="flex flex-column gap-2 flex-1">
                 <label for="endDate">End Date *</label>
-                <p-calendar id="endDate" formControlName="endDate" view="month" dateFormat="mm/yy"
-                    placeholder="MM/YYYY" appendTo="body" class="w-full" styleClass="w-full"
+                <p-calendar id="endDate" formControlName="endDate" view="month" dateFormat="mm/yy" placeholder="MM/YYYY"
+                    appendTo="body" class="w-full" styleClass="w-full"
                     [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('endDate')?.invalid && experienceForm.get('endDate')?.touched}">
                 </p-calendar>
             </div>
