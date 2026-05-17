@@ -38,24 +38,28 @@
         <!-- Degree -->
         <div class="flex flex-column gap-2">
             <label for="degree">Degree</label>
-            <input pInputText id="degree" formControlName="degree" placeholder="e.g. Bachelor's" />
+            <input pInputText id="degree" formControlName="degree" placeholder="e.g. Bachelor's"
+                [ngClass]="{'ng-invalid ng-dirty': educationForm.get('degree')?.invalid && educationForm.get('degree')?.touched}" />
         </div>
 
         <!-- Field of Study -->
         <div class="flex flex-column gap-2">
             <label for="fieldOfStudy">Field of Study</label>
-            <input pInputText id="fieldOfStudy" formControlName="fieldOfStudy" placeholder="e.g. Computer Science" />
+            <input pInputText id="fieldOfStudy" formControlName="fieldOfStudy" placeholder="e.g. Computer Science"
+                [ngClass]="{'ng-invalid ng-dirty': educationForm.get('fieldOfStudy')?.invalid && educationForm.get('fieldOfStudy')?.touched}" />
         </div>
 
         <!-- Institution & Country -->
         <div class="flex gap-3">
             <div class="flex flex-column gap-2 flex-1">
                 <label for="institution">Institution</label>
-                <input pInputText id="institution" formControlName="institution" placeholder="e.g. Cairo University" />
+                <input pInputText id="institution" formControlName="institution" placeholder="e.g. Cairo University"
+                    [ngClass]="{'ng-invalid ng-dirty': educationForm.get('institution')?.invalid && educationForm.get('institution')?.touched}" />
             </div>
             <div class="flex flex-column gap-2 flex-1">
                 <label for="country">Country</label>
-                <input pInputText id="country" formControlName="country" placeholder="e.g. Egypt" />
+                <input pInputText id="country" formControlName="country" placeholder="e.g. Egypt"
+                    [ngClass]="{'ng-invalid ng-dirty': educationForm.get('country')?.invalid && educationForm.get('country')?.touched}" />
             </div>
         </div>
 
@@ -64,17 +68,20 @@
             <div class="flex flex-column gap-2 flex-1">
                 <label for="startDate">Start Date</label>
                 <p-calendar id="startDate" formControlName="startDate" view="month" dateFormat="mm/yy"
-                    [readonlyInput]="true" placeholder="MM/YYYY" appendTo="body" />
+                    [readonlyInput]="true" placeholder="MM/YYYY" appendTo="body"
+                    [ngClass]="{'ng-invalid ng-dirty': educationForm.get('startDate')?.invalid && educationForm.get('startDate')?.touched}" />
             </div>
             <div class="flex flex-column gap-2 flex-1">
                 <label for="endDate">End Date</label>
                 <p-calendar id="endDate" formControlName="endDate" view="month" dateFormat="mm/yy"
-                    [readonlyInput]="true" placeholder="MM/YYYY" appendTo="body" />
+                    [readonlyInput]="true" placeholder="MM/YYYY" appendTo="body"
+                    [ngClass]="{'ng-invalid ng-dirty': educationForm.get('endDate')?.invalid && educationForm.get('endDate')?.touched}" />
             </div>
             <div class="flex flex-column gap-2 flex-1">
                 <label for="grade">Grade</label>
                 <p-dropdown id="grade" [options]="academicGrades" formControlName="grade" optionLabel="label"
-                    optionValue="value" placeholder="Select a Grade" appendTo="body" />
+                    optionValue="value" placeholder="Select a Grade" appendTo="body"
+                    [ngClass]="{'ng-invalid ng-dirty': educationForm.get('grade')?.invalid && educationForm.get('grade')?.touched}" />
             </div>
         </div>
 

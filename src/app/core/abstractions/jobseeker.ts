@@ -68,3 +68,13 @@ export interface Education {
 	grade: AcademicGrade
 }
 
+export interface Experience {
+	id: string,
+	company: string,
+	position: string,
+	country: string,
+	description?: string,
+	salary: number,
+	startDate: Date,
+	endDate: Date
+}

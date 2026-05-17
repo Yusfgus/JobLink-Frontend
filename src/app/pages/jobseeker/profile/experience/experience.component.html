@@ -9,9 +9,92 @@
 
     <p-divider />
 
+    @if (experiences().length === 0) {
     <div class="empty-state">
         <span class="material-symbols-outlined empty-icon">work_history</span>
         <p class="empty-text">No experience entries yet.</p>
-        <p-button label="Add Experience" icon="pi pi-plus" styleClass="primary-gradient-btn" />
+        <p-button label="Add Experience" icon="pi pi-plus" styleClass="primary-gradient-btn" (onClick)="showDialog()" />
     </div>
+    }
+    @else {
+    <div class="experiences-list">
+        @for (exp of experiences(); track $index) {
+        <app-experience-card [experience]="exp" (edit)="editExperience($event)" (delete)="deleteExperience($event)">
+        </app-experience-card>
+        }
+        <div class="flex mt-3">
+            <p-button label="Add Experience" icon="pi pi-plus" styleClass="primary-gradient-btn"
+                (onClick)="showDialog()" />
+        </div>
+    </div>
+    }
 </div>
+
+<p-dialog header="Add Experience" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [draggable]="false" [resizable]="false"
+    (onHide)="closeDialog()">
+
+    <form [formGroup]="experienceForm" (ngSubmit)="saveExperience()" class="flex flex-column gap-3 mt-3">
+        <!-- Company -->
+        <div class="flex flex-column gap-2">
+            <label for="company">Company *</label>
+            <input pInputText id="company" formControlName="company" placeholder="e.g. Google"
+                [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('company')?.invalid && experienceForm.get('company')?.touched}" />
+        </div>
+
+        <!-- Position -->
+        <div class="flex flex-column gap-2">
+            <label for="position">Position *</label>
+            <input pInputText id="position" formControlName="position" placeholder="e.g. Software Engineer"
+                [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('position')?.invalid && experienceForm.get('position')?.touched}" />
+        </div>
+
+        <!-- Country & Salary -->
+        <div class="flex gap-3">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="country">Country *</label>
+                <input pInputText id="country" formControlName="country" placeholder="e.g. United States"
+                    [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('country')?.invalid && experienceForm.get('country')?.touched}" />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="salary">Salary *</label>
+                <p-inputNumber inputId="salary" formControlName="salary" mode="currency" currency="USD" locale="en-US"
+                    class="w-full" styleClass="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('salary')?.invalid && experienceForm.get('salary')?.touched}">
+                </p-inputNumber>
+            </div>
+        </div>
+
+        <!-- Start Date & End Date -->
+        <div class="flex gap-3">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="startDate">Start Date *</label>
+                <p-calendar id="startDate" formControlName="startDate" view="month" dateFormat="mm/yy"
+                    placeholder="MM/YYYY" appendTo="body" class="w-full" styleClass="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('startDate')?.invalid && experienceForm.get('startDate')?.touched}">
+                </p-calendar>
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="endDate">End Date *</label>
+                <p-calendar id="endDate" formControlName="endDate" view="month" dateFormat="mm/yy"
+                    placeholder="MM/YYYY" appendTo="body" class="w-full" styleClass="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': experienceForm.get('endDate')?.invalid && experienceForm.get('endDate')?.touched}">
+                </p-calendar>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="flex flex-column gap-2">
+            <label for="description">Description</label>
+            <textarea pInputTextarea id="description" rows="4" formControlName="description"
+                placeholder="Describe your responsibilities and achievements..."></textarea>
+        </div>
+
+        <div class="flex justify-content-end gap-2 mt-4">
+            <p-button label="Cancel" icon="pi pi-times" [outlined]="true" severity="secondary"
+                (onClick)="closeDialog()"></p-button>
+            <p-button label="Save" icon="pi pi-check" type="submit" [disabled]="experienceForm.invalid"
+                styleClass="primary-gradient-btn"></p-button>
+        </div>
+    </form>
+</p-dialog>
